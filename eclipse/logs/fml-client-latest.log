@@ -290,7 +290,7 @@ Details:
 [21:35:15] [Client thread/DEBUG] [FML/]: The mod container twitch-external-platform-4.5-natives-windows-64.jar appears to be missing an mcmod.info file
 [21:35:15] [Client thread/DEBUG] [FML/]: Examining file modid-1.0.jar for potential mods
 [21:35:15] [Client thread/TRACE] [FML/]: Located mcmod.info file in file modid-1.0.jar
-[21:35:15] [Client thread/DEBUG] [FML/]: Identified a mod of type Lcpw/mods/fml/common/Mod; (com.example.examplemod.ExampleMod) - loading
+[21:35:15] [Client thread/DEBUG] [FML/]: Identified a mod of type Lcpw/mods/fml/common/Mod; (com.mewo.hbmenhanced.hbmenhanced) - loading
 [21:35:15] [Client thread/TRACE] [examplemod/]: Parsed dependency info : [] [] []
 [21:35:15] [Client thread/INFO] [FML/]: Forge Mod Loader has identified 4 mods to load
 [21:35:15] [Client thread/TRACE] [FML/]: Received a system property request ''
@@ -418,7 +418,7 @@ Details:
 [21:35:18] [Client thread/TRACE] [Forge/Forge]: Sent event FMLInitializationEvent to mod Forge
 [21:35:18] [Client thread/DEBUG] [FML/]: Bar Step: Initialization - Minecraft Forge took 0,000s
 [21:35:18] [Client thread/TRACE] [examplemod/examplemod]: Sending event FMLInitializationEvent to mod examplemod
-[21:35:18] [Client thread/INFO] [STDOUT/examplemod]: [com.example.examplemod.ExampleMod:init:18]: DIRT BLOCK >> tile.dirt
+[21:35:18] [Client thread/INFO] [STDOUT/examplemod]: [com.mewo.hbmenhanced.hbmenhanced:init:18]: DIRT BLOCK >> tile.dirt
 [21:35:18] [Client thread/TRACE] [examplemod/examplemod]: Sent event FMLInitializationEvent to mod examplemod
 [21:35:18] [Client thread/DEBUG] [FML/]: Bar Step: Initialization - Example Mod took 0,001s
 [21:35:18] [Client thread/DEBUG] [FML/]: Bar Finished: Initialization took 0,002s
