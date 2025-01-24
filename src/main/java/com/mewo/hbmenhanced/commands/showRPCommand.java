@@ -25,7 +25,6 @@ public class showRPCommand implements ICommand {
 
     @Override
     public void processCommand(ICommandSender sender, String[] args) {
-        String action = args[0];
         String playerName = sender.getCommandSenderName();
 
 
