@@ -1,3 +1,22 @@
 # Default ignored files
 /shelf/
 /workspace.xml
+/saves/
+/world/
+/world_nether/
+/world_the_end/
+
+# Ignore logs
+/logs/
+debug.log
+latest.log
+
+/crash-reports/
+
+*.tmp
+*.temp
+*.bak
+*.swp
+
+.DS_Store
+Thumbs.db
