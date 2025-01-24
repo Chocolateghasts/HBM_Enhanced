@@ -7,7 +7,7 @@
 /world_the_end/
 
 # Ignore logs
-/logs/
+eclips/logs/
 debug.log
 latest.log
 

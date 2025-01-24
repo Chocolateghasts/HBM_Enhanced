@@ -11,8 +11,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class RPCommand implements ICommand {
-    int points = 0;
-    int ResearchPoints = 1;
+    public static int ResearchPoints = 1;
     @Override
     public String getCommandName() {
         return "rp";
@@ -35,22 +34,20 @@ public class RPCommand implements ICommand {
 
 
         MinecraftServer server = MinecraftServer.getServer();
-        List<EntityPlayerMP> players = server.getConfigurationManager().getPlayerList(playerName);
-        if (players.isEmpty()) {
-            sender.addChatMessage(new ChatComponentText("haha you are lonely"));
-            return;
-        }
+        playerName = sender.getCommandSenderName();
 
-        EntityPlayerMP targetPlayer = players.get(0);
+        int points = 0;
+        points = Integer.parseInt(args[2]);
 
         if (action != null && action.equals("set")) {
-            sender.addChatMessage(new ChatComponentText("Set" + playerName + "'s RP to " + points));
+            sender.addChatMessage(new ChatComponentText("Set " + playerName + "'s RP to " + points));
             ResearchPoints = points;
+            System.out.println(ResearchPoints);
         } else if (action != null && action.equals("add")) {
-            sender.addChatMessage(new ChatComponentText("Add" + points + "to " + playerName));
+            sender.addChatMessage(new ChatComponentText("Added " + points + " to " + playerName));
             ResearchPoints = ResearchPoints + points;
         } else if (action != null && action.equals("subtract")) {
-            sender.addChatMessage(new ChatComponentText("Subtract" + points + "from " + playerName));
+            sender.addChatMessage(new ChatComponentText("Subtracted " + points + " from " + playerName));
             ResearchPoints = ResearchPoints - points;
         }
     }

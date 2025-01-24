@@ -1,6 +1,7 @@
 package com.mewo.hbmenhanced;
 
 import com.mewo.hbmenhanced.commands.RPCommand;
+import com.mewo.hbmenhanced.commands.showRPCommand;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import net.minecraft.init.Blocks;
 import cpw.mods.fml.common.Mod;
@@ -23,5 +24,6 @@ public class hbmenhanced
     public void serverStarting(FMLServerStartingEvent event) {
         // Register your custom command
         event.registerServerCommand(new RPCommand());
+        event.registerServerCommand(new showRPCommand());
     }
 }
