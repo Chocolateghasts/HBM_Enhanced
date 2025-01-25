@@ -7,10 +7,13 @@ import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 
 import java.io.IOException;
 import java.util.Timer;
@@ -26,7 +29,7 @@ public class hbmenhanced
     @EventHandler
     public void PreInit(FMLInitializationEvent event) {
         labBlock = new LabBlock(Material.anvil).setBlockName("labBlock");
-        GameRegistry.registerBlock(labBlock, "Lab Block");
+        GameRegistry.registerBlock(labBlock, "Lab Block").setCreativeTab(tabhbmenhanced);
     }
     
     @EventHandler
@@ -58,4 +61,11 @@ public class hbmenhanced
             }
         }, 0, 60000);  // Save every 60 seconds
     }
+
+    public static CreativeTabs tabhbmenhanced = new CreativeTabs("tabhbmenhanced") {
+        @Override
+        public Item getTabIconItem() {
+            return new ItemStack(labBlock).getItem();
+        }
+    };
 }
