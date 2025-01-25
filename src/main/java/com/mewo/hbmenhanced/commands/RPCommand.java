@@ -1,18 +1,23 @@
 package com.mewo.hbmenhanced.commands;
 
+import ibxm.Player;
 import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ChatComponentText;
+import scala.Int;
 
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 
 public class RPCommand implements ICommand {
     int points = 0;
     public static int ResearchPoints = 0;
+    public static HashMap<String, Integer> playerRPMap = new HashMap<>();
+
     @Override
     public String getCommandName() {
         return "rp";
@@ -33,7 +38,12 @@ public class RPCommand implements ICommand {
         String action = args[0];
         String playerName = args[1];
 
-        playerName = sender.getCommandSenderName();
+        //int currentRP = playerRPMap.getOrDefault(playerName, 0);
+
+
+
+        playerName = args[3];
+        System.out.println(playerName);
         points = Integer.parseInt(args[2]);
 
         if (action != null && action.equals("set")) {
