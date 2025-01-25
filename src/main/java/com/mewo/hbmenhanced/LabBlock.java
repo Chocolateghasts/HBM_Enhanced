@@ -4,10 +4,10 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 
-public class OreBlock extends Block {
+public class LabBlock extends Block {
 
-    public extends Block {
-        super(Material);
+    protected LabBlock(Material material) {
+        super(material);
 
         this.setHardness(3.0F);
         this.setResistance(1.0F);
@@ -15,7 +15,4 @@ public class OreBlock extends Block {
         this.setCreativeTab(CreativeTabs.tabBlock);
     }
 
-    protected OreBlock(Material p_i45394_1_) {
-        super(p_i45394_1_);
-    }
 }

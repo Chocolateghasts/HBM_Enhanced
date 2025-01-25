@@ -4,8 +4,8 @@ import com.mewo.hbmenhanced.commands.RPCommand;
 import com.mewo.hbmenhanced.commands.showRPCommand;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
-import javafx.scene.paint.Material;
-import jdk.nashorn.internal.ir.Block;
+import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
 import net.minecraft.init.Blocks;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
@@ -20,7 +20,7 @@ public class hbmenhanced
     public static Block labBlock;
     @EventHandler
     public void PreInit(FMLInitializationEvent event) {
-        labBlock = new OreBlock(Material.rock).setBlockName("labBlock");
+        labBlock = new LabBlock(Material.anvil).setBlockName("labBlock");
         GameRegistry.registerBlock(labBlock, "Lab Block");
     }
     
