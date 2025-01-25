@@ -1,9 +1,13 @@
 package com.mewo.hbmenhanced;
 
+import com.mewo.hbmenhanced.Gui.labBlockGuiHandler;
+import com.mewo.hbmenhanced.blocks.LabBlock;
 import com.mewo.hbmenhanced.commands.RPCommand;
 import com.mewo.hbmenhanced.commands.showRPCommand;
+import com.mewo.hbmenhanced.containers.labBlockTileEntity;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
+import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -26,9 +30,14 @@ public class hbmenhanced
     public static final String VERSION = "1.0.0";
 
     public static Block labBlock;
+    @Mod.Instance
+    public static hbmenhanced instance;
+
     @EventHandler
     public void PreInit(FMLInitializationEvent event) {
         labBlock = new LabBlock(Material.anvil).setBlockName("labBlock");
+        GameRegistry.registerTileEntity(labBlockTileEntity.class, "labBlockTileEntity");
+        NetworkRegistry.INSTANCE.registerGuiHandler(this, new labBlockGuiHandler());
         GameRegistry.registerBlock(labBlock, "Lab Block").setCreativeTab(tabhbmenhanced);
     }
     
