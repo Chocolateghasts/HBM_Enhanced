@@ -1,5 +1,6 @@
 package com.mewo.hbmenhanced;
 
+import com.mewo.hbmenhanced.blocks.LabBlock;
 import com.mewo.hbmenhanced.commands.RPCommand;
 import com.mewo.hbmenhanced.commands.showRPCommand;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
