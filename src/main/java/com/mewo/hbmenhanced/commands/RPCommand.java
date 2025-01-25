@@ -38,23 +38,28 @@ public class RPCommand implements ICommand {
         String action = args[0];
         String playerName = args[1];
 
-        //int currentRP = playerRPMap.getOrDefault(playerName, 0);
+        int currentRP = playerRPMap.getOrDefault(playerName, 0);
 
 
 
-        playerName = args[3];
+        //playerName = args[1];
         System.out.println(playerName);
         points = Integer.parseInt(args[2]);
 
         if (action != null && action.equals("set")) {
             sender.addChatMessage(new ChatComponentText("Set " + playerName + "'s RP to " + points));
-            ResearchPoints = points;
+            playerRPMap.put(playerName, points);
         } else if (action != null && action.equals("add")) {
             sender.addChatMessage(new ChatComponentText("Add " + points + " to " + playerName));
-            ResearchPoints = ResearchPoints + points;
+            playerRPMap.put(playerName, currentRP + points);
         } else if (action != null && action.equals("subtract")) {
-            sender.addChatMessage(new ChatComponentText("Subtract " + points + " from " + playerName));
-            ResearchPoints = ResearchPoints - points;
+            if (currentRP - points < 0) {
+                sender.addChatMessage(new ChatComponentText(playerName + "'s RP cannot go below zero."));
+            } else {
+                // Subtract points from the player's RP
+                playerRPMap.put(playerName, currentRP - points);
+                sender.addChatMessage(new ChatComponentText("Subtracted " + points + " from " + playerName + "'s RP"));
+            }
         }
     }
 
