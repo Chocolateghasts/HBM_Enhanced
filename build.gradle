@@ -12,13 +12,19 @@ buildscript {
         maven { url 'https://jitpack.io' }
     }
     dependencies {
-classpath ('com.anatawa12.forge:ForgeGradle:1.2-1.1.+') {
-    changing = true
+        classpath ('com.anatawa12.forge:ForgeGradle:1.2-1.1.+') {
+        changing = true
         }
     }
 }
 
+apply plugin: 'java'
 apply plugin: 'forge'
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+}
 
 version = "1.0"
 group= "com.mewo.hbmenhanced" // http://maven.apache.org/guides/mini/guide-naming-conventions.html

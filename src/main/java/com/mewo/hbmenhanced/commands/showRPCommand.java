@@ -3,9 +3,14 @@ package com.mewo.hbmenhanced.commands;
 import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.util.ChatComponentText;
+import org.lwjgl.Sys;
+import scala.collection.parallel.ParIterableLike;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+
+import static com.mewo.hbmenhanced.commands.RPCommand.playerRPMap;
 
 public class showRPCommand implements ICommand {
     @Override
@@ -25,12 +30,16 @@ public class showRPCommand implements ICommand {
 
     @Override
     public void processCommand(ICommandSender sender, String[] args) {
-        String action = args[0];
-        String playerName = sender.getCommandSenderName();
-
-
-
-        sender.addChatMessage(new ChatComponentText(playerName + "'s RP is " + RPCommand.ResearchPoints));
+        System.out.println(playerRPMap);
+        StringBuilder rpList = new StringBuilder("Current RP values:\n");
+        // Iterate over the map and format each entry
+        for (Map.Entry<String, Integer> entry : playerRPMap.entrySet()) {
+            rpList.append(entry.getKey())
+                    .append(" has ")
+                    .append(entry.getValue())
+                    .append(" RP\n");
+        }
+        sender.addChatMessage(new ChatComponentText(rpList.toString()));
     }
 
     @Override
