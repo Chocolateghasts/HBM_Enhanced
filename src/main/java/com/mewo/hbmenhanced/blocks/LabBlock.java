@@ -20,7 +20,7 @@ public class LabBlock extends Block {
 
         this.setHardness(3.0F);
         this.setResistance(1.0F);
-        this.setStepSound(soundTypeWood);
+        this.setStepSound(soundTypeAnvil);
         this.setCreativeTab(CreativeTabs.tabBlock);
     }
 

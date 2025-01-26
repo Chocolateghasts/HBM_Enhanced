@@ -1,5 +1,6 @@
 package com.mewo.hbmenhanced.commands;
 
+import com.mewo.hbmenhanced.containers.labBlockTileEntity;
 import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.util.ChatComponentText;
