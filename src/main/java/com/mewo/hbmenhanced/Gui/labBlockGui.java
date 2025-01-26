@@ -8,7 +8,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
 public class labBlockGui extends GuiContainer {
-    private static final ResourceLocation GUI_TEXTURE = new ResourceLocation("hbmenhanced", "textures/gui/GUI_TEXTURE.png");
+    private static final ResourceLocation LAB_BLOCK_GUI_TEXTURE = new ResourceLocation("hbmenhanced", "textures/gui/LAB_BLOCK_GUI_TEXTURE.png");
 
 
     public labBlockGui(InventoryPlayer inventory, World world, int x, int y, int z) {
@@ -20,13 +20,13 @@ public class labBlockGui extends GuiContainer {
 
     @Override
     protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
-        this.fontRendererObj.drawString("Lab Block", 8, 6, 4210752);
-        this.fontRendererObj.drawString("Inventory", 8, this.ySize - 96 + 2, 4210752);
+        this.fontRendererObj.drawString("", 8, 6, 4210752);
+        this.fontRendererObj.drawString("", 8, this.ySize - 96 + 2, 4210752);
     }
 
     @Override
     protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
-        this.mc.getTextureManager().bindTexture(GUI_TEXTURE);
+        this.mc.getTextureManager().bindTexture(LAB_BLOCK_GUI_TEXTURE);
         this.drawTexturedModalRect(this.guiLeft, this.guiTop, 0, 0, this.xSize, this.ySize);
     }
 }
