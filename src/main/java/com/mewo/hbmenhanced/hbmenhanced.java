@@ -5,6 +5,7 @@ import com.mewo.hbmenhanced.blocks.LabBlock;
 import com.mewo.hbmenhanced.commands.RPCommand;
 import com.mewo.hbmenhanced.commands.showRPCommand;
 import com.mewo.hbmenhanced.containers.labBlockTileEntity;
+import com.mewo.hbmenhanced.items.ItemResearchPoint;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
@@ -29,7 +30,12 @@ public class hbmenhanced
     public static final String MODID = "hbmenhanced";
     public static final String VERSION = "1.0.0";
 
+
+    public static Item researchPoint;
     public static Block labBlock;
+
+
+
     @Mod.Instance
     public static hbmenhanced instance;
 
@@ -40,16 +46,21 @@ public class hbmenhanced
         NetworkRegistry.INSTANCE.registerGuiHandler(this, new labBlockGuiHandler());
         GameRegistry.registerBlock(labBlock, "Lab Block").setCreativeTab(tabhbmenhanced);
     }
-    
+
+
+
     @EventHandler
     public void init(FMLInitializationEvent event)
     {
 		// some example code
         System.out.println("DIRT BLOCK >> "+Blocks.dirt.getUnlocalizedName());
     }
+
     @EventHandler
     public void preInit(FMLPreInitializationEvent event) {
         saveRPData.loadRPData();
+        researchPoint = new ItemResearchPoint().setUnlocalizedName("researchPoint");
+        GameRegistry.registerItem(researchPoint, "Research Point");
     }
 
     @EventHandler
@@ -74,7 +85,7 @@ public class hbmenhanced
     public static CreativeTabs tabhbmenhanced = new CreativeTabs("tabhbmenhanced") {
         @Override
         public Item getTabIconItem() {
-            return new ItemStack(labBlock).getItem();
+            return new ItemStack(researchPoint).getItem();
         }
     };
 }
