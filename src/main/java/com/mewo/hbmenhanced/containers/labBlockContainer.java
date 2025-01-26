@@ -14,8 +14,8 @@ public class labBlockContainer extends Container {
     public labBlockContainer(InventoryPlayer inventory, World world, int x, int y, int z) {
         bindPlayerInventory(inventory);
         //TileEntity tileEntity = world.getTileEntity(new BlockPos(x, y, z));
-        addSlotToContainer(new SlotInput(inventory, 37, 36, 44));
-        addSlotToContainer(new SlotOutput(inventory, 38, 124, 44));
+        addSlotToContainer(new SlotInput(inventory, 37, 38, 44));
+        addSlotToContainer(new SlotOutput(inventory, 38, 118, 44));
     }
     private void bindPlayerInventory(InventoryPlayer playerInventory) {
         // Player inventory (first row)
