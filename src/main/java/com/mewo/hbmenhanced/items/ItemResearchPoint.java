@@ -15,7 +15,7 @@ public class ItemResearchPoint extends Item {
     }
 
     @SideOnly(Side.CLIENT)
-    public void registerItemIcons(IIconRegister register) {
+    public void registerIcons(IIconRegister register) {
         this.itemIcon = register.registerIcon(hbmenhanced.MODID + ":" + this.getUnlocalizedName().substring(5));
     }
 }
