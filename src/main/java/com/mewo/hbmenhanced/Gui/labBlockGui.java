@@ -1,18 +1,27 @@
 package com.mewo.hbmenhanced.Gui;
 
-import com.mewo.hbmenhanced.containers.labBlockContainer;
+import com.mewo.hbmenhanced.containers.labBlockContainerBad;
+import com.mewo.hbmenhanced.containers.labBlockTileEntity;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.Container;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.World;
-
-public class labBlockGui extends GuiContainer {
-    private static final ResourceLocation LAB_BLOCK_GUI_TEXTURE = new ResourceLocation("hbmenhanced", "textures/gui/LAB_BLOCK_GUI_TEXTURE.png");
+import com.mewo.hbmenhanced.containers.labBlockContainer;
 
 
-    public labBlockGui(InventoryPlayer inventory, World world, int x, int y, int z) {
-        super(new labBlockContainer(inventory, world, x, y, z));
+import java.awt.*;
+
+public class labBlockGui {
+    /*private static final ResourceLocation LAB_BLOCK_GUI_TEXTURE = new ResourceLocation("hbmenhanced", "textures/gui/LAB_BLOCK_GUI_TEXTURE.png");
+
+    public labBlockTileEntity labBlock;
+
+    public labBlockGui(InventoryPlayer player, labBlockTileEntity entity) {
+        super(labBlockContainer.labBlockContainer());
+        //super(labBlockContainer(player, entity));
+
+        this.labBlock = entity;
+        //super(new labBlockContainerBad(inventory, world, x, y, z));
         this.xSize = 176;
         this.ySize = 166;
     }
@@ -28,5 +37,5 @@ public class labBlockGui extends GuiContainer {
     protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
         this.mc.getTextureManager().bindTexture(LAB_BLOCK_GUI_TEXTURE);
         this.drawTexturedModalRect(this.guiLeft, this.guiTop, 0, 0, this.xSize, this.ySize);
-    }
+    }*/
 }

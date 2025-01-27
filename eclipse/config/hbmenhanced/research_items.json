@@ -1,0 +1,20 @@
+{
+  "researchItems": [
+    {
+      "item": "minecraft:iron",
+      "researchPoints": 10
+    },
+    {
+      "item": "minecraft:coal",
+      "researchPoints": 5
+    },
+    {
+      "item": "minecraft:diamond",
+      "researchPoints": 15
+    },
+    {
+      "item": "minecraft:iron",
+      "researchPoints": 20
+    }
+  ]
+}

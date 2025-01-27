@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="ntm-space">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/libs/ntm-space.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

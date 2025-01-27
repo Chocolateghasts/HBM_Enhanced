@@ -18,6 +18,11 @@ public class RPCommand implements ICommand {
     public static int ResearchPoints = 0;
     public static HashMap<String, Integer> playerRPMap = new HashMap<>();
 
+    public int getRP(int points) {
+        int RP = points;
+        return RP;
+    }
+
     @Override
     public String getCommandName() {
         return "rp";

@@ -1,15 +1,16 @@
 package com.mewo.hbmenhanced;
 
-import com.mewo.hbmenhanced.Gui.labBlockGuiHandler;
+//import com.mewo.hbmenhanced.OpenComputers.RPComponentProvider;
 import com.mewo.hbmenhanced.blocks.LabBlock;
 import com.mewo.hbmenhanced.commands.RPCommand;
 import com.mewo.hbmenhanced.commands.showRPCommand;
 import com.mewo.hbmenhanced.containers.labBlockTileEntity;
+import com.mewo.hbmenhanced.items.ItemResearchComponent;
 import com.mewo.hbmenhanced.items.ItemResearchPoint;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
-import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
+import li.cil.oc.api.Driver;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
@@ -19,6 +20,8 @@ import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+
+
 
 import java.io.IOException;
 import java.util.Timer;
@@ -30,8 +33,10 @@ public class hbmenhanced
     public static final String MODID = "hbmenhanced";
     public static final String VERSION = "1.0.0";
 
+    public static final int guiLabBlockID = 0;
 
     public static Item researchPoint;
+    public static Item researchItem;
     public static Block labBlock;
 
 
@@ -42,8 +47,11 @@ public class hbmenhanced
     @EventHandler
     public void PreInit(FMLInitializationEvent event) {
         labBlock = new LabBlock(Material.anvil).setBlockName("labBlock");
-        //GameRegistry.registerTileEntity(labBlockTileEntity.class, "labBlockTileEntity");
-        NetworkRegistry.INSTANCE.registerGuiHandler(this, new labBlockGuiHandler());
+        GameRegistry.registerTileEntity(labBlockTileEntity.class, "labBlock");
+        researchItem = new ItemResearchComponent().setUnlocalizedName("Researcher");
+        GameRegistry.registerItem(researchItem, "Researcher");
+        //GameRegistry.registerItem(ItemResearchComponent.class, "Researcher");
+        //NetworkRegistry.INSTANCE.registerGuiHandler(this, new labBlockGuiHandler());
         GameRegistry.registerBlock(labBlock, "Lab Block").setCreativeTab(tabhbmenhanced);
     }
 
@@ -52,6 +60,8 @@ public class hbmenhanced
     @EventHandler
     public void init(FMLInitializationEvent event)
     {
+
+        Driver.add(new com.mewo.hbmenhanced.OpenComputers.RPComponent());
 		// some example code
         System.out.println("DIRT BLOCK >> "+Blocks.dirt.getUnlocalizedName());
     }
@@ -65,9 +75,9 @@ public class hbmenhanced
     }
 
 
-    GameRegistry.addSmelting(oreIronOre, new ItemStack(itemIronIngot), 0);
+    //GameRegistry.addSmelting(oreIronOre, new ItemStack(itemIronIngot), 0);
 
-    GameRegistry.registerFuelHandler(new FuelHandler());
+    //GameRegistry.registerFuelHandler(new FuelHandler());
 
 
 
