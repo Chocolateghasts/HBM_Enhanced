@@ -14,13 +14,13 @@ public class labBlockContainer extends Container {
     public labBlockContainer(InventoryPlayer inventory, World world, int x, int y, int z) {
         bindPlayerInventory(inventory);
         //TileEntity tileEntity = world.getTileEntity(new BlockPos(x, y, z));
-        addSlotToContainer(new SlotInput(inventory, 37, 38, 46));
-        addSlotToContainer(new SlotOutput(inventory, 38, 118, 46));
+        addSlotToContainer(new SlotInput(inventory, 37, 38, 4));
+        addSlotToContainer(new SlotOutput(inventory, 38, 118, 45));
     }
     private void bindPlayerInventory(InventoryPlayer playerInventory) {
         // Player inventory (first row)
         for (int i = 0; i < 9; i++) {
-            addSlotToContainer(new Slot(playerInventory, i, 8 + i * 18, 142)); // Hotbar
+            addSlotToContainer(new Slot(playerInventory, i, 8 + i * 18, 142));
         }
 
         // Player inventory (rest of the rows)
@@ -47,6 +47,26 @@ public class labBlockContainer extends Container {
         @Override
         public boolean isItemValid(ItemStack stack) {
             return false; // Disable placing items in the output slot
+        }
+    }
+
+    public boolean canSmelt() {
+        if (this.slots[0] == null) {
+         return false;
+        }else{
+            ItemStack itemStack = FurnaceRecipes.smelthing().getSmeltingResult(this.slots[0]);
+
+            if(this.slots[1] == null) {
+                this.slots[1] = itemStack.copy();
+            }else if(this.slots[1].isItemEqual(itemStack)) {
+                this.slots[1].stackSize += itemStack.stackSize;
+            }
+
+            this.slots[0].stackSize--;
+
+            if(this.slots[0].stackSize <= 0) {
+                this.slots[0] = null;
+            }
         }
     }
 

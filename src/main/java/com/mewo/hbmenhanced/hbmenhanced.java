@@ -64,6 +64,14 @@ public class hbmenhanced
         GameRegistry.registerTileEntity(labBlockTileEntity.class, "labBlockTileEntity");
     }
 
+
+    GameRegistry.addSmelting(oreIronOre, new ItemStack(itemIronIngot), 0);
+
+    GameRegistry.registerFuelHandler(new FuelHandler());
+
+
+
+
     @EventHandler
     public void serverStarting(FMLServerStartingEvent event) {
         // Register your custom command
