@@ -5,7 +5,7 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 
-public class LabBlockTileEntity extends TileEntity implements IInventory {
+public class LabBlockTileEntity {/*extends TileEntity implements IInventory {
     private ItemStack[] items = new ItemStack[2]; // Two slots: input (0) and output (1)
 
     public LabBlockTileEntity() {
@@ -109,4 +109,4 @@ public class LabBlockTileEntity extends TileEntity implements IInventory {
             }
         }
     }
-}
+*/}

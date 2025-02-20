@@ -4,6 +4,7 @@ import com.mewo.hbmenhanced.containers.labBlockTileEntity;
 import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.util.ChatComponentText;
+import com.mewo.hbmenhanced.getRpValue;
 //import li.cil.oc.
 
 import java.util.Collections;
@@ -40,6 +41,14 @@ public class showRPCommand implements ICommand {
                     .append(" RP\n");
         }
         sender.addChatMessage(new ChatComponentText(rpList.toString()));
+        getRpValue rp = new getRpValue();
+        rp.loadHashMap(); // Ensure the HashMap is populated
+
+// Print all RP values
+        for (String itemName : rp.getRpMap().keySet()) {
+            System.out.println(itemName + " -> " + rp.getRpMap().get(itemName));
+        }
+
     }
 
     @Override
