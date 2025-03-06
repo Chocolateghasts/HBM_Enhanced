@@ -19,8 +19,8 @@ public class getRpValue {
     public int RpWeaponry;
     */
 
-    private HashMap<String, EnumMap<researchType, Integer>> rpValues = new HashMap<>();
-    public HashMap<String, EnumMap<researchType, Integer>> getRpMap() {
+    private static HashMap<String, EnumMap<researchType, Integer>> rpValues = new HashMap<>();
+    public static HashMap<String, EnumMap<researchType, Integer>> getRpMap() {
         return rpValues;
     }
     public enum researchType {
@@ -40,6 +40,7 @@ public class getRpValue {
             }
         }
     }
+
     private double RpMultiplier(Item item) {
         if (item == null) return 1;
         try {

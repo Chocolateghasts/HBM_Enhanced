@@ -1,5 +1,6 @@
 package com.mewo.hbmenhanced.containers;
 
+import com.mewo.hbmenhanced.SlotResearchItem;
 import com.mewo.hbmenhanced.hbmenhanced;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -22,7 +23,7 @@ public class labBlockContainer extends Container {
     public int lastResearchTime;
     public labBlockContainer(InventoryPlayer playerInventory, labBlockTileEntity tileEntity) {
         this.labBlock = tileEntity;
-        this.addSlotToContainer(new Slot(tileEntity, 0, 38, 46));
+        this.addSlotToContainer(new SlotResearchItem(tileEntity, 0, 38, 46));
         this.addSlotToContainer(new SlotOutput(tileEntity, 1, 118, 46));
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 9; j++) {
