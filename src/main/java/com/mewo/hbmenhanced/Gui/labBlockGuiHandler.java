@@ -1,5 +1,6 @@
 package com.mewo.hbmenhanced.Gui;
 
+import com.hbm.handler.GUIHandler;
 import com.mewo.hbmenhanced.containers.labBlockContainer;
 import com.mewo.hbmenhanced.containers.labBlockTileEntity;
 import com.mewo.hbmenhanced.hbmenhanced;
@@ -10,8 +11,8 @@ import net.minecraft.world.World;
 
 import static com.mewo.hbmenhanced.hbmenhanced.labBlock;
 
-public class labBlockGuiHandler{
-    /*@Override
+public class labBlockGuiHandler extends GUIHandler {
+    @Override
     public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
         TileEntity tileEntity = world.getTileEntity(x, y, z);
         if (tileEntity != null) {
@@ -37,5 +38,5 @@ public class labBlockGuiHandler{
                 }
             }
             return null;
-    }*/
+    }
 }

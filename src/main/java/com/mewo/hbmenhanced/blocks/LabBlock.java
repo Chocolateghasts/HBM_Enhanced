@@ -59,16 +59,9 @@ public class LabBlock extends Block {
     }
 
     @Override
-    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ ) {
-        if (!world.isRemote) {
-            FMLNetworkHandler.openGui(player, hbmenhanced.instance, hbmenhanced.guiLabBlockID, world, x, y, z);
-        }
-        this.world = world;
-        this.x = x;
-        this.y = y;
-        this.z = z;
+    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ) {
+        player.openGui(hbmenhanced.instance, hbmenhanced.guiLabBlockID, world, x, y, z);
         return true;
-
     }
 
 

@@ -1,4 +1,4 @@
-package com.mewo.hbmenhanced.tiles;
+package com.mewo.hbmenhanced.LabBlockTileEntity.java;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;

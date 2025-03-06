@@ -44,6 +44,9 @@ repositories {
         name = 'ModMaven'
         url = 'https://modmaven.dev'
     }
+    maven {
+        url "https://cursemaven.com"
+    }
     maven { name = "jitpack"; url = 'https://jitpack.io' }
 }
 
@@ -58,6 +61,10 @@ dependencies {
     //compileOnly 'li.cil.oc:OpenComputers:MC1.7.10-1.7.0.1084-dev'
     //implementation 'li.cil.oc:OpenComputers:MC1.7.10-1.7.5.1356:universal'
     implementation 'li.cil.oc:OpenComputers:MC1.7.10-1.7.5.1356:dev'
+    implementation 'codechicken:CodeChickenLib:1.7.10-1.1.3.141:dev'
+    implementation 'codechicken:CodeChickenCore:1.7.10-1.0.7.48:dev'
+    implementation 'codechicken:NotEnoughItems:1.7.10-1.0.5.120:dev'
+    implementation 'com.github.JameH2:Hbm-s-Nuclear-Tech-GIT:xspace18b'
     //implementation 'com.github.AppliedEnergistics:Applied-Energistics-2:Tag'
     //compile 'com.mod-buildcraft:buildcraft:6.0.8:dev'  // adds buildcraft to the dev env
     //compile 'com.googlecode.efficient-java-matrix-library:ejml:0.24' // adds ejml to the dev env

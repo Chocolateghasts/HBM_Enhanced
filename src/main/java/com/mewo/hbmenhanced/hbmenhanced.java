@@ -1,6 +1,7 @@
 package com.mewo.hbmenhanced;
 
 //import com.mewo.hbmenhanced.OpenComputers.RPComponentProvider;
+import com.mewo.hbmenhanced.Gui.labBlockGuiHandler;
 import com.mewo.hbmenhanced.blocks.LabBlock;
 import com.mewo.hbmenhanced.commands.RPCommand;
 import com.mewo.hbmenhanced.commands.showRPCommand;
@@ -9,6 +10,7 @@ import com.mewo.hbmenhanced.items.ItemResearchComponent;
 import com.mewo.hbmenhanced.items.ItemResearchPoint;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
+import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import li.cil.oc.api.Driver;
 import net.minecraft.block.Block;
@@ -51,7 +53,7 @@ public class hbmenhanced
         researchItem = new ItemResearchComponent().setUnlocalizedName("Researcher");
         GameRegistry.registerItem(researchItem, "Researcher");
         //GameRegistry.registerItem(ItemResearchComponent.class, "Researcher");
-        //NetworkRegistry.INSTANCE.registerGuiHandler(this, new labBlockGuiHandler());
+        NetworkRegistry.INSTANCE.registerGuiHandler(this, new labBlockGuiHandler());
         GameRegistry.registerBlock(labBlock, "Lab Block").setCreativeTab(tabhbmenhanced);
     }
 
