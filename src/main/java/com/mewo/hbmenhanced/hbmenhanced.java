@@ -70,6 +70,8 @@ public class hbmenhanced
 
     @EventHandler
     public void preInit(FMLPreInitializationEvent event) {
+        getRpValue rpCalculator = new getRpValue();
+        rpCalculator.loadHashMap();
         saveRPData.loadRPData();
         researchPoint = new ItemResearchPoint().setUnlocalizedName("researchPoint");
         GameRegistry.registerItem(researchPoint, "Research Point");

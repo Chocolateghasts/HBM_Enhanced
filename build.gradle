@@ -79,6 +79,10 @@ dependencies {
 
 }
 
+test {
+    useJUnitPlatform()  // Ensure this is set to use JUnit 5
+}
+
 processResources
 {
     // this will ensure that this task is redone when the versions change.

@@ -195,9 +195,6 @@ public class getRpValue {
         if (name.contains("bscco")) {
             rpMap.put(researchType.MACHINERY, 5);
         }
-        if (name.contains("chinesium")) {
-            rpMap.put(researchType.STRUCTURAL, -500);
-        }
         if (name.contains("stainless steel")) {
             rpMap.put(researchType.MACHINERY, 30);
         }
@@ -320,6 +317,9 @@ public class getRpValue {
         }
         if (name.contains("hafnium")) {
             rpMap.put(researchType.MACHINERY, 100);  // Hafnium for advanced electronics
+        }
+        if (name.contains("chinesium")) {
+            rpMap.put(researchType.STRUCTURAL, -9999999);
         }
 
         return rpMap;
