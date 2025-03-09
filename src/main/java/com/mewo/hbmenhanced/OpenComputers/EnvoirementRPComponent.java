@@ -17,6 +17,7 @@ import li.cil.oc.api.network.Node;
 import li.cil.oc.api.network.Visibility;
 import li.cil.oc.server.component.Drive;
 import li.cil.oc.server.component.FileSystem;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.nbt.NBTTagByte;
 import net.minecraft.nbt.NBTTagCompound;
@@ -27,6 +28,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.Constants;
 import org.apache.commons.io.filefilter.DirectoryFileFilter;
+import org.lwjgl.Sys;
 import org.lwjgl.opengl.NVBindlessMultiDrawIndirect;
 
 import java.io.IOException;
@@ -59,7 +61,7 @@ public class EnvoirementRPComponent implements ManagedEnvironment {
 
             System.out.println("storeRp called with byteOffset: " + byteOffset + ", filePath: " + filePath);
 
-            handleFileSystem(context, args);
+            //handleFileSystem(context, args);
             handleDrive(context, args);
             return new Object[]{"Success: File System Handled"};
         } catch (IllegalArgumentException e) {
@@ -105,8 +107,10 @@ public class EnvoirementRPComponent implements ManagedEnvironment {
         return driveItemMap.get(drive);
     }
     public void lockDrive(Context context, Arguments arguments, Drive drive) {
+
         ItemStack driveStack = getDriveStack(drive);
         if (driveStack != null) {
+            System.out.println("Locking " + driveStack + "with " + drive.isLocked());
             changeLocked(driveStack, drive.isLocked());
         }
     }
@@ -118,34 +122,35 @@ public class EnvoirementRPComponent implements ManagedEnvironment {
             return;
         }
 
-        try {
-            int byteOffset = args.checkInteger(0);
-            String filePath = args.checkString(1);
-
-            //lockDrive(context, args, drive);
-
-            if (drive.isLocked()) {
-                Object[] data = drive.readByte(context, args);
-                if (data != null && data.length > 0 && data[0] instanceof byte[]) {
-                    byte[] newData = (byte[]) data[0];
-                    String content = new String(newData);
-                    System.out.println("Read content: " + content);
-                }
-
-                String newContent = "Placeholder";
-                byte[] byteData = newContent.getBytes();
-                Object[] writeResult = drive.writeByte(context, args);
-
-                if (writeResult != null && writeResult.length > 0 && writeResult[0] instanceof Boolean && (Boolean)writeResult[0]) {
-                    System.out.println("Write successful");
-                } else {
-                    System.out.println("Write failed");
-                }
-            }
-        } catch (Exception e) {
-            System.out.println("Drive handling error: " + e.getMessage());
-            e.printStackTrace();
-        }
+//
+//        try {
+//            int byteOffset = args.checkInteger(0);
+//            String filePath = args.checkString(1);
+//
+//            //lockDrive(context, args, drive);
+//
+//            if (drive.isLocked()) {
+//                Object[] data = drive.readByte(context, args);
+//                if (data != null && data.length > 0 && data[0] instanceof byte[]) {
+//                    byte[] newData = (byte[]) data[0];
+//                    String content = new String(newData);
+//                    System.out.println("Read content: " + content);
+//                }
+//
+//                String newContent = "Placeholder";
+//                byte[] byteData = newContent.getBytes();
+//                Object[] writeResult = drive.writeByte(context, args);
+//
+//                if (writeResult != null && writeResult.length > 0 && writeResult[0] instanceof Boolean && (Boolean)writeResult[0]) {
+//                    System.out.println("Write successful");
+//                } else {
+//                    System.out.println("Write failed");
+//                }
+//            }
+//        } catch (Exception e) {
+//            System.out.println("Drive handling error: " + e.getMessage());
+//            e.printStackTrace();
+//        }
     }
 
     private void handleFileSystem(Context context, Arguments args) {
@@ -212,6 +217,11 @@ public class EnvoirementRPComponent implements ManagedEnvironment {
         if(driveItem == null) {return;}
         NBTTagCompound nbt = driveItem.getTagCompound();
         String playerName = nbt.getString("oc:lock");
+        if (playerName == null) {
+            System.out.println("Drive is not locked");
+        } else {
+            System.out.println(playerName + "locked the drive");
+        }
 
 
         if (!locked) {
@@ -242,13 +252,35 @@ public class EnvoirementRPComponent implements ManagedEnvironment {
     public void onConnect(Node node) {
         if (node.host() instanceof Drive) {
             Drive drive = (Drive) node.host();
-
+            try {
+                java.lang.reflect.Field parentField = drive.getClass().getDeclaredField("_parent");
+                parentField.setAccessible(true);
+                Object parent = parentField.get(drive);
+                if (parent instanceof TileEntity) {
+                    TileEntity entity = (TileEntity) parent;
+                    if (entity instanceof IInventory) {
+                        IInventory inventory = (IInventory) entity;
+                        for (int i = 0; i < inventory.getSizeInventory(); i ++) {
+                            ItemStack itemStack = inventory.getStackInSlot(i);
+                            if (itemStack != null && itemStack.getItem().getClass().getName().contains("li.cil.oc.common.item.Disk")) {
+                                registerDriveItemStack(drive, itemStack);
+                                break;
+                            }
+                        }
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                System.out.println("Failed to get item: " +  e.getMessage());
+            }
         }
     }
 
     @Override
     public void onDisconnect(Node node) {
-        // Disconnection handling
+        if (node.host() instanceof Drive) {
+            driveItemMap.remove(node.host());
+        }
     }
 
     @Override
