@@ -1,5 +1,13 @@
+/*
+ * Created by: Chocolateghasts
+ * Last modified: 2025-03-09 00:56:21 UTC
+ *
+ * OpenComputers component for managing RP data
+ */
+
 package com.mewo.hbmenhanced.OpenComputers;
 
+import li.cil.oc.api.Items;
 import li.cil.oc.api.machine.Arguments;
 import li.cil.oc.api.machine.Callback;
 import li.cil.oc.api.machine.Context;
@@ -9,19 +17,26 @@ import li.cil.oc.api.network.Node;
 import li.cil.oc.api.network.Visibility;
 import li.cil.oc.server.component.Drive;
 import li.cil.oc.server.component.FileSystem;
+import net.minecraft.item.Item;
+import net.minecraft.nbt.NBTTagByte;
 import net.minecraft.nbt.NBTTagCompound;
 import com.mewo.hbmenhanced.commands.RPCommand;
 import li.cil.oc.common.item.data.DriveData;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraftforge.common.util.Constants;
+import org.lwjgl.opengl.NVBindlessMultiDrawIndirect;
+
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
 public class EnvoirementRPComponent implements ManagedEnvironment {
+    private static final Map<Drive, ItemStack> driveItemMap = new HashMap<>();
     private Node node = this.node();
-    // Declare the node variable
     public boolean isUpdated = false;
 
     public EnvoirementRPComponent() {
@@ -31,23 +46,32 @@ public class EnvoirementRPComponent implements ManagedEnvironment {
         System.out.println("RPCOMPONENT registered");
     }
 
-    @Callback(doc = "function(string filePath, int byteOffset): string; Stores RP data to the file system.")
+    @Callback(doc = "function(number:byteOffset, string:filePath): string -- Stores RP data to the file system")
     public Object[] storeRp(Context context, Arguments args) {
-        // Log the types of the arguments
-        System.out.println("storeRp called with arguments:");
-        for (int i = 0; i < args.count(); i++) {
-            System.out.println("Argument " + i + ": " + args.checkAny(i).toString() + " (Type: " + args.checkAny(i).getClass().getName() + ")");
-        }
+        try {
+            if (args.count() < 2) {
+                return new Object[]{"Error: Not enough arguments. Expected (number, string)"};
+            }
 
-        handleFileSystem(context, args);
-        handleDrive(context, args);
-        return new Object[]{"File System Handled."};
+            int byteOffset = args.checkInteger(0); // Will throw if not a number
+            String filePath = args.checkString(1); // Will throw if not a string
+
+            System.out.println("storeRp called with byteOffset: " + byteOffset + ", filePath: " + filePath);
+
+            handleFileSystem(context, args);
+            handleDrive(context, args);
+            return new Object[]{"Success: File System Handled"};
+        } catch (IllegalArgumentException e) {
+            return new Object[]{"Error: " + e.getMessage()};
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new Object[]{"Error: Unexpected error occurred"};
+        }
     }
 
-    @Callback
+    @Callback(doc = "function():table -- Returns a table of player RP data")
     public Object[] getPlayerRP(Context context, Arguments args) {
         Map<String, Integer> rpMap = RPCommand.playerRPMap;
-
         HashMap<Object, Object> luaTable = new HashMap<>();
         for (Map.Entry<String, Integer> entry : rpMap.entrySet()) {
             luaTable.put(entry.getKey(), entry.getValue());
@@ -55,7 +79,7 @@ public class EnvoirementRPComponent implements ManagedEnvironment {
         return new Object[]{luaTable};
     }
 
-    public FileSystem getFileSystem() {
+    private FileSystem getFileSystem() {
         for (Node connectedNode : node.network().nodes()) {
             if (connectedNode.host() instanceof FileSystem) {
                 return (FileSystem) connectedNode.host();
@@ -64,9 +88,10 @@ public class EnvoirementRPComponent implements ManagedEnvironment {
         return null;
     }
 
-    public Drive getDrive() {
+    private Drive getDrive() {
         for (Node connectedNode : node.network().nodes()) {
             if (connectedNode.host() instanceof Drive) {
+
                 return (Drive) connectedNode.host();
             }
         }
@@ -77,84 +102,81 @@ public class EnvoirementRPComponent implements ManagedEnvironment {
         Drive drive = getDrive();
         if (drive == null) {
             System.out.println("No drive found.");
-            return; // Exit early if no drive is found
+            return;
         }
 
-        lockDrive(context, args, drive);
-
         try {
+            int byteOffset = args.checkInteger(0);
+            String filePath = args.checkString(1);
+
+            //lockDrive(context, args, drive);
+
             if (drive.isLocked()) {
-                String filePath = args.optString(0, "/rpStorage/file.txt");
-                int byteOffset = args.optInteger(1, 0); // Default to 0 if not provided
-
-                // Ensure the arguments are valid and provide default values if necessary
-                if (args.count() < 2) {
-                    System.out.println("Not enough arguments provided.");
-                    return;
-                }
-
-                if (!args.isString(0) || !args.isInteger(1)) {
-                    System.out.println("Invalid argument types. Expected (string, int).");
-                    return;
-                }
-
-                // Read byte data from the drive
                 Object[] data = drive.readByte(context, args);
                 if (data != null && data.length > 0 && data[0] instanceof byte[]) {
                     byte[] newData = (byte[]) data[0];
                     String content = new String(newData);
-                    System.out.println("Content: " + content);
+                    System.out.println("Read content: " + content);
+                }
+
+                String newContent = "Placeholder";
+                byte[] byteData = newContent.getBytes();
+                Object[] writeResult = drive.writeByte(context, args);
+
+                if (writeResult != null && writeResult.length > 0 && writeResult[0] instanceof Boolean && (Boolean)writeResult[0]) {
+                    System.out.println("Write successful");
+                } else {
+                    System.out.println("Write failed");
                 }
             }
-
-            String newContent = "Placeholder";
-            byte[] byteData = newContent.getBytes();
-            Object[] doesWrite = drive.writeByte(context, args);
-
-            if (doesWrite != null && ((Boolean) doesWrite[0])) {
-                System.out.println("Write successful.");
-            } else {
-                System.out.println("Cannot write.");
-            }
         } catch (Exception e) {
+            System.out.println("Drive handling error: " + e.getMessage());
             e.printStackTrace();
         }
     }
 
-    public void lockDrive(Context context, Arguments arguments, Drive drive) {
-        System.out.println("Label is: " + drive.getLabel(context, arguments));
-    }
-
-    private void unlockDrive(Drive drive) throws NoSuchFieldException, IllegalAccessException {
-    }
-
     private void handleFileSystem(Context context, Arguments args) {
         FileSystem fileSystem = getFileSystem();
-        if (fileSystem != null) {
-            try {
-                Object[] readOnlyCheck = fileSystem.isReadOnly(context, args);
-
-                if (readOnlyCheck != null && ((Boolean) readOnlyCheck[0])) {
-                    System.out.println("The file system is in read-only mode.");
-                    String filepath = args.optString(0, "/rpStorage/rpStorage.txt");
-                    Object[] data = fileSystem.read(context, args);
-                    if (data != null && data.length > 0 && data[0] instanceof byte[]) {
-                        byte[] byteData = (byte[]) data[0];  // Extract the byte array
-                        String content = new String(byteData);  // Convert to string
-                        System.out.println("Content from file: " + content);
-                    } else {
-                        System.out.println("Error: Data read is invalid or empty.");
-                    }
-                } else {
-                    System.out.println("Error: The file system is not read-only, which shouldn't be the case.");
-                }
-            } catch (Exception e) {
-                // Catch any other unexpected errors
-                System.out.println("Unexpected error: " + e.getMessage());
-                e.printStackTrace();  // Log full stack trace for debugging
-            }
-        } else {
+        if (fileSystem == null) {
             System.out.println("No filesystem found.");
+            return;
+        }
+
+        try {
+            Object[] readOnlyCheck = fileSystem.isReadOnly(context, args);
+            if (readOnlyCheck != null && readOnlyCheck.length > 0 && readOnlyCheck[0] instanceof Boolean && (Boolean)readOnlyCheck[0]) {
+                System.out.println("File system is read-only");
+
+                int byteOffset = args.checkInteger(0);
+                String filePath = args.checkString(1);
+
+                Object[] data = fileSystem.read(context, args);
+                if (data != null && data.length > 0 && data[0] instanceof byte[]) {
+                    byte[] byteData = (byte[]) data[0];
+                    String content = new String(byteData);
+                    System.out.println("File content: " + content);
+                }
+            } else {
+                System.out.println("File system is not read-only");
+            }
+        } catch (Exception e) {
+            System.out.println("File system error: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+
+
+    public static void changeLocked(ItemStack driveItem, boolean locked, String username) {
+        if(driveItem == null) {return;}
+        NBTTagCompound nbt = driveItem.getTagCompound();
+        if (nbt == null) {nbt = new NBTTagCompound();}
+
+
+        if (!locked) {
+            nbt.setString("oc:lock", username);
+        } else if (locked) {
+            nbt.setString("oc:lock", null);
         }
     }
 
@@ -171,6 +193,26 @@ public class EnvoirementRPComponent implements ManagedEnvironment {
     }
 
     @Override
+    public Node node() {
+        return node;
+    }
+
+    @Override
+    public void onConnect(Node node) {
+        // Connection handling
+    }
+
+    @Override
+    public void onDisconnect(Node node) {
+        // Disconnection handling
+    }
+
+    @Override
+    public void onMessage(Message message) {
+        // Message handling
+    }
+
+    @Override
     public void load(NBTTagCompound nbt) {
         if (node != null) {
             node.load(nbt);
@@ -182,22 +224,5 @@ public class EnvoirementRPComponent implements ManagedEnvironment {
         if (node != null) {
             node.save(nbt);
         }
-    }
-
-    @Override
-    public Node node() {
-        return node; // Return the node
-    }
-
-    @Override
-    public void onConnect(Node node) {
-    }
-
-    @Override
-    public void onDisconnect(Node node) {
-    }
-
-    @Override
-    public void onMessage(Message message) {
     }
 }
