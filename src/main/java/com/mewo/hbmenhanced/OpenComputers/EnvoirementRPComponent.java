@@ -132,7 +132,7 @@ public class EnvoirementRPComponent implements ManagedEnvironment {
                                 // Check if it's variant 7 (the drive)
                                 if (variant == 7) {
                                     System.out.println("Found drive in slot " + i);
-                                    changeLocked(stack, !drive.isLocked());
+                                    changeLocked(stack, drive.isLocked());
                                     driveItemMap.put(drive, stack);
                                     System.out.println("Drive lock status changed");
                                     return;
@@ -251,18 +251,32 @@ public class EnvoirementRPComponent implements ManagedEnvironment {
     public static void changeLocked(ItemStack driveItem, boolean locked) {
         if(driveItem == null) {return;}
         NBTTagCompound nbt = driveItem.getTagCompound();
-        String playerName = nbt.getString("oc:lock:");
-        System.out.println("Initial lock is by: " + nbt.getString("oc:lock:"));
+        if (nbt == null) {
+            nbt = new NBTTagCompound();
+            driveItem.setTagCompound(nbt);
+        }
 
+        System.out.println("Current NBT: " + nbt.toString());  // Debug print
 
+        // The correct tag name is "oc:lock" not "oc:lock:"
+        String currentLock = nbt.getString("oc:lock");
+        System.out.println("Current lock state: " + currentLock);
 
         if (!locked) {
-            nbt.setString("oc:lock:", playerName);
-            System.out.println("Locked by: " + nbt.getString("oc:lock:"));
-        } else if (locked) {
-            nbt.setString("oc:lock:", "");
-            System.out.println("Locked the drive. also if there is a name here it didnt work: " + nbt.getString("oc:lock"));
+            // If we're locking it (making it not locked)
+            if (currentLock.isEmpty()) {
+                // Only set if it's not already locked
+                nbt.setString("oc:lock", "Chocolateghasts");
+                System.out.println("Locked by: " + nbt.getString("oc:lock"));
+            }
+        } else if (locked){
+            // If we're unlocking it (making it locked)
+            nbt.removeTag("oc:lock");  // Remove the lock tag completely
+            System.out.println("Unlocked the drive");
         }
+
+        // Make sure to update the ItemStack's NBT
+        driveItem.setTagCompound(nbt);
     }
 
     @Override
