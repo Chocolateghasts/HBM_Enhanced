@@ -112,6 +112,8 @@ public class EnvoirementRPComponent implements ManagedEnvironment {
         if (driveStack != null) {
             System.out.println("Locking " + driveStack + "with " + drive.isLocked());
             changeLocked(driveStack, drive.isLocked());
+        } else {
+            System.out.println("Drive stack is null");
         }
     }
     private void handleDrive(Context context, Arguments args) {
