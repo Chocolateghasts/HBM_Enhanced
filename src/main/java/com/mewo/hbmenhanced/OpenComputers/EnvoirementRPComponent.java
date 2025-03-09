@@ -56,19 +56,17 @@ public class EnvoirementRPComponent implements ManagedEnvironment {
                 return new Object[]{"Error: Not enough arguments. Expected (number, string)"};
             }
 
-            int byteOffset = args.checkInteger(0); // Will throw if not a number
-            String filePath = args.checkString(1); // Will throw if not a string
+            Drive drive = getDrive();
+            if (drive != null) {
+                lockDrive(context, drive); // Pass just context and drive
+            }
 
-            System.out.println("storeRp called with byteOffset: " + byteOffset + ", filePath: " + filePath);
-
-            //handleFileSystem(context, args);
-            handleDrive(context, args);
+            handleFileSystem(context, args);
+            // handleDrive(context, args);  // This is commented out as requested
             return new Object[]{"Success: File System Handled"};
-        } catch (IllegalArgumentException e) {
-            return new Object[]{"Error: " + e.getMessage()};
         } catch (Exception e) {
             e.printStackTrace();
-            return new Object[]{"Error: Unexpected error occurred"};
+            return new Object[]{"Error: " + e.getMessage()};
         }
     }
 
@@ -106,19 +104,54 @@ public class EnvoirementRPComponent implements ManagedEnvironment {
     public ItemStack getDriveStack(Drive drive) {
         return driveItemMap.get(drive);
     }
-    public void lockDrive(Context context, Arguments arguments, Drive drive) {
 
-        ItemStack driveStack = getDriveStack(drive);
-        if (driveStack != null) {
-            System.out.println("Locking " + driveStack + "with " + drive.isLocked());
-            changeLocked(driveStack, drive.isLocked());
-        } else {
-            System.out.println("Drive stack is null");
+    private void lockDrive(Context context, Drive drive) {
+        try {
+            java.lang.reflect.Field hostField = drive.getClass().getDeclaredField("host");
+            hostField.setAccessible(true);
+            Object hostOption = hostField.get(drive);
+
+            java.lang.reflect.Method getMethod = hostOption.getClass().getMethod("get");
+            Object host = getMethod.invoke(hostOption);
+
+            if (host instanceof TileEntity) {
+                TileEntity tile = (TileEntity) host;
+                if (tile instanceof IInventory) {
+                    IInventory inventory = (IInventory) tile;
+
+                    for (int i = 0; i < inventory.getSizeInventory(); i++) {
+                        ItemStack stack = inventory.getStackInSlot(i);
+                        if (stack != null) {
+                            Item item = stack.getItem();
+                            // Check if it's an OpenComputers multi item (like the drive)
+                            if (item.getClass().getName().contains("li.cil.oc")) {
+                                // Get the subItem/variant value
+                                int variant = stack.getItemDamage(); // In OC this gets the variant
+                                System.out.println("Found OC item in slot " + i + " with variant: " + variant);
+
+                                // Check if it's variant 7 (the drive)
+                                if (variant == 7) {
+                                    System.out.println("Found drive in slot " + i);
+                                    changeLocked(stack, !drive.isLocked());
+                                    driveItemMap.put(drive, stack);
+                                    System.out.println("Drive lock status changed");
+                                    return;
+                                }
+                            }
+                        }
+                    }
+                    System.out.println("Drive not found in inventory");
+                }
+            }
+
+        } catch (Exception e) {
+            System.out.println("Error accessing drive host: " + e.getMessage());
+            e.printStackTrace();
         }
     }
     private void handleDrive(Context context, Arguments args) {
         Drive drive = getDrive();
-        lockDrive(context, args, drive);
+        lockDrive(context, drive);
         if (drive == null) {
             System.out.println("No drive found.");
             return;
@@ -218,18 +251,17 @@ public class EnvoirementRPComponent implements ManagedEnvironment {
     public static void changeLocked(ItemStack driveItem, boolean locked) {
         if(driveItem == null) {return;}
         NBTTagCompound nbt = driveItem.getTagCompound();
-        String playerName = nbt.getString("oc:lock");
-        if (playerName == null) {
-            System.out.println("Drive is not locked");
-        } else {
-            System.out.println(playerName + "locked the drive");
-        }
+        String playerName = nbt.getString("oc:lock:");
+        System.out.println("Initial lock is by: " + nbt.getString("oc:lock:"));
+
 
 
         if (!locked) {
-            nbt.setString("oc:lock", playerName);
+            nbt.setString("oc:lock:", playerName);
+            System.out.println("Locked by: " + nbt.getString("oc:lock:"));
         } else if (locked) {
-            nbt.setString("oc:lock", null);
+            nbt.setString("oc:lock:", "");
+            System.out.println("Locked the drive. also if there is a name here it didnt work: " + nbt.getString("oc:lock"));
         }
     }
 
