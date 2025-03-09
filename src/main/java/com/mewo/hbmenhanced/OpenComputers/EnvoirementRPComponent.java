@@ -97,9 +97,18 @@ public class EnvoirementRPComponent implements ManagedEnvironment {
         }
         return null;
     }
-
+    public void lockDrive(Context context, Arguments arguments, Drive drive) {
+        ItemStack driveStack = getDriveStack();
+        if (driveStack != null) {
+            System.out.println("Drive ItemStack found: " + driveStack.toString());
+            // Now you can use driveStack with changelocked()
+        } else {
+            System.out.println("Could not get drive ItemStack");
+        }
+    }
     private void handleDrive(Context context, Arguments args) {
         Drive drive = getDrive();
+        lockDrive(context, args, drive);
         if (drive == null) {
             System.out.println("No drive found.");
             return;
@@ -166,7 +175,35 @@ public class EnvoirementRPComponent implements ManagedEnvironment {
     }
 
 
+    public DriveData getDriveData() {
+        Drive drive = getDrive();
+        if (drive != null) {
+            try {
+                // Get the DriveData field from the Drive class
+                java.lang.reflect.Field dataField = Drive.class.getDeclaredField("data");
+                dataField.setAccessible(true);
+                return (DriveData) dataField.get(drive);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
+    }
 
+    public ItemStack getDriveStack() {
+        DriveData data = getDriveData();
+        if (data != null) {
+            try {
+                // Get the stack field from the DriveData class
+                java.lang.reflect.Field stackField = DriveData.class.getDeclaredField("stack");
+                stackField.setAccessible(true);
+                return (ItemStack) stackField.get(data);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
+    }
     public static void changeLocked(ItemStack driveItem, boolean locked, String username) {
         if(driveItem == null) {return;}
         NBTTagCompound nbt = driveItem.getTagCompound();
