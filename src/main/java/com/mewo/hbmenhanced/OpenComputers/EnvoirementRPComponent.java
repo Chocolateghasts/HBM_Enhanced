@@ -26,6 +26,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.Constants;
+import org.apache.commons.io.filefilter.DirectoryFileFilter;
 import org.lwjgl.opengl.NVBindlessMultiDrawIndirect;
 
 import java.io.IOException;
@@ -97,13 +98,16 @@ public class EnvoirementRPComponent implements ManagedEnvironment {
         }
         return null;
     }
+    private void registerDriveItemStack(Drive drive, ItemStack stack) {
+        driveItemMap.put(drive, stack);
+    }
+    public ItemStack getDriveStack(Drive drive) {
+        return driveItemMap.get(drive);
+    }
     public void lockDrive(Context context, Arguments arguments, Drive drive) {
-        ItemStack driveStack = getDriveStack();
+        ItemStack driveStack = getDriveStack(drive);
         if (driveStack != null) {
-            System.out.println("Drive ItemStack found: " + driveStack.toString());
-            // Now you can use driveStack with changelocked()
-        } else {
-            System.out.println("Could not get drive ItemStack");
+            changeLocked(driveStack, drive.isLocked());
         }
     }
     private void handleDrive(Context context, Arguments args) {
@@ -204,14 +208,14 @@ public class EnvoirementRPComponent implements ManagedEnvironment {
         }
         return null;
     }
-    public static void changeLocked(ItemStack driveItem, boolean locked, String username) {
+    public static void changeLocked(ItemStack driveItem, boolean locked) {
         if(driveItem == null) {return;}
         NBTTagCompound nbt = driveItem.getTagCompound();
-        if (nbt == null) {nbt = new NBTTagCompound();}
+        String playerName = nbt.getString("oc:lock");
 
 
         if (!locked) {
-            nbt.setString("oc:lock", username);
+            nbt.setString("oc:lock", playerName);
         } else if (locked) {
             nbt.setString("oc:lock", null);
         }
@@ -236,7 +240,10 @@ public class EnvoirementRPComponent implements ManagedEnvironment {
 
     @Override
     public void onConnect(Node node) {
-        // Connection handling
+        if (node.host() instanceof Drive) {
+            Drive drive = (Drive) node.host();
+
+        }
     }
 
     @Override
