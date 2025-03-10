@@ -56,13 +56,13 @@ public class EnvoirementRPComponent implements ManagedEnvironment {
                 return new Object[]{"Error: Not enough arguments. Expected (number, string)"};
             }
 
-            Drive drive = getDrive();
-            if (drive != null) {
-                lockDrive(context, drive); // Pass just context and drive
+            // Instead of looking for Drive, look for FileSystem
+            FileSystem fileSystem = getFileSystem();
+            if (fileSystem != null) {
+                lockFileSystem(context, fileSystem);
             }
 
             handleFileSystem(context, args);
-            // handleDrive(context, args);  // This is commented out as requested
             return new Object[]{"Success: File System Handled"};
         } catch (Exception e) {
             e.printStackTrace();
@@ -105,60 +105,60 @@ public class EnvoirementRPComponent implements ManagedEnvironment {
         return driveItemMap.get(drive);
     }
 
-    private void lockDrive(Context context, Drive drive) {
-        try {
-            java.lang.reflect.Field hostField = drive.getClass().getDeclaredField("host");
-            hostField.setAccessible(true);
-            Object hostOption = hostField.get(drive);
-
-            java.lang.reflect.Method getMethod = hostOption.getClass().getMethod("get");
-            Object host = getMethod.invoke(hostOption);
-
-            if (host instanceof TileEntity) {
-                TileEntity tile = (TileEntity) host;
-                if (tile instanceof IInventory) {
-                    IInventory inventory = (IInventory) tile;
-
-                    for (int i = 0; i < inventory.getSizeInventory(); i++) {
-                        ItemStack stack = inventory.getStackInSlot(i);
-                        if (stack != null) {
-                            Item item = stack.getItem();
-                            if (item.getClass().getName().contains("li.cil.oc")) {
-                                int variant = stack.getItemDamage();
-                                System.out.println("Found OC item in slot " + i + " with variant: " + variant);
-
-                                if (variant == 7) {
-                                    System.out.println("Found drive in slot " + i);
-                                    NBTTagCompound nbt = stack.getTagCompound();
-
-                                    // Check if the drive is managed (not a filesystem)
-                                    if (nbt != null && nbt.hasKey("oc:unmanaged")) {
-                                        System.out.println("Drive is being used as filesystem, skipping lock change");
-                                        return;
-                                    }
-
-                                    boolean isCurrentlyLocked = nbt != null && nbt.hasKey("oc:lock");
-                                    System.out.println("Drive is currently " + (isCurrentlyLocked ? "locked" : "unlocked"));
-
-                                    changeLocked(stack, isCurrentlyLocked);
-                                    driveItemMap.put(drive, stack);
-                                    return;
-                                }
-                            }
-                        }
-                    }
-                    System.out.println("Drive not found in inventory");
-                }
-            }
-
-        } catch (Exception e) {
-            System.out.println("Error accessing drive host: " + e.getMessage());
-            e.printStackTrace();
-        }
-    }
+//    private void lockDrive(Context context, Drive drive) {
+//        try {
+//            java.lang.reflect.Field hostField = drive.getClass().getDeclaredField("host");
+//            hostField.setAccessible(true);
+//            Object hostOption = hostField.get(drive);
+//
+//            java.lang.reflect.Method getMethod = hostOption.getClass().getMethod("get");
+//            Object host = getMethod.invoke(hostOption);
+//
+//            if (host instanceof TileEntity) {
+//                TileEntity tile = (TileEntity) host;
+//                if (tile instanceof IInventory) {
+//                    IInventory inventory = (IInventory) tile;
+//
+//                    for (int i = 0; i < inventory.getSizeInventory(); i++) {
+//                        ItemStack stack = inventory.getStackInSlot(i);
+//                        if (stack != null) {
+//                            Item item = stack.getItem();
+//                            if (item.getClass().getName().contains("li.cil.oc")) {
+//                                int variant = stack.getItemDamage();
+//                                System.out.println("Found OC item in slot " + i + " with variant: " + variant);
+//
+//                                if (variant == 7) {
+//                                    System.out.println("Found drive in slot " + i);
+//                                    NBTTagCompound nbt = stack.getTagCompound();
+//
+//                                    // Check if the drive is managed (not a filesystem)
+//                                    if (nbt != null && nbt.hasKey("oc:unmanaged")) {
+//                                        System.out.println("Drive is being used as filesystem, skipping lock change");
+//                                        return;
+//                                    }
+//
+//                                    boolean isCurrentlyLocked = nbt != null && nbt.hasKey("oc:lock");
+//                                    System.out.println("Drive is currently " + (isCurrentlyLocked ? "locked" : "unlocked"));
+//
+//                                    changeLocked(stack, isCurrentlyLocked);
+//                                    driveItemMap.put(drive, stack);
+//                                    return;
+//                                }
+//                            }
+//                        }
+//                    }
+//                    System.out.println("Drive not found in inventory");
+//                }
+//            }
+//
+//        } catch (Exception e) {
+//            System.out.println("Error accessing drive host: " + e.getMessage());
+//            e.printStackTrace();
+//        }
+//    }
     private void handleDrive(Context context, Arguments args) {
         Drive drive = getDrive();
-        lockDrive(context, drive);
+        //lockDrive(context, drive);
         if (drive == null) {
             System.out.println("No drive found.");
             return;
@@ -193,6 +193,56 @@ public class EnvoirementRPComponent implements ManagedEnvironment {
 //            System.out.println("Drive handling error: " + e.getMessage());
 //            e.printStackTrace();
 //        }
+    }
+    private void lockFileSystem(Context context, FileSystem fileSystem) {
+        try {
+            java.lang.reflect.Field hostField = fileSystem.getClass().getDeclaredField("host");
+            hostField.setAccessible(true);
+            Object hostOption = hostField.get(fileSystem);
+
+            java.lang.reflect.Method getMethod = hostOption.getClass().getMethod("get");
+            Object host = getMethod.invoke(hostOption);
+
+            if (host instanceof TileEntity) {
+                TileEntity tile = (TileEntity) host;
+                if (tile instanceof IInventory) {
+                    IInventory inventory = (IInventory) tile;
+
+                    for (int i = 0; i < inventory.getSizeInventory(); i++) {
+                        ItemStack stack = inventory.getStackInSlot(i);
+                        if (stack != null) {
+                            Item item = stack.getItem();
+                            if (item.getClass().getName().contains("li.cil.oc")) {
+                                int variant = stack.getItemDamage();
+                                System.out.println("Found OC item in slot " + i + " with variant: " + variant);
+
+                                if (variant == 7) {
+                                    System.out.println("Found filesystem in slot " + i);
+                                    NBTTagCompound nbt = stack.getTagCompound();
+                                    if (nbt == null) {
+                                        nbt = new NBTTagCompound();
+                                        stack.setTagCompound(nbt);
+                                    }
+
+                                    // Only proceed if it's unmanaged (filesystem)
+                                    if (nbt.hasKey("oc:unmanaged")) {
+                                        boolean isCurrentlyLocked = nbt.hasKey("oc:lock");
+                                        System.out.println("Processing as FileSystem - currently " + (isCurrentlyLocked ? "locked" : "unlocked"));
+                                        changeLocked(stack, isCurrentlyLocked);
+                                        return;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    System.out.println("FileSystem not found in inventory");
+                }
+            }
+
+        } catch (Exception e) {
+            System.out.println("Error accessing filesystem host: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 
     private void handleFileSystem(Context context, Arguments args) {
@@ -256,7 +306,7 @@ public class EnvoirementRPComponent implements ManagedEnvironment {
         return null;
     }
     public static void changeLocked(ItemStack driveItem, boolean currentlyLocked) {
-        if(driveItem == null) {return;}
+        if(driveItem == null) return;
 
         NBTTagCompound nbt = driveItem.getTagCompound();
         if (nbt == null) {
@@ -267,13 +317,11 @@ public class EnvoirementRPComponent implements ManagedEnvironment {
         System.out.println("Current NBT: " + nbt.toString());
 
         if (currentlyLocked) {
-            // Drive is currently locked, so unlock it
             nbt.removeTag("oc:lock");
-            System.out.println("Unlocked the drive");
+            System.out.println("Unlocked the filesystem");
         } else {
-            // Drive is currently unlocked, so lock it
             nbt.setString("oc:lock", "Chocolateghasts");
-            System.out.println("Locked drive by: Chocolateghasts");
+            System.out.println("Locked filesystem by: Chocolateghasts");
         }
 
         driveItem.setTagCompound(nbt);
