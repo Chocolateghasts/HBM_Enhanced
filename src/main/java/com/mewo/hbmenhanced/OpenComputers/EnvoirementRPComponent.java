@@ -123,18 +123,25 @@ public class EnvoirementRPComponent implements ManagedEnvironment {
                         ItemStack stack = inventory.getStackInSlot(i);
                         if (stack != null) {
                             Item item = stack.getItem();
-                            // Check if it's an OpenComputers multi item (like the drive)
                             if (item.getClass().getName().contains("li.cil.oc")) {
-                                // Get the subItem/variant value
-                                int variant = stack.getItemDamage(); // In OC this gets the variant
+                                int variant = stack.getItemDamage();
                                 System.out.println("Found OC item in slot " + i + " with variant: " + variant);
 
-                                // Check if it's variant 7 (the drive)
                                 if (variant == 7) {
                                     System.out.println("Found drive in slot " + i);
-                                    changeLocked(stack, drive.isLocked());
+                                    NBTTagCompound nbt = stack.getTagCompound();
+
+                                    // Check if the drive is managed (not a filesystem)
+                                    if (nbt != null && nbt.hasKey("oc:unmanaged")) {
+                                        System.out.println("Drive is being used as filesystem, skipping lock change");
+                                        return;
+                                    }
+
+                                    boolean isCurrentlyLocked = nbt != null && nbt.hasKey("oc:lock");
+                                    System.out.println("Drive is currently " + (isCurrentlyLocked ? "locked" : "unlocked"));
+
+                                    changeLocked(stack, isCurrentlyLocked);
                                     driveItemMap.put(drive, stack);
-                                    System.out.println("Drive lock status changed");
                                     return;
                                 }
                             }
@@ -248,34 +255,27 @@ public class EnvoirementRPComponent implements ManagedEnvironment {
         }
         return null;
     }
-    public static void changeLocked(ItemStack driveItem, boolean locked) {
+    public static void changeLocked(ItemStack driveItem, boolean currentlyLocked) {
         if(driveItem == null) {return;}
+
         NBTTagCompound nbt = driveItem.getTagCompound();
         if (nbt == null) {
             nbt = new NBTTagCompound();
             driveItem.setTagCompound(nbt);
         }
 
-        System.out.println("Current NBT: " + nbt.toString());  // Debug print
+        System.out.println("Current NBT: " + nbt.toString());
 
-        // The correct tag name is "oc:lock" not "oc:lock:"
-        String currentLock = nbt.getString("oc:lock");
-        System.out.println("Current lock state: " + currentLock);
-
-        if (!locked) {
-            // If we're locking it (making it not locked)
-            if (currentLock.isEmpty()) {
-                // Only set if it's not already locked
-                nbt.setString("oc:lock", "Chocolateghasts");
-                System.out.println("Locked by: " + nbt.getString("oc:lock"));
-            }
-        } else if (locked){
-            // If we're unlocking it (making it locked)
-            nbt.removeTag("oc:lock");  // Remove the lock tag completely
+        if (currentlyLocked) {
+            // Drive is currently locked, so unlock it
+            nbt.removeTag("oc:lock");
             System.out.println("Unlocked the drive");
+        } else {
+            // Drive is currently unlocked, so lock it
+            nbt.setString("oc:lock", "Chocolateghasts");
+            System.out.println("Locked drive by: Chocolateghasts");
         }
 
-        // Make sure to update the ItemStack's NBT
         driveItem.setTagCompound(nbt);
     }
 
