@@ -105,57 +105,57 @@ public class EnvoirementRPComponent implements ManagedEnvironment {
         return driveItemMap.get(drive);
     }
 
-//    private void lockDrive(Context context, Drive drive) {
-//        try {
-//            java.lang.reflect.Field hostField = drive.getClass().getDeclaredField("host");
-//            hostField.setAccessible(true);
-//            Object hostOption = hostField.get(drive);
-//
-//            java.lang.reflect.Method getMethod = hostOption.getClass().getMethod("get");
-//            Object host = getMethod.invoke(hostOption);
-//
-//            if (host instanceof TileEntity) {
-//                TileEntity tile = (TileEntity) host;
-//                if (tile instanceof IInventory) {
-//                    IInventory inventory = (IInventory) tile;
-//
-//                    for (int i = 0; i < inventory.getSizeInventory(); i++) {
-//                        ItemStack stack = inventory.getStackInSlot(i);
-//                        if (stack != null) {
-//                            Item item = stack.getItem();
-//                            if (item.getClass().getName().contains("li.cil.oc")) {
-//                                int variant = stack.getItemDamage();
-//                                System.out.println("Found OC item in slot " + i + " with variant: " + variant);
-//
-//                                if (variant == 7) {
-//                                    System.out.println("Found drive in slot " + i);
-//                                    NBTTagCompound nbt = stack.getTagCompound();
-//
-//                                    // Check if the drive is managed (not a filesystem)
-//                                    if (nbt != null && nbt.hasKey("oc:unmanaged")) {
-//                                        System.out.println("Drive is being used as filesystem, skipping lock change");
-//                                        return;
-//                                    }
-//
-//                                    boolean isCurrentlyLocked = nbt != null && nbt.hasKey("oc:lock");
-//                                    System.out.println("Drive is currently " + (isCurrentlyLocked ? "locked" : "unlocked"));
-//
-//                                    changeLocked(stack, isCurrentlyLocked);
-//                                    driveItemMap.put(drive, stack);
-//                                    return;
-//                                }
-//                            }
-//                        }
-//                    }
-//                    System.out.println("Drive not found in inventory");
-//                }
-//            }
-//
-//        } catch (Exception e) {
-//            System.out.println("Error accessing drive host: " + e.getMessage());
-//            e.printStackTrace();
-//        }
-//    }
+        private void lockDrive(Context context, Drive drive) {
+        try {
+            java.lang.reflect.Field hostField = drive.getClass().getDeclaredField("host");
+            hostField.setAccessible(true);
+            Object hostOption = hostField.get(drive);
+
+            java.lang.reflect.Method getMethod = hostOption.getClass().getMethod("get");
+            Object host = getMethod.invoke(hostOption);
+
+            if (host instanceof TileEntity) {
+                TileEntity tile = (TileEntity) host;
+                if (tile instanceof IInventory) {
+                    IInventory inventory = (IInventory) tile;
+
+                    for (int i = 0; i < inventory.getSizeInventory(); i++) {
+                        ItemStack stack = inventory.getStackInSlot(i);
+                        if (stack != null) {
+                            Item item = stack.getItem();
+                            if (item.getClass().getName().contains("li.cil.oc")) {
+                                int variant = stack.getItemDamage();
+                                System.out.println("Found OC item in slot " + i + " with variant: " + variant);
+
+                                if (variant == 7) {
+                                    System.out.println("Found drive in slot " + i);
+                                    NBTTagCompound nbt = stack.getTagCompound();
+
+                                    // Check if the drive is managed (not a filesystem)
+                                    if (nbt != null && nbt.hasKey("oc:unmanaged")) {
+                                        System.out.println("Drive is being used as filesystem, skipping lock change");
+                                        return;
+                                    }
+
+                                    boolean isCurrentlyLocked = nbt != null && nbt.hasKey("oc:lock");
+                                    System.out.println("Drive is currently " + (isCurrentlyLocked ? "locked" : "unlocked"));
+
+                                    changeLocked(stack, isCurrentlyLocked);
+                                    driveItemMap.put(drive, stack);
+                                    return;
+                                }
+                            }
+                        }
+                    }
+                    System.out.println("Drive not found in inventory");
+                }
+            }
+
+        } catch (Exception e) {
+            System.out.println("Error accessing drive host: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
     private void handleDrive(Context context, Arguments args) {
         Drive drive = getDrive();
         //lockDrive(context, drive);
@@ -164,35 +164,35 @@ public class EnvoirementRPComponent implements ManagedEnvironment {
             return;
         }
 
-//
-//        try {
-//            int byteOffset = args.checkInteger(0);
-//            String filePath = args.checkString(1);
-//
-//            //lockDrive(context, args, drive);
-//
-//            if (drive.isLocked()) {
-//                Object[] data = drive.readByte(context, args);
-//                if (data != null && data.length > 0 && data[0] instanceof byte[]) {
-//                    byte[] newData = (byte[]) data[0];
-//                    String content = new String(newData);
-//                    System.out.println("Read content: " + content);
-//                }
-//
-//                String newContent = "Placeholder";
-//                byte[] byteData = newContent.getBytes();
-//                Object[] writeResult = drive.writeByte(context, args);
-//
-//                if (writeResult != null && writeResult.length > 0 && writeResult[0] instanceof Boolean && (Boolean)writeResult[0]) {
-//                    System.out.println("Write successful");
-//                } else {
-//                    System.out.println("Write failed");
-//                }
-//            }
-//        } catch (Exception e) {
-//            System.out.println("Drive handling error: " + e.getMessage());
-//            e.printStackTrace();
-//        }
+
+        try {
+            int byteOffset = args.checkInteger(0);
+            String filePath = args.checkString(1);
+
+            //lockDrive(context, args, drive);
+
+            if (drive.isLocked()) {
+                Object[] data = drive.readByte(context, args);
+                if (data != null && data.length > 0 && data[0] instanceof byte[]) {
+                    byte[] newData = (byte[]) data[0];
+                    String content = new String(newData);
+                    System.out.println("Read content: " + content);
+                }
+
+                String newContent = "Placeholder";
+                byte[] byteData = newContent.getBytes();
+                Object[] writeResult = drive.writeByte(context, args);
+
+                if (writeResult != null && writeResult.length > 0 && writeResult[0] instanceof Boolean && (Boolean)writeResult[0]) {
+                    System.out.println("Write successful");
+                } else {
+                    System.out.println("Write failed");
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("Drive handling error: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
     private void lockFileSystem(Context context, FileSystem fileSystem) {
         try {
