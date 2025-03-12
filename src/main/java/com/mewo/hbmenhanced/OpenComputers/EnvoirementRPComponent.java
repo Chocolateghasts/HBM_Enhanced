@@ -1,5 +1,6 @@
 package com.mewo.hbmenhanced.OpenComputers;
 
+import com.sun.org.apache.xpath.internal.Arg;
 import li.cil.oc.api.Items;
 import li.cil.oc.api.machine.Arguments;
 import li.cil.oc.api.machine.Callback;
@@ -21,6 +22,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.Constants;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -35,8 +37,96 @@ public class EnvoirementRPComponent implements ManagedEnvironment {
                 .create();
         System.out.println("RPCOMPONENT registered");
     }
+    public void initializeDrive(Drive drive) {
 
-    @Callback(doc = "function(number:byteOffset, string:filePath): string -- Stores RP data to the file system")
+    }
+
+
+    @Callback(doc = "function(slot:number):string -- Checks if a drive in the specified slot is valid for initialization")
+    public Object[] checkDrive(Context context, Arguments args) {
+        try {
+            if (args.count() < 1) {
+                return new Object[]{"Unspecified Drive. Correct syntax: initializeRpDrive(<slot number>)"};
+            }
+            int slot = args.checkInteger(0);
+            Drive drive = getDrive();
+            java.lang.reflect.Field hostField = drive.getClass().getDeclaredField("host");
+            hostField.setAccessible(true);
+            Object hostOption = hostField.get(drive);
+            java.lang.reflect.Method getMethod = hostOption.getClass().getMethod("get");
+            Object host = getMethod.invoke(hostOption);
+            if (!(host instanceof TileEntity) || !(host instanceof IInventory)) {
+                return new Object[]{"No Host"};
+            }
+            IInventory inventory = (IInventory) host;
+            ItemStack item = inventory.getStackInSlot(slot);
+            if (item == null) {
+                return new Object[]{"No item in slot " + slot};
+            }
+            int variant  = item.getItemDamage();
+            NBTTagCompound nbt = item.getTagCompound();
+            Byte unmanaged = nbt.getByte("oc:unmanaged");
+            if (item.getItem().getClass().getName().contains("li.cil.oc") && variant == 7 && unmanaged == 1) {
+                if (nbt.hasKey("oc:data")) {
+                    return new Object[]{"Drive already has data"};
+                }
+                if (nbt.hasKey("hbmenhanced:rpdrive")) {
+                    return new Object[]{"Already initialized"};
+                }
+            } else {
+                return new Object[]{"No valid Drive in slot " + slot};
+            }
+        } catch (NoSuchFieldException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
+            e.printStackTrace();
+        }
+        return new Object[]{"Drive is valid"};
+    }
+    @Callback(doc = "function(slot:number, teamName:string):string -- Initializes an RP drive in the specified slot with the given team name")
+    public Object[] initializeRpDrive(Context context, Arguments args) {
+        try {
+            if (args.count() < 2) {
+                return new Object[]{"Unspecified Drive. Correct syntax: checkDrive(<slot number>)"};
+            }
+            int slot = args.checkInteger(0);
+            String teamName = args.checkString(1);
+            Drive drive = getDrive();
+            java.lang.reflect.Field hostField = drive.getClass().getDeclaredField("host");
+            hostField.setAccessible(true);
+            Object hostOption = hostField.get(drive);
+            java.lang.reflect.Method getMethod = hostOption.getClass().getMethod("get");
+            Object host = getMethod.invoke(hostOption);
+            if (!(host instanceof TileEntity) || !(host instanceof IInventory)) {
+                return new Object[]{"No Host"};
+            }
+            IInventory inventory = (IInventory) host;
+            ItemStack item = inventory.getStackInSlot(slot);
+            if (item == null) {
+                return new Object[]{"No item in slot " + slot};
+            }
+            int variant  = item.getItemDamage();
+            NBTTagCompound nbt = item.getTagCompound();
+            byte unmanaged = nbt.getByte("oc:unmanaged");
+            if (item.getItem().getClass().getName().contains("li.cil.oc") && variant == 7 && unmanaged == 1) {
+                if (nbt.hasKey("oc:data")) {
+                    return new Object[]{"Drive already has data. You should have checked the drive!"};
+                }
+                if (nbt.hasKey("hbmenhanced:rpdrive")) {
+                    return new Object[]{"Already initialized"};
+                }
+                nbt.setBoolean("hbmenhanced:rpdrive", true);
+                nbt.setString("oc:lock", teamName);
+                item.setStackDisplayName("§bRP Research Storage Drive");
+                item.setTagCompound(nbt);
+                return new Object[]{"Initialized Drive in slot " + slot};
+            } else {
+                return new Object[]{"No valid Drive in slot " + slot};
+            }
+        } catch (NoSuchFieldException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
+            e.printStackTrace();
+        }
+        return new Object[]{"Failed"};
+    }
+    @Callback//(doc = "function(number:byteOffset, string:filePath): string -- Stores RP data to the file system")
     public Object[] storeRp(Context context, Arguments args) {
         try {
             if (args.count() < 2) {
@@ -56,7 +146,7 @@ public class EnvoirementRPComponent implements ManagedEnvironment {
         }
     }
 
-    @Callback(doc = "function():table -- Returns a table of player RP data")
+    @Callback//(doc = "function():table -- Returns a table of player RP data")
     public Object[] getPlayerRP(Context context, Arguments args) {
         Map<String, Integer> rpMap = RPCommand.playerRPMap;
         HashMap<Object, Object> luaTable = new HashMap<>();
