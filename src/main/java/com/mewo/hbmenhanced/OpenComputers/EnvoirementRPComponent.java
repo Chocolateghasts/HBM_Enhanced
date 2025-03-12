@@ -110,6 +110,7 @@ public class EnvoirementRPComponent implements ManagedEnvironment {
                         ItemStack stack = inventory.getStackInSlot(i);
                         if (stack != null) {
                             Item item = stack.getItem();
+                            //only on drives not filesytemz
                             if (item.getClass().getName().contains("li.cil.oc")) {
                                 int variant = stack.getItemDamage();
                                 System.out.println("Found OC item in slot " + i + " with variant: " + variant);
