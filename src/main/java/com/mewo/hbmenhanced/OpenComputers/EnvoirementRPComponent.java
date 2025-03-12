@@ -115,14 +115,18 @@ public class EnvoirementRPComponent implements ManagedEnvironment {
                                 System.out.println("Found OC item in slot " + i + " with variant: " + variant);
 
                                 if (variant == 7) {
-                                    System.out.println("Found drive in slot " + i);
-                                    NBTTagCompound nbt = stack.getTagCompound();
-                                    boolean isCurrentlyLocked = nbt != null && nbt.hasKey("oc:lock");
-                                    System.out.println("Drive is currently " + (isCurrentlyLocked ? "locked" : "unlocked"));
+                                    NBTTagCompound nbtTest = stack.getTagCompound();
+                                    Byte managed = nbtTest.getByte("oc:unmanaged");
+                                    if (managed == 1) {
+                                        System.out.println("Found drive in slot " + i);
+                                        NBTTagCompound nbt = stack.getTagCompound();
+                                        boolean isCurrentlyLocked = nbt != null && nbt.hasKey("oc:lock");
+                                        System.out.println("Drive is currently " + (isCurrentlyLocked ? "locked" : "unlocked"));
 
-                                    changeLocked(stack, isCurrentlyLocked);
-                                    driveItemMap.put(drive, stack);
-                                    return;
+                                        changeLocked(stack, isCurrentlyLocked);
+                                        driveItemMap.put(drive, stack);
+                                        return;
+                                    }
                                 }
                             }
                         }
