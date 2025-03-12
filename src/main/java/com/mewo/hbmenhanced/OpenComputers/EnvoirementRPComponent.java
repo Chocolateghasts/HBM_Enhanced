@@ -20,7 +20,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.Constants;
-import org.lwjgl.Sys;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -49,7 +48,7 @@ public class EnvoirementRPComponent implements ManagedEnvironment {
                 lockDrive(context, drive);
             }
 
-            handleFileSystem(context, args);
+            //handleFileSystem(context, args);
             return new Object[]{"Success: File System Handled"};
         } catch (Exception e) {
             e.printStackTrace();
@@ -79,7 +78,6 @@ public class EnvoirementRPComponent implements ManagedEnvironment {
     private Drive getDrive() {
         for (Node connectedNode : node.network().nodes()) {
             if (connectedNode.host() instanceof Drive) {
-                System.out.println("Drive is: " + connectedNode.host().node().address());
                 return (Drive) connectedNode.host();
             }
         }
