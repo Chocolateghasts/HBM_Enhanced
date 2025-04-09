@@ -9,20 +9,17 @@ import java.util.EnumMap;
 import java.util.HashMap;
 
 public class getRpValue {
-    /*
-    public int RpStructural;
-    public int RpNuclear;
-    public int RpSpace;
-    public int RpChemical;
-    public int RpExplosives;
-    public int RpMachinery;
-    public int RpWeaponry;
-    */
-
     private static HashMap<String, EnumMap<researchType, Integer>> rpValues = new HashMap<>();
+    private static HashMap<String, HashMap<String, EnumMap<researchType, Integer>>> teamRpValues = new HashMap<>();
+
     public static HashMap<String, EnumMap<researchType, Integer>> getRpMap() {
         return rpValues;
     }
+
+    public static HashMap<String, HashMap<String, EnumMap<researchType, Integer>>> getTeamRpMap() {
+        return teamRpValues;
+    }
+
     public enum researchType {
         STRUCTURAL, NUCLEAR, SPACE, EXPLOSIVES, MACHINERY, WEAPONRY, CHEMICAL, EXOTIC, ELECTRONICS
     }
@@ -55,10 +52,10 @@ public class getRpValue {
         String className = item.getClass().getName();
         String name;
         try {
-            name = item.getUnlocalizedName(); // Get name safely
-            if (name == null) return true; // Prevent further issues
+            name = item.getUnlocalizedName();
+            if (name == null) return true;
         } catch (Exception e) {
-            return true; // Handle potential errors gracefully
+            return true;
         }
         name = name.toLowerCase();
         String[] Keywords = {
@@ -93,18 +90,18 @@ public class getRpValue {
             return true;
         }
         return false;
-
-
     }
+
     public EnumMap<researchType, Integer> getRpValuesForItem(ItemStack item) {
         EnumMap<researchType, Integer> rpMap = new EnumMap<>(researchType.class);
         if (item == null || item.getItem() == null) return rpMap;
         String name = item.getDisplayName().toLowerCase();
         if (rpValues.containsKey(name)) return rpValues.get(name);
+
         if (name.contains("cadmium") || name.contains("technetium") && !(isBlacklisted(item.getItem()))) {
             rpMap.put(researchType.STRUCTURAL, 35);
         }
-        if (name.contains("iron")&& !(isBlacklisted(item.getItem()))) {
+        if (name.contains("iron") && !(isBlacklisted(item.getItem()))) {
             rpMap.put(researchType.STRUCTURAL, 10);
         }
         if (name.contains("steel") && !name.contains("cadmium") && !name.contains("technetium") && !(isBlacklisted(item.getItem()))) {
@@ -140,10 +137,9 @@ public class getRpValue {
             if (name.contains("uel")) {
                 rpMap.put(researchType.NUCLEAR, 60);
             }
-            if (name.contains("reactor"))  {
+            if (name.contains("reactor")) {
                 rpMap.put(researchType.NUCLEAR, 70);
-            }
-            else {
+            } else {
                 rpMap.put(researchType.NUCLEAR, 25);
             }
         }
@@ -160,9 +156,9 @@ public class getRpValue {
         }
         if (name.contains("americium")) {
             if (name.contains("241") || name.contains("242")) {
-                rpMap.put(researchType.NUCLEAR, 60);  // Americium 241 and 242 for advanced reactors
+                rpMap.put(researchType.NUCLEAR, 60);
             } else if (name.contains("reactor grade") || name.contains("fuel")) {
-                rpMap.put(researchType.NUCLEAR, 70);  // Americium Reactor Grade and Fuel for reactors
+                rpMap.put(researchType.NUCLEAR, 70);
             }
         }
         if (name.contains("radium")) {
@@ -271,52 +267,52 @@ public class getRpValue {
             rpMap.put(researchType.MACHINERY, 90);
         }
         if (name.contains("ferrouranium")) {
-            rpMap.put(researchType.MACHINERY, 30);  // Ferrouranium for advanced materials
+            rpMap.put(researchType.MACHINERY, 30);
         }
         if (name.contains("starmetal")) {
-            rpMap.put(researchType.MACHINERY, 100);  // Starmetal for high-end crafting and weapons
+            rpMap.put(researchType.MACHINERY, 100);
         }
         if (name.contains("niobium")) {
-            rpMap.put(researchType.ELECTRONICS, 30);  // Niobium for advanced machinery
+            rpMap.put(researchType.ELECTRONICS, 30);
         }
         if (name.contains("bismuth")) {
-            rpMap.put(researchType.ELECTRONICS, 65);  // Bismuth for machinery
+            rpMap.put(researchType.ELECTRONICS, 65);
         }
         if (name.contains("schrabidium")) {
-            rpMap.put(researchType.NUCLEAR, 40);  // Schrabidium for advanced nuclear tech
+            rpMap.put(researchType.NUCLEAR, 40);
         }
         if (name.contains("magnetized tungsten")) {
-            rpMap.put(researchType.MACHINERY, 60);  // Magnetized Tungsten for advanced machinery
+            rpMap.put(researchType.MACHINERY, 60);
         }
         if (name.contains("ferric schrabidate")) {
-            rpMap.put(researchType.MACHINERY, 50);  // Ferric Schrabidate for general machinery
+            rpMap.put(researchType.MACHINERY, 50);
         }
         if (name.contains("solinium")) {
-            rpMap.put(researchType.NUCLEAR, 90);  // Solinium for nuclear waste recycling
+            rpMap.put(researchType.NUCLEAR, 90);
         }
         if (name.contains("actinium")) {
-            rpMap.put(researchType.NUCLEAR, 25);  // Actinium for RTGs and reactors
+            rpMap.put(researchType.NUCLEAR, 25);
         }
         if (name.contains("australium")) {
-            rpMap.put(researchType.NUCLEAR, 80);  // Australium for nuclear tech
+            rpMap.put(researchType.NUCLEAR, 80);
         }
         if (name.contains("saturnite")) {
-            rpMap.put(researchType.MACHINERY, 70);  // Saturnite for high-end machinery
+            rpMap.put(researchType.MACHINERY, 70);
         }
         if (name.contains("euphenium")) {
-            rpMap.put(researchType.MACHINERY, 200);  // Euphenium for late-game tech (e.g., armor, fusion)
+            rpMap.put(researchType.MACHINERY, 200);
         }
         if (name.contains("dineutronium")) {
-            rpMap.put(researchType.MACHINERY, 250);  // Dineutronium for OP late-game armor and tech
+            rpMap.put(researchType.MACHINERY, 250);
         }
         if (name.contains("electronium")) {
-            rpMap.put(researchType.MACHINERY, 300);  // Electronium for extremely rare, high-end materials
+            rpMap.put(researchType.MACHINERY, 300);
         }
         if (name.contains("osmiridium")) {
-            rpMap.put(researchType.MACHINERY, 250);  // Osmiridium for exotic materials
+            rpMap.put(researchType.MACHINERY, 250);
         }
         if (name.contains("hafnium")) {
-            rpMap.put(researchType.MACHINERY, 100);  // Hafnium for advanced electronics
+            rpMap.put(researchType.MACHINERY, 100);
         }
         if (name.contains("chinesium")) {
             rpMap.put(researchType.STRUCTURAL, -9999999);
@@ -324,7 +320,14 @@ public class getRpValue {
 
         return rpMap;
     }
+
     public int getRpForType(String itemName, researchType type) {
         return rpValues.getOrDefault(itemName, new EnumMap<>(researchType.class)).getOrDefault(type, 0);
+    }
+
+    public void addResearchPoints(String teamName, String itemName, researchType type, int points) {
+        teamRpValues.putIfAbsent(teamName, new HashMap<>());
+        teamRpValues.get(teamName).putIfAbsent(itemName, new EnumMap<>(researchType.class));
+        teamRpValues.get(teamName).get(itemName).merge(type, points, Integer::sum);
     }
 }

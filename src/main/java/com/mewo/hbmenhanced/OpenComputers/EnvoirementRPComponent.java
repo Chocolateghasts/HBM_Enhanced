@@ -1,7 +1,6 @@
 package com.mewo.hbmenhanced.OpenComputers;
 
-import com.sun.org.apache.xpath.internal.Arg;
-import li.cil.oc.api.Items;
+import com.mewo.hbmenhanced.getRpValue;
 import li.cil.oc.api.machine.Arguments;
 import li.cil.oc.api.machine.Callback;
 import li.cil.oc.api.machine.Context;
@@ -11,36 +10,130 @@ import li.cil.oc.api.network.Node;
 import li.cil.oc.api.network.Visibility;
 import li.cil.oc.server.component.Drive;
 import li.cil.oc.server.component.FileSystem;
+import net.minecraft.client.Minecraft;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
-import net.minecraft.nbt.NBTTagByte;
 import net.minecraft.nbt.NBTTagCompound;
 import com.mewo.hbmenhanced.commands.RPCommand;
 import li.cil.oc.common.item.data.DriveData;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.common.util.Constants;
-
+import net.minecraft.world.World;
+import net.minecraft.world.storage.ISaveHandler;
+import net.minecraft.world.storage.SaveHandler;
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.util.HashMap;
-import java.util.Map;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.*;
+
+import static com.mewo.hbmenhanced.getRpValue.getRpMap;
 
 public class EnvoirementRPComponent implements ManagedEnvironment {
     private static final Map<Drive, ItemStack> driveItemMap = new HashMap<>();
     private Node node = this.node();
     public boolean isUpdated = false;
-
+    public enum researchType {
+        STRUCTURAL, NUCLEAR, SPACE, EXPLOSIVES, MACHINERY, WEAPONRY, CHEMICAL, EXOTIC, ELECTRONICS
+    }
     public EnvoirementRPComponent() {
         node = li.cil.oc.api.Network.newNode(this, Visibility.Neighbors)
                 .withComponent("RPComponent", Visibility.Neighbors)
                 .create();
         System.out.println("RPCOMPONENT registered");
     }
-    public void initializeDrive(Drive drive) {
+    public String getWorldName(World world) {
+        // For integrated server (singleplayer)
+        if (world.isRemote) {
+            return Minecraft.getMinecraft().getIntegratedServer().getWorldName();
+        }
+        return "unknown_world";
+    }
+    public void writeToDrive(Context context, Arguments args, ItemStack itemStack, Drive drive, TileEntity tileEntity) {
+        if (itemStack == null) return;
+        NBTTagCompound nbt = itemStack.getTagCompound();
+        boolean isRpDrive = nbt.getBoolean("hbmenhanced:rpdrive");
+        if (!isRpDrive) {
+            return;
+        }
+        String addres = drive.node().address();
+        MinecraftServer server = MinecraftServer.getServer();
+        System.out.println(drive.node().host());
+        //String filepath = "/eclipse/saves/" + ;
 
     }
+    @Callback
+    public Object[] writeRp(Context c, Arguments a) {
+        try {
+            Drive drive = getDrive();
+            java.lang.reflect.Field hostField = drive.getClass().getDeclaredField("host");
+            hostField.setAccessible(true);
+            Object hostOption = hostField.get(drive);
+            java.lang.reflect.Method getMethod = hostOption.getClass().getMethod("get");
+            Object host = getMethod.invoke(hostOption);
+            if (!(host instanceof TileEntity) || !(host instanceof IInventory)) {
+                return new Object[]{"No Host"};
+            }
+            TileEntity tile = (TileEntity) host;
+            IInventory inventory = (IInventory) host;
+            int slot = a.checkInteger(0);
+            ItemStack item = inventory.getStackInSlot(slot);
+            NBTTagCompound nbt = item.getTagCompound();
+            boolean unmanaged = nbt.getBoolean("oc:unmanaged");
+            if (unmanaged) {
+                nbt.setBoolean("oc:unmanaged", true);
+                item.setTagCompound(nbt);
+            }
+            Object[] capacity = drive.getCapacity(c, a);
+            String newCap = Arrays.toString(capacity);
+            newCap = newCap.replace("[", "").replace("]", "").trim();
+            int cap = Integer.parseInt(newCap.trim());
+            System.out.println("Cap is: " + cap);
 
+        } catch (NoSuchFieldException | InvocationTargetException | IllegalAccessException | NoSuchMethodException e) {
+            e.printStackTrace();
+        }
+
+        return new Object[]{"i hope it worked"};
+    }
+    @Callback(doc = "function(teamName:string):table -- Returns a table of research points for the specified team")
+    public Object[] getResearchPoints(Context context, Arguments args) {
+        if (args.count() < 1) {
+            return new Object[]{"Error: Not enough arguments. Expected (teamName)"};
+        }
+        String teamName = args.checkString(0);
+
+        // Create a HashMap to store the research points in a Lua-friendly format
+        HashMap<String, Integer> rpMapForLua = new HashMap<>();
+
+        // Get the EnumMap from getRpMap for the specified team
+        EnumMap<getRpValue.researchType, Integer> teamRpMap = getRpValue.getRpMap().get(teamName);
+
+        if (teamRpMap != null) {
+            // Convert the EnumMap entries to a format that Lua can understand
+            for (Map.Entry<getRpValue.researchType, Integer> entry : teamRpMap.entrySet()) {
+                rpMapForLua.put(entry.getKey().name(), entry.getValue());
+            }
+        }
+
+        return new Object[]{rpMapForLua};
+    }
+    public void readAndWrite(String filepath, Boolean write) {
+        try {
+            if (!write) {
+                List<String> lines = Files.readAllLines(Paths.get(filepath));
+                for (String line : lines) {
+                    for (researchType type : researchType.values()) {
+                        System.out.println("Reasearchtypew ;" + type);
+                    }
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
 
     @Callback(doc = "function(slot:number):string -- Checks if a drive in the specified slot is valid for initialization")
     public Object[] checkDrive(Context context, Arguments args) {
@@ -89,39 +182,65 @@ public class EnvoirementRPComponent implements ManagedEnvironment {
             }
             int slot = args.checkInteger(0);
             String teamName = args.checkString(1);
+            System.out.println("Debug: Initializing drive slot " + slot + " for team " + teamName);
+
             Drive drive = getDrive();
+            if (drive == null) {
+                System.out.println("Debug: No drive found");
+                return new Object[]{"No drive component found"};
+            }
+
             java.lang.reflect.Field hostField = drive.getClass().getDeclaredField("host");
             hostField.setAccessible(true);
             Object hostOption = hostField.get(drive);
             java.lang.reflect.Method getMethod = hostOption.getClass().getMethod("get");
             Object host = getMethod.invoke(hostOption);
+
             if (!(host instanceof TileEntity) || !(host instanceof IInventory)) {
+                System.out.println("Debug: Invalid host type");
                 return new Object[]{"No Host"};
             }
+
             IInventory inventory = (IInventory) host;
             ItemStack item = inventory.getStackInSlot(slot);
             if (item == null) {
+                System.out.println("Debug: No item in slot " + slot);
                 return new Object[]{"No item in slot " + slot};
             }
-            int variant  = item.getItemDamage();
+
+            System.out.println("Debug: Found item: " + item.getDisplayName());
+
+            int variant = item.getItemDamage();
             NBTTagCompound nbt = item.getTagCompound();
+            if (nbt == null) {
+                System.out.println("Debug: Creating new NBT compound");
+                nbt = new NBTTagCompound();
+                item.setTagCompound(nbt);
+            }
+
+            System.out.println("Debug: Current NBT before changes: " + nbt.toString());
+
             byte unmanaged = nbt.getByte("oc:unmanaged");
             if (item.getItem().getClass().getName().contains("li.cil.oc") && variant == 7 && unmanaged == 1) {
                 if (nbt.hasKey("oc:data")) {
-                    return new Object[]{"Drive already has data. You should have checked the drive!"};
+                    System.out.println("Debug: Drive already has data");
                 }
                 if (nbt.hasKey("hbmenhanced:rpdrive")) {
+                    System.out.println("Debug: Drive already initialized");
                     return new Object[]{"Already initialized"};
                 }
+                System.out.println("Debug: Setting NBT data");
                 nbt.setBoolean("hbmenhanced:rpdrive", true);
                 nbt.setString("oc:lock", teamName);
                 item.setStackDisplayName("§bRP Research Storage Drive");
                 item.setTagCompound(nbt);
                 return new Object[]{"Initialized Drive in slot " + slot};
             } else {
+                System.out.println("Debug: Invalid drive type");
                 return new Object[]{"No valid Drive in slot " + slot};
             }
-        } catch (NoSuchFieldException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
+        } catch (Exception e) {
+            System.out.println("Debug: Exception occurred: " + e.getMessage());
             e.printStackTrace();
         }
         return new Object[]{"Failed"};
