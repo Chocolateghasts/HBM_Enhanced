@@ -52,7 +52,6 @@ public class hbmenhanced
         GameRegistry.registerTileEntity(labBlockTileEntity.class, "labBlock");
         researchItem = new ItemResearchComponent().setUnlocalizedName("Researcher");
         GameRegistry.registerItem(researchItem, "Researcher");
-        //GameRegistry.registerItem(ItemResearchComponent.class, "Researcher");
         NetworkRegistry.INSTANCE.registerGuiHandler(this, new labBlockGuiHandler());
         GameRegistry.registerBlock(labBlock, "Lab Block").setCreativeTab(tabhbmenhanced);
     }
@@ -75,7 +74,7 @@ public class hbmenhanced
         saveRPData.loadRPData();
         researchPoint = new ItemResearchPoint().setUnlocalizedName("researchPoint");
         GameRegistry.registerItem(researchPoint, "Research Point");
-        GameRegistry.registerTileEntity(labBlockTileEntity.class, "labBlockTileEntity");
+       // GameRegistry.registerTileEntity(labBlockTileEntity.class, "labBlockTileEntity");
     }
 
 

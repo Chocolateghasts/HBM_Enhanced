@@ -59,17 +59,6 @@ public class labBlockContainer extends Container {
 
     }
 
-
-
-
-
-
-
-
-
-
-
-
     @Override
     public boolean canInteractWith(EntityPlayer entityPlayer) {
         return true; // Allow the player to use the GUI
