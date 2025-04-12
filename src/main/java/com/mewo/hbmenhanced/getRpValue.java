@@ -18,14 +18,29 @@ public class getRpValue {
     public int RpMachinery;
     public int RpWeaponry;
     */
-
+    public enum researchType {
+        STRUCTURAL, NUCLEAR, SPACE, EXPLOSIVES, MACHINERY, WEAPONRY, CHEMICAL, EXOTIC, ELECTRONICS
+    }
     private static HashMap<String, EnumMap<researchType, Integer>> rpValues = new HashMap<>();
     public static HashMap<String, EnumMap<researchType, Integer>> getRpMap() {
         return rpValues;
     }
-    public enum researchType {
-        STRUCTURAL, NUCLEAR, SPACE, EXPLOSIVES, MACHINERY, WEAPONRY, CHEMICAL, EXOTIC, ELECTRONICS
+    private static HashMap<String, EnumMap<researchType, Integer>> teamRpMap = new HashMap<>();
+
+
+    public static void addRpPoints(String team, researchType type, int points) {
+        teamRpMap.putIfAbsent(team, new EnumMap<>(researchType.class));
+        teamRpMap.get(team).merge(type, points, Integer::sum);
     }
+    public static int getTeamResearchPoints(String teamName, researchType type) {
+        return teamRpMap
+                .getOrDefault(teamName, new EnumMap<>(researchType.class))
+                .getOrDefault(type, 0);
+    }
+    public EnumMap<researchType, Integer> getAllTeamPoints(String teamName) {
+        return teamRpMap.getOrDefault(teamName, new EnumMap<>(researchType.class));
+    }
+
 
     public void loadHashMap() {
         for (Object obj : Item.itemRegistry) {
