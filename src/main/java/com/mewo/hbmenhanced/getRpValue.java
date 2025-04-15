@@ -7,6 +7,7 @@ import net.minecraft.util.StatCollector;
 
 import java.util.EnumMap;
 import java.util.HashMap;
+import java.util.Map;
 
 public class getRpValue {
     private static HashMap<String, EnumMap<researchType, Integer>> rpValues = new HashMap<>();
@@ -37,7 +38,68 @@ public class getRpValue {
             }
         }
     }
+    public static String getTeamDataAsString(String teamName) {
+        if (!teamRpValues.containsKey(teamName)) {
+            return "";
+        }
 
+        StringBuilder data = new StringBuilder();
+        HashMap<String, EnumMap<researchType, Integer>> teamData = teamRpValues.get(teamName);
+
+        for (Map.Entry<String, EnumMap<researchType, Integer>> entry : teamData.entrySet()) {
+            String itemName = entry.getKey();
+            EnumMap<researchType, Integer> typePoints = entry.getValue();
+
+            data.append(itemName).append(":");
+            for (Map.Entry<researchType, Integer> pointEntry : typePoints.entrySet()) {
+                data.append(pointEntry.getKey()).append("=")
+                        .append(pointEntry.getValue()).append(";");
+            }
+            data.append("\n");
+        }
+
+        return data.toString();
+    }
+
+    // Add method to load team data from string
+    public static void loadTeamDataFromString(String teamName, String data) {
+        if (data == null || data.isEmpty()) {
+            return;
+        }
+
+        HashMap<String, EnumMap<researchType, Integer>> teamData = new HashMap<>();
+
+        String[] lines = data.split("\n");
+        for (String line : lines) {
+            if (line.isEmpty()) continue;
+
+            String[] parts = line.split(":");
+            if (parts.length != 2) continue;
+
+            String itemName = parts[0];
+            EnumMap<researchType, Integer> typePoints = new EnumMap<>(researchType.class);
+
+            String[] pointPairs = parts[1].split(";");
+            for (String pair : pointPairs) {
+                if (pair.isEmpty()) continue;
+                String[] typeAndPoint = pair.split("=");
+                if (typeAndPoint.length != 2) continue;
+
+                try {
+                    researchType type = researchType.valueOf(typeAndPoint[0]);
+                    int points = Integer.parseInt(typeAndPoint[1]);
+                    typePoints.put(type, points);
+                } catch (IllegalArgumentException e) {
+                    // Skip invalid entries
+                    continue;
+                }
+            }
+
+            teamData.put(itemName, typePoints);
+        }
+
+        teamRpValues.put(teamName, teamData);
+    }
     private double RpMultiplier(Item item) {
         if (item == null) return 1;
         try {

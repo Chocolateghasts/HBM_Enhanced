@@ -69,7 +69,9 @@ public class EnvoirementRPComponent implements ManagedEnvironment {
 
     @Callback(doc = "function(slot:number, teamName:string):table -- Writes RP data to a drive")
     public Object[] writeRp(Context c, Arguments a) {
+        System.out.println("Starting");
         try {
+            System.out.println("Trying");
             if (a.count() < 2) {
                 return new Object[]{"Error: Expected (slot, teamName)"};
             }
@@ -78,7 +80,7 @@ public class EnvoirementRPComponent implements ManagedEnvironment {
             String teamName = a.checkString(1);
 
             // Get the team's RP data
-            //String rpData = getRpValue.getTeamDataAsString(teamName);
+            String rpData = getRpValue.getTeamDataAsString(teamName);
             System.out.println("Debug: Got RP data for team " + teamName); // Debug line
 
             Drive drive = getDrive();
@@ -126,7 +128,7 @@ public class EnvoirementRPComponent implements ManagedEnvironment {
                 System.out.println("Debug: Attempting to write to file: " + rpFile.getAbsolutePath()); // Debug line
 
                 try (FileWriter writer = new FileWriter(rpFile)) {
-                    //writer.write(rpData);
+                    writer.write(rpData);
                     System.out.println("Debug: Successfully wrote data to file"); // Debug line
                 }
 
@@ -179,7 +181,7 @@ public class EnvoirementRPComponent implements ManagedEnvironment {
             }
 
             // Load the data back into getRpValue
-            //getRpValue.loadTeamDataFromString(teamName, content.toString());
+            getRpValue.loadTeamDataFromString(teamName, content.toString());
 
             // Return the data and file size for Lua
             return new Object[]{true, content.toString(), rpFile.length()};
@@ -190,23 +192,7 @@ public class EnvoirementRPComponent implements ManagedEnvironment {
         }
     }
 
-    @Callback(doc = "function():number -- Get drive capacity usage")
-    public Object[] getDriveUsage(Context c, Arguments a) {
-        try {
-            Drive drive = getDrive();
-            if (drive == null) return new Object[]{-1};
 
-            // Get the drive's capacity
-            Object[] capacity = drive.getCapacity(c, a);
-            if (capacity.length > 0 && capacity[0] instanceof Number) {
-                return new Object[]{((Number) capacity[0]).longValue()};
-            }
-
-            return new Object[]{-1};
-        } catch (Exception e) {
-            return new Object[]{-1};
-        }
-    }
 
     @Callback(doc = "function(slot:number):string -- Checks if a drive in the specified slot is valid for initialization")
     public Object[] checkDrive(Context context, Arguments args) {
