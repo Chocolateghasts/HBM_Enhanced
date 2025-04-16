@@ -4,6 +4,7 @@ package com.mewo.hbmenhanced;
 import com.mewo.hbmenhanced.Gui.labBlockGuiHandler;
 import com.mewo.hbmenhanced.blocks.LabBlock;
 import com.mewo.hbmenhanced.commands.RPCommand;
+import com.mewo.hbmenhanced.commands.TeamCommand;
 import com.mewo.hbmenhanced.commands.showRPCommand;
 import com.mewo.hbmenhanced.containers.labBlockTileEntity;
 import com.mewo.hbmenhanced.items.ItemResearchComponent;
@@ -91,6 +92,7 @@ public class hbmenhanced
         // Register your custom command
         event.registerServerCommand(new RPCommand());
         event.registerServerCommand(new showRPCommand());
+        event.registerServerCommand(new TeamCommand());
 
         Timer timer = new Timer(true);
         timer.scheduleAtFixedRate(new TimerTask() {

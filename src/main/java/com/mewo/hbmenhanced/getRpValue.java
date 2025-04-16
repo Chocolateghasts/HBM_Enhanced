@@ -11,13 +11,12 @@ import java.util.Map;
 
 public class getRpValue {
     private static HashMap<String, EnumMap<researchType, Integer>> rpValues = new HashMap<>();
-    private static HashMap<String, HashMap<String, EnumMap<researchType, Integer>>> teamRpValues = new HashMap<>();
-
+    private static HashMap<String, EnumMap<researchType, Integer>> teamRpValues = new HashMap<>();
     public static HashMap<String, EnumMap<researchType, Integer>> getRpMap() {
         return rpValues;
     }
 
-    public static HashMap<String, HashMap<String, EnumMap<researchType, Integer>>> getTeamRpMap() {
+    public static HashMap<String, EnumMap<researchType, Integer>> getTeamRpMap() {
         return teamRpValues;
     }
 
@@ -44,18 +43,11 @@ public class getRpValue {
         }
 
         StringBuilder data = new StringBuilder();
-        HashMap<String, EnumMap<researchType, Integer>> teamData = teamRpValues.get(teamName);
+        EnumMap<researchType, Integer> teamData = teamRpValues.get(teamName);
 
-        for (Map.Entry<String, EnumMap<researchType, Integer>> entry : teamData.entrySet()) {
-            String itemName = entry.getKey();
-            EnumMap<researchType, Integer> typePoints = entry.getValue();
-
-            data.append(itemName).append(":");
-            for (Map.Entry<researchType, Integer> pointEntry : typePoints.entrySet()) {
-                data.append(pointEntry.getKey()).append("=")
-                        .append(pointEntry.getValue()).append(";");
-            }
-            data.append("\n");
+        for (Map.Entry<researchType, Integer> entry : teamData.entrySet()) {
+            data.append(entry.getKey()).append("=")
+                    .append(entry.getValue()).append(";");
         }
 
         return data.toString();
@@ -67,35 +59,21 @@ public class getRpValue {
             return;
         }
 
-        HashMap<String, EnumMap<researchType, Integer>> teamData = new HashMap<>();
+        EnumMap<researchType, Integer> teamData = new EnumMap<>(researchType.class);
 
-        String[] lines = data.split("\n");
-        for (String line : lines) {
-            if (line.isEmpty()) continue;
+        String[] pointPairs = data.split(";");
+        for (String pair : pointPairs) {
+            if (pair.isEmpty()) continue;
+            String[] typeAndPoint = pair.split("=");
+            if (typeAndPoint.length != 2) continue;
 
-            String[] parts = line.split(":");
-            if (parts.length != 2) continue;
-
-            String itemName = parts[0];
-            EnumMap<researchType, Integer> typePoints = new EnumMap<>(researchType.class);
-
-            String[] pointPairs = parts[1].split(";");
-            for (String pair : pointPairs) {
-                if (pair.isEmpty()) continue;
-                String[] typeAndPoint = pair.split("=");
-                if (typeAndPoint.length != 2) continue;
-
-                try {
-                    researchType type = researchType.valueOf(typeAndPoint[0]);
-                    int points = Integer.parseInt(typeAndPoint[1]);
-                    typePoints.put(type, points);
-                } catch (IllegalArgumentException e) {
-                    // Skip invalid entries
-                    continue;
-                }
+            try {
+                researchType type = researchType.valueOf(typeAndPoint[0]);
+                int points = Integer.parseInt(typeAndPoint[1]);
+                teamData.put(type, points);
+            } catch (IllegalArgumentException e) {
+                e.printStackTrace();
             }
-
-            teamData.put(itemName, typePoints);
         }
 
         teamRpValues.put(teamName, teamData);
@@ -387,9 +365,8 @@ public class getRpValue {
         return rpValues.getOrDefault(itemName, new EnumMap<>(researchType.class)).getOrDefault(type, 0);
     }
 
-    public static void addResearchPoints(String teamName, String itemName, researchType type, int points) {
-        teamRpValues.putIfAbsent(teamName, new HashMap<>());
-        teamRpValues.get(teamName).putIfAbsent(itemName, new EnumMap<>(researchType.class));
-        teamRpValues.get(teamName).get(itemName).merge(type, points, Integer::sum);
+    public static void addResearchPoints(String teamName, researchType type, int points) {
+        teamRpValues.putIfAbsent(teamName, new EnumMap<>(researchType.class));
+        teamRpValues.get(teamName).merge(type, points, Integer::sum);
     }
 }
