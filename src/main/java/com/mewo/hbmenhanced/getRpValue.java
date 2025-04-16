@@ -383,11 +383,11 @@ public class getRpValue {
         return rpMap;
     }
 
-    public int getRpForType(String itemName, researchType type) {
+    public static int getRpForType(String itemName, researchType type) {
         return rpValues.getOrDefault(itemName, new EnumMap<>(researchType.class)).getOrDefault(type, 0);
     }
 
-    public void addResearchPoints(String teamName, String itemName, researchType type, int points) {
+    public static void addResearchPoints(String teamName, String itemName, researchType type, int points) {
         teamRpValues.putIfAbsent(teamName, new HashMap<>());
         teamRpValues.get(teamName).putIfAbsent(itemName, new EnumMap<>(researchType.class));
         teamRpValues.get(teamName).get(itemName).merge(type, points, Integer::sum);

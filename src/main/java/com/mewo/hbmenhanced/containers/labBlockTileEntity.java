@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.mewo.hbmenhanced.getRpValue;
+import com.mewo.hbmenhanced.items.ItemResearchPoint;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.ISidedInventory;
@@ -24,9 +25,12 @@ end
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.EnumMap;
 import java.util.List;
+import java.util.Map;
 
 import static com.mewo.hbmenhanced.hbmenhanced.researchPoint;
+import static com.mewo.hbmenhanced.hbmenhanced.tabhbmenhanced;
 
 public class labBlockTileEntity extends TileEntity implements ISidedInventory {
 
@@ -35,8 +39,11 @@ public class labBlockTileEntity extends TileEntity implements ISidedInventory {
     private static final int[] slot_input = new int[]{0};
     private static final int[] slot_output = new int[]{1};
     public int currentItemResearchTime;
-    public int researchTime;
+    public int researchTime = 120;
     public int researchSpeed = 5;
+    private boolean isResearching = false;
+    private boolean isProcessing = false;
+    private int timer = 0;
 
     private List<ItemStack> researchItems = new ArrayList<>();
 
@@ -166,9 +173,6 @@ public class labBlockTileEntity extends TileEntity implements ISidedInventory {
 
     }
 
-
-
-
     @Override
     public int[] getAccessibleSlotsFromSide(int i) {
         if (i == 5) { return slot_input; } // Only allow input slot
@@ -191,6 +195,46 @@ public class labBlockTileEntity extends TileEntity implements ISidedInventory {
         return this.researchTime * i / this.currentItemResearchTime;
     }
     public int getResearchProgressScale(int i) {
-        return this.researchTime * i /this.researchSpeed;
+        return this.researchTime * i / this.researchSpeed;
+    }
+
+    @Override
+    public void updateEntity() {
+        if (!worldObj.isRemote) {
+            if (slots[0] != null && isResearchItem(slots[0]) && !isResearching) {
+                isResearching = true;
+                System.out.println("Started Researching");
+            }
+
+            if (isResearching) {
+                timer++;
+                if (timer >= researchTime) {
+                    String itemName = slots[0].getDisplayName().toLowerCase();
+                    boolean hasPoints = false;
+                    ItemStack itemStack = new ItemStack(researchPoint);
+
+                    for (getRpValue.researchType type : getRpValue.researchType.values()) {
+                        int points = getRpValue.getRpForType(itemName, type);
+                        if (points > 0) {
+                            hasPoints = true;
+                            ItemResearchPoint.setRp(itemStack, type.toString(), points);
+                            System.out.println(type.name() + ": " + points);
+                        }
+                    }
+
+                    if (hasPoints) {
+                        slots[1] = itemStack;
+                        slots[0].stackSize--;
+                        if (slots[0].stackSize <= 0) {
+                            slots[0] = null;
+                        }
+                    }
+
+                    timer = 0;
+                    isResearching = false;
+                    markDirty();
+                }
+            }
+        }
     }
 }
