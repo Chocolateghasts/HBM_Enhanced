@@ -129,8 +129,7 @@ public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase e
             case 0: // Bottom
                 return this.iconBottom;
             case 1: // Top
-                System.out.println("Skibidi");
-                return isResearching ? this.iconTop : this.icontop2;
+                return this.iconTop;
             case 2: // North
                 return metadata == 2 ? this.iconFront : this.iconBack;
             case 3: // South
@@ -143,7 +142,7 @@ public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase e
                 return this.blockIcon;
         }
     }
-    
+
     @Override
     public void onBlockAdded(World world, int x, int y, int z) {
         super.onBlockAdded(world, x, y, z);
