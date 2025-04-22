@@ -143,8 +143,7 @@ public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase e
                 return this.blockIcon;
         }
     }
-
-    // Add this method to update the block's coordinates
+    
     @Override
     public void onBlockAdded(World world, int x, int y, int z) {
         super.onBlockAdded(world, x, y, z);
