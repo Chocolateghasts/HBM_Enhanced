@@ -41,7 +41,7 @@ public class labBlockTileEntity extends TileEntity implements ISidedInventory {
     public int currentItemResearchTime;
     public int researchTime = 120;
     public int researchSpeed = 5;
-    private boolean isResearching = false;
+    public boolean isResearching = false;
     private boolean isProcessing = false;
     private int timer = 0;
 
@@ -197,16 +197,36 @@ public class labBlockTileEntity extends TileEntity implements ISidedInventory {
     public int getResearchProgressScale(int i) {
         return this.researchTime * i / this.researchSpeed;
     }
+    @Override
+    public void invalidate() {
+        super.invalidate();
+        // Stop any ongoing research when the tile entity is invalidated
+        this.isResearching = false;
+        this.timer = 0;
+    }
+
+    @Override
+    public void onChunkUnload() {
+        super.onChunkUnload();
+        // Clean up when chunk unloads
+        this.isResearching = false;
+        this.timer = 0;
+    }
 
     @Override
     public void updateEntity() {
         if (!worldObj.isRemote) {
-            if (slots[0] != null && isResearchItem(slots[0]) && !isResearching) {
+            boolean wasResearching = isResearching;
+
+            // Check if we should start researching
+            if (slots[0] != null && isResearchItem(slots[0])) {
                 isResearching = true;
-                System.out.println("Started Researching");
+            } else {
+                isResearching = false;
             }
 
-            if (isResearching) {
+            // Do research if active
+            if (isResearching && slots[0] != null) {
                 timer++;
                 if (timer >= researchTime) {
                     String itemName = slots[0].getDisplayName().toLowerCase();
@@ -234,6 +254,15 @@ public class labBlockTileEntity extends TileEntity implements ISidedInventory {
                     isResearching = false;
                     markDirty();
                 }
+            } else if (isResearching && slots[0] == null) {
+                // Reset if input slot becomes empty
+                isResearching = false;
+                timer = 0;
+            }
+
+            if (wasResearching != isResearching) {
+                worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+                worldObj.notifyBlockChange(xCoord, yCoord, zCoord, getBlockType());
             }
         }
     }

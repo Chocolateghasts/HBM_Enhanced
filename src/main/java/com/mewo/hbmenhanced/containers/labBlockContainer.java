@@ -11,6 +11,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.Slot;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraft.inventory.Container;
@@ -18,7 +19,7 @@ import net.minecraft.inventory.Container;
 public class labBlockContainer extends Container {
 
     private labBlockTileEntity labBlock;
-    public static boolean isActive = false;
+    public static boolean isActive = true;
     public int lastCurrentItemResearchTime;
     public int lastResearchTime;
     public labBlockContainer(InventoryPlayer playerInventory, labBlockTileEntity tileEntity) {
@@ -35,6 +36,58 @@ public class labBlockContainer extends Container {
         }
     }
 
+    @Override
+    public ItemStack transferStackInSlot(EntityPlayer player, int slotIndex) {
+        ItemStack itemstack = null;
+        Slot slot = (Slot)this.inventorySlots.get(slotIndex);
+
+        if (slot != null && slot.getHasStack()) {
+            ItemStack itemstack1 = slot.getStack();
+            itemstack = itemstack1.copy();
+            if (slotIndex == 1) {
+                if (!this.mergeItemStack(itemstack1, 2, 38, true)) {
+                    return null;
+                }
+                slot.onSlotChange(itemstack1, itemstack);
+            }
+            else if (slotIndex == 0) {
+                if (!this.mergeItemStack(itemstack1, 2, 38, false)) {
+                    return null;
+                }
+            }
+            // If we're trying to move from the player's inventory
+            else if (labBlockTileEntity.isResearchItem(itemstack1)) {
+                // Try to move to input slot
+                if (!this.mergeItemStack(itemstack1, 0, 1, false)) {
+                    return null;
+                }
+            }
+            // Moving from player's inventory to player's hotbar or vice versa
+            else if (slotIndex >= 2 && slotIndex < 29) {
+                if (!this.mergeItemStack(itemstack1, 29, 38, false)) {
+                    return null;
+                }
+            } else if (slotIndex >= 29 && slotIndex < 38) {
+                if (!this.mergeItemStack(itemstack1, 2, 29, false)) {
+                    return null;
+                }
+            }
+
+            if (itemstack1.stackSize == 0) {
+                slot.putStack(null);
+            } else {
+                slot.onSlotChanged();
+            }
+
+            if (itemstack1.stackSize == itemstack.stackSize) {
+                return null;
+            }
+
+            slot.onPickupFromSlot(player, itemstack1);
+        }
+
+        return itemstack;
+    }
     public void addCraftingToCrafters(ICrafting crafting) {
         super.addCraftingToCrafters(crafting);
         crafting.sendProgressBarUpdate(this, 0, this.labBlock.researchTime);

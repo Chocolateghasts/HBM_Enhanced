@@ -90,40 +90,67 @@ public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase e
         if (l == 3) {
             world.setBlockMetadataWithNotify(x, y, z, 4, 2);
         }
-
-
-
-
 }
 
-
+    @Override
+    public boolean renderAsNormalBlock() {
+        return false;
+    }
+    @Override
+    public void onBlockPreDestroy(World world, int x, int y, int z, int meta) {
+        super.onBlockPreDestroy(world, x, y, z, meta);
+        if (world.getTileEntity(x, y, z) instanceof labBlockTileEntity) {
+            ((labBlockTileEntity)world.getTileEntity(x, y, z)).isResearching = false;
+        }
+    }
+    @Override
+    public boolean isOpaqueCube() {
+        return false;
+    }
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(IIconRegister register) {
         this.blockIcon = register.registerIcon(hbmenhanced.MODID + ":" + "labBlock_sides");
         this.iconFront = register.registerIcon(hbmenhanced.MODID + ":" + "labBlock_back");
         this.iconBack = register.registerIcon(hbmenhanced.MODID + ":" + "labBlock_back");
-        this.iconTop = register.registerIcon(hbmenhanced.MODID + ":" + "labBlock_top_animated-1");
+        this.iconTop = register.registerIcon(hbmenhanced.MODID + ":" + "labBlock_top_animated");
         this.iconBottom = register.registerIcon(hbmenhanced.MODID + ":" + "labBlock_bottom");
-        this.icontop2 = register.registerIcon(hbmenhanced.MODID + ":" + "labBlock_top_animated");
+        this.icontop2 = register.registerIcon(hbmenhanced.MODID + ":" + "labBlock_top_animated-1");
     }
     @SideOnly(Side.CLIENT)
-    public IIcon getIcon(int side, int metaData) {
-        if (isActive && side == 1)
-        {
-            return icontop2;
-        } else {
-            switch (side) {
-                case 0: // Bottom
-                    return this.iconBottom;
-                case 1: // Top
-                    return this.iconTop;
-                case 2: // North (Back)
-                    return this.iconBack;
-                case 3: // South (Front)
-                    return this.iconFront;
-                default:
-                    return this.blockIcon;
-            }
+    public IIcon getIcon(int side, int metadata) {
+        TileEntity te = world != null ? world.getTileEntity(x, y, z) : null;
+        boolean isResearching = false;
+
+        if (te instanceof labBlockTileEntity) {
+            isResearching = ((labBlockTileEntity) te).isResearching;
         }
+
+        switch (side) {
+            case 0: // Bottom
+                return this.iconBottom;
+            case 1: // Top
+                System.out.println("Skibidi");
+                return isResearching ? this.iconTop : this.icontop2;
+            case 2: // North
+                return metadata == 2 ? this.iconFront : this.iconBack;
+            case 3: // South
+                return metadata == 3 ? this.iconFront : this.iconBack;
+            case 4: // West
+                return metadata == 4 ? this.iconFront : this.iconBack;
+            case 5: // East
+                return metadata == 5 ? this.iconFront : this.iconBack;
+            default:
+                return this.blockIcon;
+        }
+    }
+
+    // Add this method to update the block's coordinates
+    @Override
+    public void onBlockAdded(World world, int x, int y, int z) {
+        super.onBlockAdded(world, x, y, z);
+        this.world = world;
+        this.x = x;
+        this.y = y;
+        this.z = z;
     }
 }
