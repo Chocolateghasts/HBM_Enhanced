@@ -93,23 +93,33 @@ public class labBlockContainer extends Container {
         crafting.sendProgressBarUpdate(this, 0, this.labBlock.researchTime);
         crafting.sendProgressBarUpdate(this, 0, this.labBlock.currentItemResearchTime);
     }
+    @Override
     public void detectAndSendChanges() {
         super.detectAndSendChanges();
+
         for (int i = 0; i < this.crafters.size(); i++) {
-            ICrafting crafting = (ICrafting) this.crafters.get(i);
+            ICrafting craft = (ICrafting) this.crafters.get(i);
+
             if (this.lastResearchTime != this.labBlock.researchTime) {
-                crafting.sendProgressBarUpdate(this, 0, this.labBlock.researchTime);
+                craft.sendProgressBarUpdate(this, 0, this.labBlock.researchTime);
             }
             if (this.lastCurrentItemResearchTime != this.labBlock.currentItemResearchTime) {
-                crafting.sendProgressBarUpdate(this, 0, this.labBlock.currentItemResearchTime);
+                craft.sendProgressBarUpdate(this, 1, this.labBlock.currentItemResearchTime);
             }
-            this.lastResearchTime = this.labBlock.researchTime;
-            this.lastCurrentItemResearchTime = this.labBlock.currentItemResearchTime;
         }
-    }
-    @SideOnly(Side.CLIENT)
-    public void updateProgressBar(int slot, int newValue) {
 
+        this.lastResearchTime = this.labBlock.researchTime;
+        this.lastCurrentItemResearchTime = this.labBlock.currentItemResearchTime;
+    }
+
+    @SideOnly(Side.CLIENT)
+    public void updateProgressBar(int id, int value) {
+        if (id == 0) {
+            this.labBlock.researchTime = value;
+        }
+        if (id == 1) {
+            this.labBlock.currentItemResearchTime = value;
+        }
     }
 
 

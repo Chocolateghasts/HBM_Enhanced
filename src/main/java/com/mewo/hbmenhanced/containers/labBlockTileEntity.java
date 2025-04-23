@@ -188,11 +188,12 @@ public class labBlockTileEntity extends TileEntity implements ISidedInventory {
     public boolean canExtractItem(int i, ItemStack itemStack, int j) {
         return i == 1;
     }
-    public int getResearchTimeRemainingScaled(int i) {
+    public int getResearchTimeRemainingScaled(int scale) {
         if (this.currentItemResearchTime == 0) {
-            this.currentItemResearchTime = this.researchSpeed;
+            return 0;
         }
-        return this.researchTime * i / this.currentItemResearchTime;
+        // This will convert the research progress to the scale of your progress bar
+        return (this.researchTime * scale) / this.currentItemResearchTime;
     }
     public int getResearchProgressScale(int i) {
         return this.researchTime * i / this.researchSpeed;
@@ -226,7 +227,8 @@ public class labBlockTileEntity extends TileEntity implements ISidedInventory {
             }
 
             // Do research if active
-            if (isResearching && slots[0] != null) {
+
+            if (isResearching && slots[0] != null && slots[1] == null) {
                 timer++;
                 if (timer >= researchTime) {
                     String itemName = slots[0].getDisplayName().toLowerCase();
@@ -266,4 +268,5 @@ public class labBlockTileEntity extends TileEntity implements ISidedInventory {
             }
         }
     }
+
 }
