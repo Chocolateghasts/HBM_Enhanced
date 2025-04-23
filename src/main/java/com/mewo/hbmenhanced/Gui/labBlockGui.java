@@ -31,38 +31,46 @@ public class labBlockGui extends GuiContainer {
 
     @Override
     protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
-        // Draw the background
+        // Bind background texture
         this.mc.getTextureManager().bindTexture(LAB_BLOCK_GUI_TEXTURE);
         this.drawTexturedModalRect(this.guiLeft, this.guiTop, 0, 0, this.xSize, this.ySize);
 
-        // Draw progress bar
+        // Optional: draw base arrow texture under it
+        //this.drawTexturedModalRect(this.guiLeft + 80, this.guiTop + 42, 40, 21, 7, 11);
+
         if (this.labBlock.isResearching) {
-            // Calculate progress (scale to 7 pixels wide)
-            int progress = this.labBlock.getResearchTimeRemainingScaled(7);
+            int arrowX = this.guiLeft + 80;
+            int arrowY = this.guiTop + 42;
+            int pixelSize = 2;
 
-            // Add debug print
-            System.out.println("Drawing progress bar: " + progress + " pixels");
+            // Fill shape: 12 rows of 7 columns
+            String[] arrowShape = new String[]{
+                    "01100000",
+                    "11110000",
+                    "11111000",
+                    "01111100",
+                    "00111110",
+                    "00011111",
+                    "00011111",
+                    "00111110",
+                    "01111100",
+                    "11111000",
+                    "11110000",
+                    "01100000"
+            };
 
-            // Draw the empty progress bar background
-            this.drawTexturedModalRect(
-                    this.guiLeft + 79,
-                    this.guiTop + 34,
-                    40,
-                    21,
-                    7,
-                    11
-            );
+            // Determine max width (horizontal progress) from 0–7
+            int progress = this.labBlock.getResearchTimeRemainingScaled(10);
 
-            // Only draw filled portion if there is progress
-            if (progress > 0) {
-                this.drawTexturedModalRect(
-                        this.guiLeft + 79,
-                        this.guiTop + 34,
-                        88,
-                        72,
-                        progress,
-                        11
-                );
+            for (int row = 0; row < arrowShape.length; row++) {
+                String line = arrowShape[row];
+                for (int col = 0; col < progress; col++) {
+                    if (col < line.length() && line.charAt(col) == '1') {
+                        int x = arrowX + col * pixelSize;
+                        int y = arrowY + row * pixelSize;
+                        drawRect(x, y, x + pixelSize, y + pixelSize, 0xFF00FF00); // Green
+                    }
+                }
             }
         }
     }

@@ -39,7 +39,7 @@ public class labBlockTileEntity extends TileEntity implements ISidedInventory {
     private static final int[] slot_input = new int[]{0};
     private static final int[] slot_output = new int[]{1};
     public int currentItemResearchTime;
-    public int researchTime = 120;
+    public int researchTime = 160;
     public int researchSpeed = 5;
     public boolean isResearching = false;
     private boolean isProcessing = false;
@@ -218,30 +218,57 @@ public class labBlockTileEntity extends TileEntity implements ISidedInventory {
         if (!worldObj.isRemote) {
             boolean wasResearching = isResearching;
 
-            // Check if we should start researching
+            // Check if we can research (has input, is valid item, and output slot is empty)
             if (slots[0] != null && isResearchItem(slots[0]) && slots[1] == null) {
                 isResearching = true;
             } else {
                 isResearching = false;
             }
 
-            // Do research if active
+            // Handle research process
             if (isResearching && slots[0] != null) {
                 timer++;
 
-                // Add this line for debugging
-                System.out.println("Research Progress: " + timer + " / " + researchTime);
-
                 if (timer >= researchTime) {
-                    // ... existing completion code ...
+                    String itemName = slots[0].getDisplayName().toLowerCase();
+                    boolean hasPoints = false;
+                    ItemStack itemStack = new ItemStack(researchPoint);
+
+                    for (getRpValue.researchType type : getRpValue.researchType.values()) {
+                        int points = getRpValue.getRpForType(itemName, type);
+                        if (points > 0) {
+                            hasPoints = true;
+                            ItemResearchPoint.setRp(itemStack, type.toString(), points);
+                            System.out.println(type.name() + ": " + points);
+                        }
+                    }
+
+                    if (hasPoints) {
+                        slots[1] = itemStack;
+                        slots[0].stackSize--;
+                        if (slots[0].stackSize <= 0) {
+                            slots[0] = null;
+                        }
+                    }
+
                     timer = 0;
+                    isResearching = false;
                 }
 
-                // Mark dirty to ensure updates are sent to client
-                this.markDirty();
+                // Mark dirty to ensure client gets updates
+                markDirty();
+                worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
             } else if (!isResearching && timer > 0) {
+                // Reset timer if we stopped researching
                 timer = 0;
-                this.markDirty();
+                markDirty();
+                worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+            }
+
+            // If research state changed, make sure client knows
+            if (wasResearching != isResearching) {
+                markDirty();
+                worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
             }
         }
     }
