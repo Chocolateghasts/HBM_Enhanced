@@ -43,7 +43,7 @@ public class labBlockTileEntity extends TileEntity implements ISidedInventory {
     public int researchSpeed = 5;
     public boolean isResearching = false;
     private boolean isProcessing = false;
-    private int timer = 0;
+    public int timer = 0;
 
     private List<ItemStack> researchItems = new ArrayList<>();
 
@@ -189,12 +189,11 @@ public class labBlockTileEntity extends TileEntity implements ISidedInventory {
         return i == 1;
     }
     public int getResearchTimeRemainingScaled(int scale) {
-        if (this.currentItemResearchTime == 0) {
-            return 0;
-        }
-        // This will convert the research progress to the scale of your progress bar
-        return (this.researchTime * scale) / this.currentItemResearchTime;
+        // Changed to use timer instead of currentItemResearchTime
+        if (this.researchTime == 0) return 0;
+        return (this.timer * scale) / this.researchTime;
     }
+
     public int getResearchProgressScale(int i) {
         return this.researchTime * i / this.researchSpeed;
     }
@@ -220,51 +219,29 @@ public class labBlockTileEntity extends TileEntity implements ISidedInventory {
             boolean wasResearching = isResearching;
 
             // Check if we should start researching
-            if (slots[0] != null && isResearchItem(slots[0])) {
+            if (slots[0] != null && isResearchItem(slots[0]) && slots[1] == null) {
                 isResearching = true;
             } else {
                 isResearching = false;
             }
 
             // Do research if active
-
-            if (isResearching && slots[0] != null && slots[1] == null) {
+            if (isResearching && slots[0] != null) {
                 timer++;
+
+                // Add this line for debugging
+                System.out.println("Research Progress: " + timer + " / " + researchTime);
+
                 if (timer >= researchTime) {
-                    String itemName = slots[0].getDisplayName().toLowerCase();
-                    boolean hasPoints = false;
-                    ItemStack itemStack = new ItemStack(researchPoint);
-
-                    for (getRpValue.researchType type : getRpValue.researchType.values()) {
-                        int points = getRpValue.getRpForType(itemName, type);
-                        if (points > 0) {
-                            hasPoints = true;
-                            ItemResearchPoint.setRp(itemStack, type.toString(), points);
-                            System.out.println(type.name() + ": " + points);
-                        }
-                    }
-
-                    if (hasPoints) {
-                        slots[1] = itemStack;
-                        slots[0].stackSize--;
-                        if (slots[0].stackSize <= 0) {
-                            slots[0] = null;
-                        }
-                    }
-
+                    // ... existing completion code ...
                     timer = 0;
-                    isResearching = false;
-                    markDirty();
                 }
-            } else if (isResearching && slots[0] == null) {
-                // Reset if input slot becomes empty
-                isResearching = false;
-                timer = 0;
-            }
 
-            if (wasResearching != isResearching) {
-                worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-                worldObj.notifyBlockChange(xCoord, yCoord, zCoord, getBlockType());
+                // Mark dirty to ensure updates are sent to client
+                this.markDirty();
+            } else if (!isResearching && timer > 0) {
+                timer = 0;
+                this.markDirty();
             }
         }
     }

@@ -40,25 +40,30 @@ public class labBlockGui extends GuiContainer {
             // Calculate progress (scale to 7 pixels wide)
             int progress = this.labBlock.getResearchTimeRemainingScaled(7);
 
+            // Add debug print
+            System.out.println("Drawing progress bar: " + progress + " pixels");
+
             // Draw the empty progress bar background
             this.drawTexturedModalRect(
-                    this.guiLeft + 79,  // X position on screen
-                    this.guiTop + 34,   // Y position on screen
-                    40,                 // X position in texture (empty bar at x=40)
-                    21,                 // Y position in texture (empty bar at y=21)
-                    7,                  // Width of the progress bar (47-40=7 pixels)
-                    11                  // Height of the progress bar (32-21=11 pixels)
+                    this.guiLeft + 79,
+                    this.guiTop + 34,
+                    40,
+                    21,
+                    7,
+                    11
             );
 
-            // Draw the filled portion using your actual coordinates
-            this.drawTexturedModalRect(
-                    this.guiLeft + 79,  // Same X position as empty bar
-                    this.guiTop + 34,   // Same Y position as empty bar
-                    88,                 // X position of filled texture (x=88)
-                    72,                 // Y position of filled texture (y=72)
-                    progress,           // Width based on research progress
-                    11                  // Height (83-72=11 pixels)
-            );
+            // Only draw filled portion if there is progress
+            if (progress > 0) {
+                this.drawTexturedModalRect(
+                        this.guiLeft + 79,
+                        this.guiTop + 34,
+                        88,
+                        72,
+                        progress,
+                        11
+                );
+            }
         }
     }
 }

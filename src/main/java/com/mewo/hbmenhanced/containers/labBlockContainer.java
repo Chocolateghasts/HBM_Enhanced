@@ -22,6 +22,8 @@ public class labBlockContainer extends Container {
     public static boolean isActive = true;
     public int lastCurrentItemResearchTime;
     public int lastResearchTime;
+    private int lastTimer;
+    private boolean lastIsResearching;
     public labBlockContainer(InventoryPlayer playerInventory, labBlockTileEntity tileEntity) {
         this.labBlock = tileEntity;
         this.addSlotToContainer(new SlotResearchItem(tileEntity, 0, 38, 46));
@@ -100,25 +102,25 @@ public class labBlockContainer extends Container {
         for (int i = 0; i < this.crafters.size(); i++) {
             ICrafting craft = (ICrafting) this.crafters.get(i);
 
-            if (this.lastResearchTime != this.labBlock.researchTime) {
-                craft.sendProgressBarUpdate(this, 0, this.labBlock.researchTime);
+            if (this.lastTimer != this.labBlock.timer) {
+                craft.sendProgressBarUpdate(this, 0, this.labBlock.timer);
             }
-            if (this.lastCurrentItemResearchTime != this.labBlock.currentItemResearchTime) {
-                craft.sendProgressBarUpdate(this, 1, this.labBlock.currentItemResearchTime);
+            if (this.lastIsResearching != this.labBlock.isResearching) {
+                craft.sendProgressBarUpdate(this, 1, this.labBlock.isResearching ? 1 : 0);
             }
         }
 
-        this.lastResearchTime = this.labBlock.researchTime;
-        this.lastCurrentItemResearchTime = this.labBlock.currentItemResearchTime;
+        this.lastTimer = this.labBlock.timer;
+        this.lastIsResearching = this.labBlock.isResearching;
     }
 
     @SideOnly(Side.CLIENT)
     public void updateProgressBar(int id, int value) {
         if (id == 0) {
-            this.labBlock.researchTime = value;
+            this.labBlock.timer = value;
         }
         if (id == 1) {
-            this.labBlock.currentItemResearchTime = value;
+            this.labBlock.isResearching = value == 1;
         }
     }
 
