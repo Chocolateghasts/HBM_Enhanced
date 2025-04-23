@@ -67,129 +67,9 @@ public class EnvoirementRPComponent implements ManagedEnvironment {
         return "unknown_world";
     }
 
-    @Callback(doc = "function(slot:number, teamName:string):table -- Writes RP data to a drive")
-    public Object[] writeRp(Context c, Arguments a) {
-        System.out.println("Starting");
-        try {
-            System.out.println("Trying");
-            if (a.count() < 2) {
-                return new Object[]{"Error: Expected (slot, teamName)"};
-            }
-
-            int slot = a.checkInteger(0);
-            String teamName = a.checkString(1);
-
-            // Get the team's RP data
-            String rpData = getRpValue.getTeamDataAsString(teamName);
-            System.out.println("Debug: Got RP data for team " + teamName); // Debug line
-
-            Drive drive = getDrive();
-            if (drive == null) return new Object[]{false, "No drive found"};
-            System.out.println("Debug: Found drive"); // Debug line
-
-            TileEntity tile = getTileEntity();
-            if (tile == null) return new Object[]{false, "No tile entity"};
-            System.out.println("Debug: Found tile entity"); // Debug line
-
-            if (!(tile instanceof IInventory)) {
-                return new Object[]{false, "Invalid inventory"};
-            }
-
-            IInventory inventory = (IInventory) tile;
-            ItemStack item = inventory.getStackInSlot(slot);
-
-            if (item == null) {
-                return new Object[]{false, "No item in slot " + slot};
-            }
-            System.out.println("Debug: Found item in slot " + slot); // Debug line
-
-            NBTTagCompound nbt = item.getTagCompound();
-            if (nbt == null) {
-                nbt = new NBTTagCompound();
-                item.setTagCompound(nbt);
-            }
-
-            World world = tile.getWorldObj();
-            ISaveHandler saveHandler = world.getSaveHandler();
-            if (saveHandler instanceof SaveHandler) {
-                File worldDirectory = ((SaveHandler) saveHandler).getWorldDirectory();
-                System.out.println("Debug: World directory: " + worldDirectory.getAbsolutePath()); // Debug line
-
-                File rpDirectory = new File(worldDirectory, "hbmenhanced/rpdata");
-                System.out.println("Debug: RP directory: " + rpDirectory.getAbsolutePath()); // Debug line
-
-                if (!rpDirectory.exists()) {
-                    boolean created = rpDirectory.mkdirs();
-                    System.out.println("Debug: Creating directory result: " + created); // Debug line
-                }
-
-                // Write the RP data
-                File rpFile = new File(rpDirectory, "rpdata_" + teamName + ".dat");
-                System.out.println("Debug: Attempting to write to file: " + rpFile.getAbsolutePath()); // Debug line
-
-                try (FileWriter writer = new FileWriter(rpFile)) {
-                    writer.write(rpData);
-                    System.out.println("Debug: Successfully wrote data to file"); // Debug line
-                }
-
-                // Get file size for the Lua gibberish
-                long fileSize = rpFile.length();
-                System.out.println("Debug: File size: " + fileSize); // Debug line
-
-                return new Object[]{true, fileSize};
-            } else {
-                System.out.println("Debug: SaveHandler is not instance of SaveHandler: " + saveHandler.getClass().getName()); // Debug line
-            }
-
-        } catch (Exception e) {
-            System.out.println("Debug: Exception occurred: " + e.getClass().getName()); // Debug line
-            e.printStackTrace();
-            return new Object[]{false, e.getMessage()};
-        }
-        return new Object[]{false, "Unknown error"};
-    }
-
-    @Callback(doc = "function(teamName:string):table -- Reads RP data for a team")
-    public Object[] readRpData(Context c, Arguments a) {
-        try {
-            String teamName = a.checkString(0);
-
-            TileEntity tile = getTileEntity();
-            if (tile == null) return new Object[]{false, "No tile entity"};
-
-            World world = tile.getWorldObj();
-            ISaveHandler saveHandler = world.getSaveHandler();
-            if (!(saveHandler instanceof SaveHandler)) {
-                return new Object[]{false, "Invalid save handler"};
-            }
-
-            File worldDirectory = ((SaveHandler) saveHandler).getWorldDirectory();
-            File rpDirectory = new File(worldDirectory, "hbmenhanced/rpdata");
-            File rpFile = new File(rpDirectory, "rpdata_" + teamName + ".dat");
-
-            if (!rpFile.exists()) {
-                return new Object[]{false, "No data found for team"};
-            }
-
-            // Read the file
-            StringBuilder content = new StringBuilder();
-            try (BufferedReader reader = new BufferedReader(new FileReader(rpFile))) {
-                String line;
-                while ((line = reader.readLine()) != null) {
-                    content.append(line).append("\n");
-                }
-            }
-
-            // Load the data back into getRpValue
-            getRpValue.loadTeamDataFromString(teamName, content.toString());
-
-            // Return the data and file size for Lua
-            return new Object[]{true, content.toString(), rpFile.length()};
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new Object[]{false, e.getMessage()};
-        }
+    @Callback
+    public Object[] getRp(Context c, Arguments a) {
+        return new Object[]{"Placeholder"};
     }
 
 
@@ -385,3 +265,127 @@ public class EnvoirementRPComponent implements ManagedEnvironment {
         }
     }
 }
+//@Callback(doc = "function(slot:number, teamName:string):table -- Writes RP data to a drive")
+//public Object[] writeRp(Context c, Arguments a) {
+//    System.out.println("Starting");
+//    try {
+//        System.out.println("Trying");
+//        if (a.count() < 2) {
+//            return new Object[]{"Error: Expected (slot, teamName)"};
+//        }
+//
+//        int slot = a.checkInteger(0);
+//        String teamName = a.checkString(1);
+//
+//        // Get the team's RP data
+//        String rpData = getRpValue.getTeamDataAsString(teamName);
+//        System.out.println("Debug: Got RP data for team " + teamName); // Debug line
+//
+//        Drive drive = getDrive();
+//        if (drive == null) return new Object[]{false, "No drive found"};
+//        System.out.println("Debug: Found drive"); // Debug line
+//
+//        TileEntity tile = getTileEntity();
+//        if (tile == null) return new Object[]{false, "No tile entity"};
+//        System.out.println("Debug: Found tile entity"); // Debug line
+//
+//        if (!(tile instanceof IInventory)) {
+//            return new Object[]{false, "Invalid inventory"};
+//        }
+//
+//        IInventory inventory = (IInventory) tile;
+//        ItemStack item = inventory.getStackInSlot(slot);
+//
+//        if (item == null) {
+//            return new Object[]{false, "No item in slot " + slot};
+//        }
+//        System.out.println("Debug: Found item in slot " + slot); // Debug line
+//
+//        NBTTagCompound nbt = item.getTagCompound();
+//        if (nbt == null) {
+//            nbt = new NBTTagCompound();
+//            item.setTagCompound(nbt);
+//        }
+//
+//        World world = tile.getWorldObj();
+//        ISaveHandler saveHandler = world.getSaveHandler();
+//        if (saveHandler instanceof SaveHandler) {
+//            File worldDirectory = ((SaveHandler) saveHandler).getWorldDirectory();
+//            System.out.println("Debug: World directory: " + worldDirectory.getAbsolutePath()); // Debug line
+//
+//            File rpDirectory = new File(worldDirectory, "hbmenhanced/rpdata");
+//            System.out.println("Debug: RP directory: " + rpDirectory.getAbsolutePath()); // Debug line
+//
+//            if (!rpDirectory.exists()) {
+//                boolean created = rpDirectory.mkdirs();
+//                System.out.println("Debug: Creating directory result: " + created); // Debug line
+//            }
+//
+//            // Write the RP data
+//            File rpFile = new File(rpDirectory, "rpdata_" + teamName + ".dat");
+//            System.out.println("Debug: Attempting to write to file: " + rpFile.getAbsolutePath()); // Debug line
+//
+//            try (FileWriter writer = new FileWriter(rpFile)) {
+//                writer.write(rpData);
+//                System.out.println("Debug: Successfully wrote data to file"); // Debug line
+//            }
+//
+//            // Get file size for the Lua gibberish
+//            long fileSize = rpFile.length();
+//            System.out.println("Debug: File size: " + fileSize); // Debug line
+//
+//            return new Object[]{true, fileSize};
+//        } else {
+//            System.out.println("Debug: SaveHandler is not instance of SaveHandler: " + saveHandler.getClass().getName()); // Debug line
+//        }
+//
+//    } catch (Exception e) {
+//        System.out.println("Debug: Exception occurred: " + e.getClass().getName()); // Debug line
+//        e.printStackTrace();
+//        return new Object[]{false, e.getMessage()};
+//    }
+//    return new Object[]{false, "Unknown error"};
+//}
+//
+//@Callback(doc = "function(teamName:string):table -- Reads RP data for a team")
+//public Object[] readRpData(Context c, Arguments a) {
+//    try {
+//        String teamName = a.checkString(0);
+//
+//        TileEntity tile = getTileEntity();
+//        if (tile == null) return new Object[]{false, "No tile entity"};
+//
+//        World world = tile.getWorldObj();
+//        ISaveHandler saveHandler = world.getSaveHandler();
+//        if (!(saveHandler instanceof SaveHandler)) {
+//            return new Object[]{false, "Invalid save handler"};
+//        }
+//
+//        File worldDirectory = ((SaveHandler) saveHandler).getWorldDirectory();
+//        File rpDirectory = new File(worldDirectory, "hbmenhanced/rpdata");
+//        File rpFile = new File(rpDirectory, "rpdata_" + teamName + ".dat");
+//
+//        if (!rpFile.exists()) {
+//            return new Object[]{false, "No data found for team"};
+//        }
+//
+//        // Read the file
+//        StringBuilder content = new StringBuilder();
+//        try (BufferedReader reader = new BufferedReader(new FileReader(rpFile))) {
+//            String line;
+//            while ((line = reader.readLine()) != null) {
+//                content.append(line).append("\n");
+//            }
+//        }
+//
+//        // Load the data back into getRpValue
+//        getRpValue.loadTeamDataFromString(teamName, content.toString());
+//
+//        // Return the data and file size for Lua
+//        return new Object[]{true, content.toString(), rpFile.length()};
+//
+//    } catch (Exception e) {
+//        e.printStackTrace();
+//        return new Object[]{false, e.getMessage()};
+//    }
+//}
