@@ -93,6 +93,7 @@ public class hbmenhanced
         event.registerServerCommand(new RPCommand());
         event.registerServerCommand(new showRPCommand());
         event.registerServerCommand(new TeamCommand());
+        getRpValue.setServer(event.getServer());
 
         Timer timer = new Timer(true);
         timer.scheduleAtFixedRate(new TimerTask() {

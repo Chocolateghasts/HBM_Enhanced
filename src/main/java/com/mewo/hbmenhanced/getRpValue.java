@@ -3,19 +3,27 @@ package com.mewo.hbmenhanced;
 import li.cil.repack.org.luaj.vm2.ast.Str;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.StatCollector;
+import net.minecraft.world.storage.ISaveHandler;
+import com.mewo.hbmenhanced.containers.labBlockTileEntity;
+import net.minecraft.world.storage.SaveHandler;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
+import java.io.*;
 import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
 
 public class getRpValue {
+    private static final Log log = LogFactory.getLog(getRpValue.class);
     private static HashMap<String, EnumMap<researchType, Integer>> rpValues = new HashMap<>();
     private static HashMap<String, EnumMap<researchType, Integer>> teamRpValues = new HashMap<>();
     public static HashMap<String, EnumMap<researchType, Integer>> getRpMap() {
         return rpValues;
     }
-
+    public static MinecraftServer minecraftServer;
     public static HashMap<String, EnumMap<researchType, Integer>> getTeamRpMap() {
         return teamRpValues;
     }
@@ -365,8 +373,76 @@ public class getRpValue {
         return rpValues.getOrDefault(itemName, new EnumMap<>(researchType.class)).getOrDefault(type, 0);
     }
 
+    public static void setServer(MinecraftServer server) {
+        minecraftServer = server;
+    }
+    
+    public static void saveRp(String team) {
+        try {
+            
+            ISaveHandler saveHandler = minecraftServer.getEntityWorld().getSaveHandler();
+            File worldDir = saveHandler.getWorldDirectory();
+            File rpDir = new File(worldDir, "hbmenhanced");
+            if (!rpDir.exists()) {
+                rpDir.mkdirs();
+            }
+
+            File teamFile = new File(rpDir, team + ".dat");
+            if (!teamFile.exists()) {
+                teamFile.createNewFile();
+            }
+            FileWriter writer = new FileWriter(teamFile);
+            EnumMap<researchType, Integer> teamData = teamRpValues.get(team);
+            if (teamData != null) {
+                for (Map.Entry<researchType, Integer> entry : teamData.entrySet()) {
+                    writer.write(entry.getKey().name() + "=" + entry.getValue() + "\n");
+                    System.out.println(entry.getKey().name() + "=" + entry.getValue());
+                }
+            }
+            writer.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    public static EnumMap<researchType, Integer> loadRp(String team) {
+        EnumMap<researchType, Integer> teamData = new EnumMap<>(researchType.class);
+        try {
+            ISaveHandler handler = minecraftServer.getEntityWorld().getSaveHandler();
+            File worldDir = handler.getWorldDirectory();
+            File rpDir = new File(worldDir, "hbmenhanced");
+            File teamFile = new File(rpDir, team + ".dat");
+            if (teamFile.exists()) {
+                try (BufferedReader reader = new BufferedReader(new FileReader(teamFile))) {
+                    String line;
+                    while ((line = reader.readLine()) != null) {
+                        String[] parts = line.split("=");
+                        if (parts.length == 2) {
+                            try {
+                                researchType type = researchType.valueOf(parts[0].trim());
+                                int points = Integer.parseInt(parts[1].trim());
+                                teamData.put(type, points);
+                            } catch (IllegalArgumentException e) {
+                                System.out.println("Error parsing line: " + line);
+                            }
+                        }
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                // Store loaded data in memory
+                if (!teamData.isEmpty()) {
+                    teamRpValues.put(team, teamData);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return teamData;
+    }
+
     public static void addResearchPoints(String teamName, researchType type, int points) {
         teamRpValues.putIfAbsent(teamName, new EnumMap<>(researchType.class));
         teamRpValues.get(teamName).merge(type, points, Integer::sum);
+        saveRp(teamName);
     }
 }

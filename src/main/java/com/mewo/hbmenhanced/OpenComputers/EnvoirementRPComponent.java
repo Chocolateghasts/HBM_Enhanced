@@ -37,7 +37,7 @@ public class EnvoirementRPComponent implements ManagedEnvironment {
         node = li.cil.oc.api.Network.newNode(this, Visibility.Neighbors)
                 .withComponent("RPComponent", Visibility.Neighbors)
                 .create();
-        System.out.println("RPCOMPONENT registered");
+        //System.out.println("RPCOMPONENT registered");
     }
 
     private TileEntity getTileEntity() {
@@ -59,35 +59,117 @@ public class EnvoirementRPComponent implements ManagedEnvironment {
         }
         return null;
     }
+    private ItemStack getDriveItem(Drive drive, int slot) {
 
-    public String getWorldName(World world) {
-        if (world.isRemote) {
-            return Minecraft.getMinecraft().getIntegratedServer().getWorldName();
+        ItemStack stack = driveItemMap.get(drive);
+        if (stack != null) {
+            //System.out.println("getDriveItem: Found drive in map");
+            return stack;
         }
-        return "unknown_world";
+
+        // If not in map, check inventory
+        TileEntity tile = getTileEntity();
+        if (!(tile instanceof IInventory)) {
+            //System.out.println("getDriveItem: Tile entity is not an inventory");
+            return null;
+        }
+
+        IInventory inventory = (IInventory) tile;
+        //System.out.println("getDriveItem: Searching inventory of size " + inventory.getSizeInventory());
+
+        for (int i = 0; i < inventory.getSizeInventory(); i++) {
+            ItemStack itemStack = inventory.getStackInSlot(i);
+            if (itemStack != null) {
+
+                int variant = itemStack.getItemDamage();
+                if (variant == 7 && slot == i) {
+                    return itemStack;
+                }
+            }
+        }
+
+        //System.out.println("getDriveItem: No drive item found in inventory");
+        return null;
+    }
+    public void changeLocked(String team, int slot) {
+        Drive drive = getDrive();
+        ItemStack driveItem = getDriveItem(drive, slot);
+        System.out.println(driveItem);
+        NBTTagCompound nbt = driveItem.getTagCompound();
+        String isLocked = nbt.getString("oc:lock");
+
+
+        if (isLocked.isEmpty()) {
+            System.out.println("Lock string is empty, locking with team: " + nbt.getString("hbmenhanced:team"));
+            nbt.setString("oc:lock", nbt.getString("hbmenhanced:team"));
+        } else if (isLocked.equals(team)) {
+            System.out.println("Lock string matches team, unlocking");
+            nbt.setString("oc:lock", "");
+            nbt.setString("hbmenhanced:team", team);
+        } else {
+            System.out.println("No action taken - lock string not empty and doesn't match team");
+        }
     }
 
-    @Callback
+    @Callback(doc = "function(teamName:string):table -- Returns the RP data for the specified team")
     public Object[] getRp(Context c, Arguments a) {
         try {
-            Drive drive = getDrive();
-            String team = a.checkString(0);
-            Map<getRpValue.researchType, Integer> teamData = getRpValue.getTeamRpMap().get(team);
-            if (teamData == null) {
-                return new Object[]{false, "No RP data found for team " + team};
+            if (a.count() < 1) {
+                return new Object[]{"Error: Expected (teamName)"};
             }
+
+            String team = a.checkString(0).trim();
+            changeLocked(team, 6);
+
+            // Get the team's RP data from the teamRpValues map
+            HashMap<String, EnumMap<getRpValue.researchType, Integer>> allTeamData = getRpValue.getTeamRpMap();
+            System.out.println("All team data: " + allTeamData); // Debug print
+            System.out.println("Looking for team: '" + team + "'"); // Debug print with quotes to show whitespace
+
+            System.out.println("Available teams:");
+            for (String teamName : allTeamData.keySet()) {
+                System.out.println("'" + teamName + "'");
+            }
+
+            EnumMap<getRpValue.researchType, Integer> teamData = null;
+            teamData = allTeamData.get(team);
+
+            if (teamData == null) {
+                for (Map.Entry<String, EnumMap<getRpValue.researchType, Integer>> entry : allTeamData.entrySet()) {
+                    if (entry.getKey().equalsIgnoreCase(team)) {
+                        teamData = entry.getValue();
+                        team = entry.getKey();
+                        System.out.println("Found case-insensitive match: " + entry.getKey());
+                        break;
+                    }
+                }
+            }
+
+            System.out.println("Team '" + team + "' data: " + teamData);
+
+            if (teamData == null || teamData.isEmpty()) {
+                System.out.println("No data found for team: '" + team + "'");
+                teamData = getRpValue.loadRp(team);
+                if (teamData == null) {
+                    teamData = new EnumMap<>(getRpValue.researchType.class);
+                    for (getRpValue.researchType type : getRpValue.researchType.values()) {
+                        teamData.put(type, 0);
+                    }
+                }
+            }
+
             Map<String, Integer> luaMap = new HashMap<>();
             for (Map.Entry<getRpValue.researchType, Integer> entry : teamData.entrySet()) {
                 luaMap.put(entry.getKey().name(), entry.getValue());
+                System.out.println("Adding to Lua map: " + entry.getKey().name() + " = " + entry.getValue()); // Debug print
             }
+
             return new Object[]{true, luaMap};
-        }catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
             return new Object[]{false, "Error: " + e.getMessage()};
         }
     }
-
-
 
     @Callback(doc = "function(slot:number):string -- Checks if a drive in the specified slot is valid for initialization")
     public Object[] checkDrive(Context context, Arguments args) {

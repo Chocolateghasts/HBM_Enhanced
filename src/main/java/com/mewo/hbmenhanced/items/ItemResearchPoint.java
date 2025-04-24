@@ -60,7 +60,6 @@ public class ItemResearchPoint extends Item {
                     getRpValue.addResearchPoints(team, type, points);
                     HashMap<String, EnumMap<getRpValue.researchType, Integer>> teamValues = getRpValue.getTeamRpMap();
                     System.out.println(teamValues);
-
                 }
             }
         }

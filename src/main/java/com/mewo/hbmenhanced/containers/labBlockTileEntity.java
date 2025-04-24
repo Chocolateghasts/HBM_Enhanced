@@ -12,6 +12,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.World;
 /*
 local component = require("component")
 local rp = component.RPComponent
@@ -46,6 +47,8 @@ public class labBlockTileEntity extends TileEntity implements ISidedInventory {
     public int timer = 0;
 
     private List<ItemStack> researchItems = new ArrayList<>();
+
+
 
     public void loadResearchItems() {
         try {
