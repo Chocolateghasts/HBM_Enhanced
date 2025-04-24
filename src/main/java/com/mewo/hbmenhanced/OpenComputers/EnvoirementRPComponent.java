@@ -69,7 +69,22 @@ public class EnvoirementRPComponent implements ManagedEnvironment {
 
     @Callback
     public Object[] getRp(Context c, Arguments a) {
-        return new Object[]{"Placeholder"};
+        try {
+            Drive drive = getDrive();
+            String team = a.checkString(0);
+            Map<getRpValue.researchType, Integer> teamData = getRpValue.getTeamRpMap().get(team);
+            if (teamData == null) {
+                return new Object[]{false, "No RP data found for team " + team};
+            }
+            Map<String, Integer> luaMap = new HashMap<>();
+            for (Map.Entry<getRpValue.researchType, Integer> entry : teamData.entrySet()) {
+                luaMap.put(entry.getKey().name(), entry.getValue());
+            }
+            return new Object[]{true, luaMap};
+        }catch (Exception e) {
+            e.printStackTrace();
+            return new Object[]{false, "Error: " + e.getMessage()};
+        }
     }
 
 
@@ -159,7 +174,7 @@ public class EnvoirementRPComponent implements ManagedEnvironment {
 
             byte unmanaged = nbt.getByte("oc:unmanaged");
             if (item.getItem().getClass().getName().contains("li.cil.oc") && item.getItemDamage() == 7 && unmanaged == 1) {
-                if (nbt.hasKey("oc:data") || nbt.hasKey("hbmenhanced:rpdrive")) {
+                if (nbt.hasKey("hbmenhanced:rpdrive")) {
                     return new Object[]{"Drive already initialized"};
                 }
 
