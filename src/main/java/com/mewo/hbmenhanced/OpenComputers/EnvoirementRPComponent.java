@@ -277,6 +277,18 @@ public class EnvoirementRPComponent implements ManagedEnvironment {
     }
 
     @Callback
+    public Object[] getNodes(Context c, Arguments a) {
+        ResearchTree tree = new ResearchTree(getRpValue.getServer());
+        List<String> nodeIds = new ArrayList<>();
+
+        for (ResearchNode node : tree.getNodes()) {
+            nodeIds.add(node.id);  // Use only the node ID or any other relevant info
+        }
+
+        return new Object[] {nodeIds};  // Return a Lua-friendly list of IDs
+    }
+
+    @Callback
     public Object[] getNode(Context c, Arguments a) {
         String id = a.checkString(0);
         ResearchTree tree = new ResearchTree(getServer());
