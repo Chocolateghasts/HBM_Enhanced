@@ -376,6 +376,9 @@ public class getRpValue {
     public static void setServer(MinecraftServer server) {
         minecraftServer = server;
     }
+    public static MinecraftServer getServer() {
+        return minecraftServer;
+    }
     
     public static void saveRp(String team) {
         try {

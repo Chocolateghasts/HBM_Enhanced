@@ -2,6 +2,7 @@ package com.mewo.hbmenhanced;
 
 //import com.mewo.hbmenhanced.OpenComputers.RPComponentProvider;
 import com.mewo.hbmenhanced.Gui.labBlockGuiHandler;
+import com.mewo.hbmenhanced.OpenComputers.ResearchTree;
 import com.mewo.hbmenhanced.blocks.LabBlock;
 import com.mewo.hbmenhanced.commands.RPCommand;
 import com.mewo.hbmenhanced.commands.TeamCommand;
@@ -63,7 +64,6 @@ public class hbmenhanced
     @EventHandler
     public void init(FMLInitializationEvent event)
     {
-
         Driver.add(new com.mewo.hbmenhanced.OpenComputers.RPComponent());
 		// some example code
         System.out.println("DIRT BLOCK >> "+Blocks.dirt.getUnlocalizedName());
@@ -89,7 +89,9 @@ public class hbmenhanced
 
     @EventHandler
     public void serverStarting(FMLServerStartingEvent event) {
-        // Register your custom command
+        ResearchTree tree = new ResearchTree(event.getServer());
+        tree.getNodes();
+
         event.registerServerCommand(new RPCommand());
         event.registerServerCommand(new showRPCommand());
         event.registerServerCommand(new TeamCommand());

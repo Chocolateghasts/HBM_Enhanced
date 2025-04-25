@@ -27,6 +27,7 @@ import java.nio.file.Paths;
 import java.util.*;
 
 import static com.mewo.hbmenhanced.getRpValue.getRpMap;
+import static com.mewo.hbmenhanced.getRpValue.getServer;
 
 public class EnvoirementRPComponent implements ManagedEnvironment {
     private static final Map<Drive, ItemStack> driveItemMap = new HashMap<>();
@@ -43,7 +44,6 @@ public class EnvoirementRPComponent implements ManagedEnvironment {
     private TileEntity getTileEntity() {
         Drive drive = getDrive();
         if (drive == null) return null;
-
         try {
             java.lang.reflect.Field hostField = drive.getClass().getDeclaredField("host");
             hostField.setAccessible(true);
@@ -276,6 +276,28 @@ public class EnvoirementRPComponent implements ManagedEnvironment {
         }
     }
 
+    @Callback
+    public Object[] getNode(Context c, Arguments a) {
+        String id = a.checkString(0);
+        ResearchTree tree = new ResearchTree(getServer());
+        ResearchNode researchNode = tree.getNode(id);
+        Map<String, Object> luaNode = new HashMap<>();
+        luaNode.put("name", researchNode.name);
+        luaNode.put("id", researchNode.id);
+        luaNode.put("category", researchNode.category);
+        luaNode.put("description", researchNode.description);
+        luaNode.put("level", researchNode.level);
+        luaNode.put("unlocked", researchNode.unlocked);
+        luaNode.put("dependencies", researchNode.dependencies);
+        Map<String, Integer> luaReqs = new HashMap<>();
+        for (Map.Entry<getRpValue.researchType, Integer> entry : researchNode.requirements.entrySet()) {
+            luaReqs.put(entry.getKey().name(), entry.getValue());
+        }
+        luaNode.put("requirements", luaReqs);
+        luaNode.put("templateId", researchNode.templateId);
+        return new Object[]{luaNode};
+    }
+
     private Drive getDrive() {
         for (Node connectedNode : node.network().nodes()) {
             if (connectedNode.host() instanceof Drive) {
@@ -285,14 +307,14 @@ public class EnvoirementRPComponent implements ManagedEnvironment {
         return null;
     }
 
-    private FileSystem getFileSystem() {
-        for (Node connectedNode : node.network().nodes()) {
-            if (connectedNode.host() instanceof FileSystem) {
-                return (FileSystem) connectedNode.host();
-            }
-        }
-        return null;
-    }
+//    private FileSystem getFileSystem() {
+//        for (Node connectedNode : node.network().nodes()) {
+//            if (connectedNode.host() instanceof FileSystem) {
+//                return (FileSystem) connectedNode.host();
+//            }
+//        }
+//        return null;
+//    }
 
     @Override
     public boolean canUpdate() {
