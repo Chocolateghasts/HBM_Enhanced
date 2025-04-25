@@ -2,6 +2,7 @@ package com.mewo.hbmenhanced;
 
 //import com.mewo.hbmenhanced.OpenComputers.RPComponentProvider;
 import com.mewo.hbmenhanced.Gui.labBlockGuiHandler;
+import com.mewo.hbmenhanced.OpenComputers.ResearchNode;
 import com.mewo.hbmenhanced.OpenComputers.ResearchTree;
 import com.mewo.hbmenhanced.blocks.LabBlock;
 import com.mewo.hbmenhanced.commands.RPCommand;
@@ -28,6 +29,8 @@ import net.minecraft.item.ItemStack;
 
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -91,7 +94,9 @@ public class hbmenhanced
     public void serverStarting(FMLServerStartingEvent event) {
         ResearchTree tree = new ResearchTree(event.getServer());
         tree.getNodes();
-
+        Map<String, Boolean> testmap = new HashMap<>();
+        testmap.put("test", true);
+        tree.editNode("node_1", null, null, null, null, null, null, null, null, testmap);
         event.registerServerCommand(new RPCommand());
         event.registerServerCommand(new showRPCommand());
         event.registerServerCommand(new TeamCommand());

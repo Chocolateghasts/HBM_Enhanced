@@ -91,7 +91,8 @@ public class ResearchTree {
             String category,
             Integer templateId,
             List<String> dependencies,
-            Map<getRpValue.researchType, Integer> requirements
+            Map<getRpValue.researchType, Integer> requirements,
+            Map<String, Boolean> teamUnlocked  // Add this parameter
     ) {
         getNodes();
 
@@ -107,10 +108,13 @@ public class ResearchTree {
                     node.dependencies.clear();
                     node.dependencies.addAll(dependencies);
                 }
-
                 if (requirements != null) {
                     node.requirements.clear();
                     node.requirements.putAll(requirements);
+                }
+                if (teamUnlocked != null) {  // Add this block
+                    node.teamUnlocked.clear();
+                    node.teamUnlocked.putAll(teamUnlocked);
                 }
                 System.out.println("Edited node");
                 saveNodes(nodeList);

@@ -276,16 +276,34 @@ public class EnvoirementRPComponent implements ManagedEnvironment {
         }
     }
 
-    @Callback
+    @Callback(doc = "function():table -- Returns all research nodes")
     public Object[] getNodes(Context c, Arguments a) {
-        ResearchTree tree = new ResearchTree(getRpValue.getServer());
-        List<String> nodeIds = new ArrayList<>();
+        ResearchTree tree = new ResearchTree(getServer());
+        List<ResearchNode> nodes = tree.getNodes();
 
-        for (ResearchNode node : tree.getNodes()) {
-            nodeIds.add(node.id);  // Use only the node ID or any other relevant info
+        List<Map<String, Object>> luaNodes = new ArrayList<>();
+
+        for (ResearchNode node : nodes) {
+            Map<String, Object> luaNode = new HashMap<>();
+            luaNode.put("name", node.name);
+            luaNode.put("id", node.id);
+            luaNode.put("category", node.category);
+            luaNode.put("description", node.description);
+            luaNode.put("level", node.level);
+            luaNode.put("unlocked", node.unlocked);
+            luaNode.put("dependencies", node.dependencies);
+
+            Map<String, Integer> luaReqs = new HashMap<>();
+            for (Map.Entry<getRpValue.researchType, Integer> entry : node.requirements.entrySet()) {
+                luaReqs.put(entry.getKey().name(), entry.getValue());
+            }
+            luaNode.put("requirements", luaReqs);
+            luaNode.put("templateId", node.templateId);
+
+            luaNodes.add(luaNode);
         }
 
-        return new Object[] {nodeIds};  // Return a Lua-friendly list of IDs
+        return new Object[]{luaNodes};
     }
 
     @Callback
@@ -305,6 +323,7 @@ public class EnvoirementRPComponent implements ManagedEnvironment {
         for (Map.Entry<getRpValue.researchType, Integer> entry : researchNode.requirements.entrySet()) {
             luaReqs.put(entry.getKey().name(), entry.getValue());
         }
+        luaNode.put("teamUnlocked", researchNode.teamUnlocked);
         luaNode.put("requirements", luaReqs);
         luaNode.put("templateId", researchNode.templateId);
         return new Object[]{luaNode};

@@ -15,12 +15,14 @@ public class ResearchNode {
     protected List<String> dependencies;
     protected HashMap<getRpValue.researchType, Integer> requirements;
     protected int templateId;
+    protected Map<String, Boolean> teamUnlocked;
 
     public ResearchNode() {
         this.dependencies = new ArrayList<>();
         this.requirements = new HashMap<>();
         this.unlocked = false;
         this.level = 0;
+        this.teamUnlocked = new HashMap<>();
     }
 
 
@@ -37,6 +39,14 @@ public class ResearchNode {
             requirements.put(type, points);
         } else if (!add) {
             requirements.remove(type);
+        }
+    }
+    public Boolean getUnlocked(String ownerId) {
+        return teamUnlocked.getOrDefault(ownerId, false);  // Default to false if the owner is not in the map
+    }
+    public void unlock(String ownerId) {
+        if (!teamUnlocked.containsKey(ownerId)) {
+            teamUnlocked.put(ownerId, true);
         }
     }
 
