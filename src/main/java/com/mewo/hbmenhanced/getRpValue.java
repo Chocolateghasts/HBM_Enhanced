@@ -429,6 +429,7 @@ public class getRpValue {
                             }
                         }
                     }
+                    teamRpValues.put(team, teamData);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -444,8 +445,9 @@ public class getRpValue {
     }
 
     public static void addResearchPoints(String teamName, researchType type, int points) {
-        teamRpValues.putIfAbsent(teamName, new EnumMap<>(researchType.class));
-        teamRpValues.get(teamName).merge(type, points, Integer::sum);
+        EnumMap<researchType, Integer> teamData = loadRp(teamName);
+        teamRpValues.put(teamName, teamData);
+        teamData.merge(type, points, Integer::sum);
         saveRp(teamName);
     }
 }

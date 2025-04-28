@@ -1,0 +1,65 @@
+local term = require("term")
+local component = require("component")
+local rpComponent = component.RPComponent
+local function trim(s)
+    return s:match("^%s*(.-)%s*$")
+end
+local function Hub()
+print("-------Rp Hub-------")
+print("   1:  Manage Drive ")
+print("   2:  Research     ")
+
+local option = trim(term.read())
+
+if option == "1" then
+    term.clear()
+    print("------Drive Hub------")
+    print("   1:  Initialize    ")
+    print("   2:  Check drive   ")
+    print("   3:  Check Rp      ")
+    option = trim(term.read())
+    if option == "1" then
+        term.clear()
+        print("Enter Team")
+        local team = trim(term.read())
+        print("Enter Drive Slot")
+        local slot = trim(term.read())
+        local succes = rpComponent.initializeRpDrive(tonumber(slot), team)
+        print(succes)
+    elseif option == "2" then
+        term.clear()
+        print("Enter Slot")
+        local slot = trim(term.read())
+        local succes = rpComponent.checkDrive(tonumber(slot))
+        print(succes)
+    elseif option == "3" then
+        term.clear()
+        print("Enter Team")
+        local team = trim(term.read())
+        local success, data = rpComponent.getRp(team)
+        if success then
+            for researchType, points in pairs(data) do
+                print(researchType .. ": " .. points)
+            end
+        else
+            print("Error: " .. data)
+        end
+        print("Enter X to exit")
+        local exit = trim(term.read())
+        if string.lower(exit) == "x" then
+            term.clear()
+            Hub()
+        end
+
+    end
+elseif option == "2" then
+    term.clear()
+    --local address = next(component.list("drive"))
+    --local drive = component.proxy(address)
+    os.execute("/home/rpProgram/research")
+else
+    print("Invalid Option")
+end
+end
+Hub()
+

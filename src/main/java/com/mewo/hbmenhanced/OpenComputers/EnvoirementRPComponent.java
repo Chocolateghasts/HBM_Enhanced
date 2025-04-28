@@ -20,6 +20,8 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraft.world.storage.ISaveHandler;
 import net.minecraft.world.storage.SaveHandler;
+import scala.util.control.TailCalls;
+
 import java.io.*;
 import java.lang.reflect.InvocationTargetException;
 import java.nio.file.Files;
@@ -28,6 +30,7 @@ import java.util.*;
 
 import static com.mewo.hbmenhanced.getRpValue.getRpMap;
 import static com.mewo.hbmenhanced.getRpValue.getServer;
+import static java.lang.Math.round;
 
 public class EnvoirementRPComponent implements ManagedEnvironment {
     private static final Map<Drive, ItemStack> driveItemMap = new HashMap<>();
@@ -121,53 +124,52 @@ public class EnvoirementRPComponent implements ManagedEnvironment {
             String team = a.checkString(0).trim();
             changeLocked(team, 6);
 
-            // Get the team's RP data from the teamRpValues map
-            HashMap<String, EnumMap<getRpValue.researchType, Integer>> allTeamData = getRpValue.getTeamRpMap();
-            System.out.println("All team data: " + allTeamData); // Debug print
-            System.out.println("Looking for team: '" + team + "'"); // Debug print with quotes to show whitespace
-
-            System.out.println("Available teams:");
-            for (String teamName : allTeamData.keySet()) {
-                System.out.println("'" + teamName + "'");
-            }
-
-            EnumMap<getRpValue.researchType, Integer> teamData = null;
-            teamData = allTeamData.get(team);
-
-            if (teamData == null) {
-                for (Map.Entry<String, EnumMap<getRpValue.researchType, Integer>> entry : allTeamData.entrySet()) {
-                    if (entry.getKey().equalsIgnoreCase(team)) {
-                        teamData = entry.getValue();
-                        team = entry.getKey();
-                        System.out.println("Found case-insensitive match: " + entry.getKey());
-                        break;
-                    }
-                }
-            }
-
-            System.out.println("Team '" + team + "' data: " + teamData);
+            // Explicitly reload the team's data from the .dat file
+            EnumMap<getRpValue.researchType, Integer> teamData = getRpValue.loadRp(team);
 
             if (teamData == null || teamData.isEmpty()) {
-                System.out.println("No data found for team: '" + team + "'");
-                teamData = getRpValue.loadRp(team);
-                if (teamData == null) {
-                    teamData = new EnumMap<>(getRpValue.researchType.class);
-                    for (getRpValue.researchType type : getRpValue.researchType.values()) {
-                        teamData.put(type, 0);
-                    }
+                // If no data is found, create a default data structure
+                teamData = new EnumMap<>(getRpValue.researchType.class);
+                for (getRpValue.researchType type : getRpValue.researchType.values()) {
+                    teamData.put(type, 0);
                 }
             }
 
             Map<String, Integer> luaMap = new HashMap<>();
             for (Map.Entry<getRpValue.researchType, Integer> entry : teamData.entrySet()) {
                 luaMap.put(entry.getKey().name(), entry.getValue());
-                System.out.println("Adding to Lua map: " + entry.getKey().name() + " = " + entry.getValue()); // Debug print
             }
 
             return new Object[]{true, luaMap};
         } catch (Exception e) {
             e.printStackTrace();
             return new Object[]{false, "Error: " + e.getMessage()};
+        }
+    }
+
+    @Callback
+    public Object[] setRp(Context c, Arguments a) {
+        try {
+            if (a.count() < 2){
+                return new Object[]{"Invalid Arguments"};
+            }
+            String team = a.checkString(0);
+            Map<String, Double> rpMap = a.checkTable(1);
+
+            System.out.println("Current team RP before changes: " + getRpValue.getTeamRpMap().get(team));
+
+            for (Map.Entry<String, Double> entry : rpMap.entrySet()) {
+                System.out.println("Adding for type " + entry.getKey() + ": " + entry.getValue()); // Debug print
+                getRpValue.addResearchPoints(team,
+                        getRpValue.researchType.valueOf(entry.getKey()),
+                        (int) Math.round(entry.getValue())
+                );
+                System.out.println("Current values after add: " + getRpValue.getTeamRpMap().get(team)); // Debug print
+            }
+            return new Object[]{"Success"};
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new Object[]{"Error: " + e.getMessage()};
         }
     }
 
@@ -304,6 +306,77 @@ public class EnvoirementRPComponent implements ManagedEnvironment {
         }
 
         return new Object[]{luaNodes};
+    }
+
+    @Callback(doc = "function(nodes:table):boolean, string -- Saves all nodes with their current states and properties")
+    public Object[] saveNodes(Context c, Arguments a) {
+        try {
+            Map<String, Object> nodes = a.checkTable(0);
+            ResearchTree tree = new ResearchTree(getRpValue.getServer());
+            int savedCount = 0;
+
+            for (Map.Entry<String, Object> entry : nodes.entrySet()) {
+                if (!(entry.getValue() instanceof Map)) continue;
+
+                ResearchNode node = tree.getNode(entry.getKey());
+                if (node == null) continue;
+
+                Map<String, Object> data = (Map<String, Object>) entry.getValue();
+                updateNodeFromData(node, data);
+                tree.editNode(
+                        node.id,
+                        node.name,
+                        node.description,
+                        node.level,
+                        node.unlocked,
+                        node.category,
+                        node.templateId,
+                        node.dependencies,
+                        node.requirements,
+                        node.teamUnlocked
+                );
+                savedCount++;
+            }
+
+            return new Object[]{true, savedCount + " nodes saved"};
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new Object[]{false, "Error: " + e.getMessage()};
+        }
+    }
+
+    private void updateNodeFromData(ResearchNode node, Map<String, Object> data) {
+        // Simple properties
+        if (data.containsKey("name")) node.name = String.valueOf(data.get("name"));
+        if (data.containsKey("category")) node.category = String.valueOf(data.get("category"));
+        if (data.containsKey("description")) node.description = String.valueOf(data.get("description"));
+        if (data.containsKey("level")) node.level = ((Number) data.get("level")).intValue();
+        if (data.containsKey("unlocked")) node.unlocked = (Boolean) data.get("unlocked");
+        if (data.containsKey("templateId")) node.templateId = ((Number) data.get("templateId")).intValue();
+
+        // Collections
+        if (data.containsKey("dependencies") && data.get("dependencies") instanceof Map) {
+            node.dependencies.clear();
+            ((Map<?, ?>) data.get("dependencies")).values()
+                    .forEach(v -> node.dependencies.add(String.valueOf(v)));
+        }
+
+        if (data.containsKey("requirements") && data.get("requirements") instanceof Map) {
+            node.requirements.clear();
+            ((Map<?, ?>) data.get("requirements")).forEach((k, v) ->
+                    node.requirements.put(
+                            getRpValue.researchType.valueOf(String.valueOf(k)),
+                            v instanceof Number ? ((Number) v).intValue() : 0
+                    )
+            );
+        }
+
+        if (data.containsKey("teamUnlocked") && data.get("teamUnlocked") instanceof Map) {
+            node.teamUnlocked.clear();
+            ((Map<?, ?>) data.get("teamUnlocked")).forEach((k, v) ->
+                    node.teamUnlocked.put(String.valueOf(k), Boolean.TRUE.equals(v))
+            );
+        }
     }
 
     @Callback
