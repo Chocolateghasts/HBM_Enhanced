@@ -40,7 +40,13 @@ public class LabBlock extends Block {
     @SideOnly(Side.CLIENT)
     private IIcon iconBottom;
     @SideOnly(Side.CLIENT)
+    private IIcon iconWest;
+    @SideOnly(Side.CLIENT)
     private IIcon icontop2;
+//    @SideOnly(Side.CLIENT)
+//    @SideOnly(Side.CLIENT)
+//    @SideOnly(Side.CLIENT)
+
     private static int frame;
     private Timer timer;
     private World world;
@@ -109,12 +115,12 @@ public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase e
     }
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(IIconRegister register) {
-        this.blockIcon = register.registerIcon(hbmenhanced.MODID + ":" + "labBlock_sides");
-        this.iconFront = register.registerIcon(hbmenhanced.MODID + ":" + "labBlock_back");
-        this.iconBack = register.registerIcon(hbmenhanced.MODID + ":" + "labBlock_back");
-        this.iconTop = register.registerIcon(hbmenhanced.MODID + ":" + "labBlock_top_animated");
-        this.iconBottom = register.registerIcon(hbmenhanced.MODID + ":" + "labBlock_bottom");
-        this.icontop2 = register.registerIcon(hbmenhanced.MODID + ":" + "labBlock_top_animated-1");
+        this.blockIcon = register.registerIcon(hbmenhanced.MODID + ":" + "sideb");
+        this.iconFront = register.registerIcon(hbmenhanced.MODID + ":" + "sideb");
+        this.iconBack = register.registerIcon(hbmenhanced.MODID + ":" + "back");
+        this.iconTop = register.registerIcon(hbmenhanced.MODID + ":" + "top");
+        this.iconBottom = register.registerIcon(hbmenhanced.MODID + ":" + "bottom");
+        this.iconWest = register.registerIcon(hbmenhanced.MODID + ":" + "sidea");
     }
     @SideOnly(Side.CLIENT)
     public IIcon getIcon(int side, int metadata) {
@@ -131,13 +137,13 @@ public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase e
             case 1: // Top
                 return this.iconTop;
             case 2: // North
-                return metadata == 2 ? this.iconFront : this.iconBack;
+                return this.iconFront;
             case 3: // South
-                return metadata == 3 ? this.iconFront : this.iconBack;
+                return this.iconBack;
             case 4: // West
-                return metadata == 4 ? this.iconFront : this.iconBack;
+                return this.iconWest;
             case 5: // East
-                return metadata == 5 ? this.iconFront : this.iconBack;
+                return this.iconWest;
             default:
                 return this.blockIcon;
         }
