@@ -1,5 +1,13 @@
 package com.mewo.hbmenhanced.OpenComputers;
 
+import com.hbm.blocks.generic.BlockDirt;
+import com.hbm.inventory.RecipesCommon.ComparableStack;
+import com.hbm.inventory.recipes.ChemplantRecipes;
+import com.hbm.inventory.recipes.CrucibleRecipes;
+import com.hbm.items.ModItems;
+import com.hbm.items.machine.ItemAssemblyTemplate;
+import com.hbm.items.machine.ItemChemistryTemplate;
+import com.hbm.items.machine.ItemCrucibleTemplate;
 import com.mewo.hbmenhanced.getRpValue;
 import li.cil.oc.api.machine.Arguments;
 import li.cil.oc.api.machine.Callback;
@@ -11,17 +19,20 @@ import li.cil.oc.api.network.Visibility;
 import li.cil.oc.server.component.Drive;
 import li.cil.oc.server.component.FileSystem;
 import net.minecraft.client.Minecraft;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.management.ServerConfigurationManager;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraft.world.storage.ISaveHandler;
 import net.minecraft.world.storage.SaveHandler;
 import scala.util.control.TailCalls;
-
+import com.hbm.inventory.recipes.AssemblerRecipes;
 import java.io.*;
 import java.lang.reflect.InvocationTargetException;
 import java.nio.file.Files;
@@ -112,6 +123,87 @@ public class EnvoirementRPComponent implements ManagedEnvironment {
         } else {
             System.out.println("No action taken - lock string not empty and doesn't match team");
         }
+    }
+
+    @Callback
+    public Object[] giveTemplate(Context c, Arguments a) {
+        try {
+            System.out.println("[DEBUG] Method entered");
+
+            String id = a.checkString(0);
+            String playerName = a.checkString(1);
+
+            System.out.println("[DEBUG] id = " + id + ", playerName = " + playerName);
+
+            ResearchTree tree = new ResearchTree(getRpValue.getServer());
+            ResearchNode nodeToGive = tree.getNode(id);
+
+            if (nodeToGive == null) {
+                System.out.println("[DEBUG] Node not found");
+                return new Object[]{"Failed to get node"};
+            }
+
+            ServerConfigurationManager scm = getServer().getConfigurationManager();
+            EntityPlayerMP player = scm.func_152612_a(playerName);
+
+            if (player == null) {
+                System.out.println("[DEBUG] Player not found: " + playerName);
+                return new Object[]{"Could not find player"};
+            }
+
+            List<Map<String, Object>> templates = nodeToGive.templates;
+            if (templates == null || templates.isEmpty()) {
+                System.out.println("[DEBUG] No templates found");
+                return new Object[]{"No templates found in node"};
+            }
+
+            System.out.println("[DEBUG] Templates size: " + templates.size());
+
+            for (Map<String, Object> templateData : templates) {
+                String templateType = (String) templateData.get("type");
+                Double templateId2 = (Double) templateData.get("id");
+                int templateId = (int) Math.round(templateId2);
+                System.out.println("[DEBUG] Processing template: type=" + templateType + ", id=" + templateId);
+
+                ItemStack stack;
+
+                if ("a".equalsIgnoreCase(templateType)) {
+                    ComparableStack key = AssemblerRecipes.recipeList.get(templateId);
+                    if (key == null) {
+                        System.out.println("[DEBUG] No recipe for ID: " + templateId);
+                        return new Object[]{"No recipe for template ID: " + templateId};
+                    }
+                    stack = new ItemStack(ModItems.assembly_template, 1, templateId);
+                    ItemAssemblyTemplate.writeType(stack, key);
+                } else if ("b".equalsIgnoreCase(templateType)) {
+                    stack = new ItemStack(ModItems.chemistry_template, 1, templateId);
+                } else if ("c".equalsIgnoreCase(templateType)) {
+                    stack = new ItemStack(ModItems.crucible_template, 1, templateId);
+                } else {
+                    return new Object[]{"Unknown template type: " + templateType};
+                }
+
+                player.inventory.addItemStackToInventory(stack);
+            }
+
+            System.out.println("[DEBUG] Finished processing templates");
+            return new Object[]{"Successfully gave Template"};
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new Object[]{"Exception occurred: " + e.getMessage()};
+        }
+    }
+
+
+    @Callback
+    public Object[] getTeam(Context c, Arguments a) {
+        Drive drive = getDrive();
+        int slot = a.checkInteger(0);
+        ItemStack itemStack = getDriveItem(drive, slot);
+        NBTTagCompound nbt = itemStack.getTagCompound();
+        String team = nbt.getString("oc:lock");
+        return new Object[]{team};
     }
 
     @Callback(doc = "function(teamName:string):table -- Returns the RP data for the specified team")
@@ -293,15 +385,16 @@ public class EnvoirementRPComponent implements ManagedEnvironment {
             luaNode.put("description", node.description);
             luaNode.put("level", node.level);
             luaNode.put("unlocked", node.unlocked);
+            luaNode.put("templates", node.templates);
             luaNode.put("dependencies", node.dependencies);
-
+            luaNode.put("type", node.type.toString());
             Map<String, Integer> luaReqs = new HashMap<>();
             for (Map.Entry<getRpValue.researchType, Integer> entry : node.requirements.entrySet()) {
                 luaReqs.put(entry.getKey().name(), entry.getValue());
             }
             luaNode.put("requirements", luaReqs);
-            luaNode.put("templateId", node.templateId);
-
+            luaNode.put("xPos", node.xPos);
+            luaNode.put("yPos", node.yPos);
             luaNodes.add(luaNode);
         }
 
@@ -330,10 +423,13 @@ public class EnvoirementRPComponent implements ManagedEnvironment {
                         node.level,
                         node.unlocked,
                         node.category,
-                        node.templateId,
+                        node.templates,
                         node.dependencies,
                         node.requirements,
-                        node.teamUnlocked
+                        node.teamUnlocked,
+                        node.xPos,
+                        node.yPos,
+                        node.type
                 );
                 savedCount++;
             }
@@ -346,14 +442,14 @@ public class EnvoirementRPComponent implements ManagedEnvironment {
     }
 
     private void updateNodeFromData(ResearchNode node, Map<String, Object> data) {
-        // Simple properties
         if (data.containsKey("name")) node.name = String.valueOf(data.get("name"));
         if (data.containsKey("category")) node.category = String.valueOf(data.get("category"));
         if (data.containsKey("description")) node.description = String.valueOf(data.get("description"));
         if (data.containsKey("level")) node.level = ((Number) data.get("level")).intValue();
         if (data.containsKey("unlocked")) node.unlocked = (Boolean) data.get("unlocked");
-        if (data.containsKey("templateId")) node.templateId = ((Number) data.get("templateId")).intValue();
-
+        if (data.containsKey("xPos")) node.xPos = ((Number) data.get("xPos")).floatValue();
+        if (data.containsKey("yPos")) node.yPos = ((Number) data.get("yPos")).floatValue();
+        if (data.containsKey("type")) node.type = getRpValue.researchType.valueOf(data.get("type").toString());
         // Collections
         if (data.containsKey("dependencies") && data.get("dependencies") instanceof Map) {
             node.dependencies.clear();
@@ -377,6 +473,20 @@ public class EnvoirementRPComponent implements ManagedEnvironment {
                     node.teamUnlocked.put(String.valueOf(k), Boolean.TRUE.equals(v))
             );
         }
+        if (data.containsKey("templates") && data.get("templates") instanceof List) {
+            List<Map<String, Object>> templates = (List<Map<String, Object>>) data.get("templates");
+            node.templates.clear();  // Clear existing templates
+
+            for (Map<String, Object> templateData : templates) {
+                // Ensure that template data is valid
+                if (templateData.containsKey("type") && templateData.containsKey("id")) {
+                    Map<String, Object> template = new HashMap<>();
+                    template.put("type", templateData.get("type"));
+                    template.put("id", templateData.get("id"));
+                    node.templates.add(template);  // Add the new template to the list
+                }
+            }
+        }
     }
 
     @Callback
@@ -391,6 +501,7 @@ public class EnvoirementRPComponent implements ManagedEnvironment {
         luaNode.put("description", researchNode.description);
         luaNode.put("level", researchNode.level);
         luaNode.put("unlocked", researchNode.unlocked);
+        luaNode.put("templates", researchNode.templates);
         luaNode.put("dependencies", researchNode.dependencies);
         Map<String, Integer> luaReqs = new HashMap<>();
         for (Map.Entry<getRpValue.researchType, Integer> entry : researchNode.requirements.entrySet()) {
@@ -398,7 +509,9 @@ public class EnvoirementRPComponent implements ManagedEnvironment {
         }
         luaNode.put("teamUnlocked", researchNode.teamUnlocked);
         luaNode.put("requirements", luaReqs);
-        luaNode.put("templateId", researchNode.templateId);
+        luaNode.put("xPos", researchNode.xPos);
+        luaNode.put("yPos", researchNode.yPos);
+        luaNode.put("type", researchNode.type);
         return new Object[]{luaNode};
     }
 

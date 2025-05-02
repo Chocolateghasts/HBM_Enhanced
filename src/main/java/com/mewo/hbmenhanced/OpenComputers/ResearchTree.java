@@ -94,10 +94,12 @@ public class ResearchTree {
             Integer level,
             Boolean unlocked,
             String category,
-            Integer templateId,
+            List<Map<String, Object>> templates,
             List<String> dependencies,
             Map<getRpValue.researchType, Integer> requirements,
-            Map<String, Boolean> teamUnlocked  // Add this parameter
+            Map<String, Boolean> teamUnlocked,
+            Float xPos, Float yPos,
+            getRpValue.researchType type
     ) {
         getNodes();
 
@@ -108,7 +110,10 @@ public class ResearchTree {
                 if (level != null) node.level = level;
                 if (unlocked != null) node.unlocked = unlocked;
                 if (category != null) node.category = category;
-                if (templateId != null) node.templateId = templateId;
+                if (templates != null) {
+                    node.templates.clear();
+                    node.templates.addAll(templates);
+                }
                 if (dependencies != null) {
                     node.dependencies.clear();
                     node.dependencies.addAll(dependencies);
@@ -121,10 +126,24 @@ public class ResearchTree {
                     node.teamUnlocked.clear();
                     node.teamUnlocked.putAll(teamUnlocked);
                 }
+                if (xPos != null) node.xPos = xPos;
+                if (yPos != null) node.yPos = yPos;
+                if (type != null) node.type = type;
                 System.out.println("Edited node");
                 saveNodes(nodeList);
                 break;
             }
         }
+    }
+
+    public List<Map<String, Object>> createTemplates(Object... templateData) {
+        List<Map<String, Object>> templates = new ArrayList<>();
+        for (int i = 0; i < templateData.length; i += 2) {
+            Map<String, Object> template = new HashMap<>();
+            template.put("type", templateData[i]);
+            template.put("id", templateData[i + 1]);
+            templates.add(template);
+        }
+        return templates;
     }
 }

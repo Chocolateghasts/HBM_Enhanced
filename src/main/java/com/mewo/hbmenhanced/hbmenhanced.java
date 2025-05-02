@@ -29,10 +29,7 @@ import net.minecraft.item.ItemStack;
 
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
 
 @Mod(modid = hbmenhanced.MODID, version = hbmenhanced.VERSION)
 public class hbmenhanced
@@ -96,7 +93,16 @@ public class hbmenhanced
         tree.getNodes();
         Map<String, Boolean> testmap = new HashMap<>();
         testmap.put("test", true);
-        tree.editNode("node_1", null, null, null, null, null, null, null, null, testmap);
+        List<Map<String, Object>> templates = tree.createTemplates(
+                "A", 1,
+                "B", 2,
+                "C", 5,
+                "A", 9
+        );
+
+        //tree.editNode("node_1", null, null, null, null, null, templates, null, null, testmap, 30.0f, 30.0f, getRpValue.researchType.STRUCTURAL);
+        //tree.editNode("node_0", null, null, null, null, null, templates, null, null, testmap, 10.0f, 10.0f, getRpValue.researchType.NUCLEAR);
+
         event.registerServerCommand(new RPCommand());
         event.registerServerCommand(new showRPCommand());
         event.registerServerCommand(new TeamCommand());

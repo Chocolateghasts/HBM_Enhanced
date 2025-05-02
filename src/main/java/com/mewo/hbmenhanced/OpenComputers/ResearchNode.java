@@ -13,9 +13,14 @@ public class ResearchNode {
     protected int level;
     protected Boolean unlocked;
     protected List<String> dependencies;
+    protected List<Map<String, Object>> templates;
     protected HashMap<getRpValue.researchType, Integer> requirements;
-    protected int templateId;
+//    protected int templateId;
+//    protected String templateType;
     protected Map<String, Boolean> teamUnlocked;
+    protected float xPos;
+    protected float yPos;
+    protected getRpValue.researchType type;
 
     public ResearchNode() {
         this.dependencies = new ArrayList<>();
@@ -23,6 +28,7 @@ public class ResearchNode {
         this.unlocked = false;
         this.level = 0;
         this.teamUnlocked = new HashMap<>();
+        this.templates = new ArrayList<>();
     }
 
 
@@ -49,5 +55,4 @@ public class ResearchNode {
             teamUnlocked.put(ownerId, true);
         }
     }
-
 }
