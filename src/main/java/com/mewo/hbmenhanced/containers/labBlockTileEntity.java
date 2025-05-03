@@ -160,13 +160,10 @@ public class labBlockTileEntity extends TileEntity implements ISidedInventory {
     public boolean isItemValidForSlot(int i, ItemStack itemStack) {
         if (itemStack == null || itemStack.getItem() == null) return false;
 
-        // Use getUnlocalizedName() to get a unique name for the item
         String itemName = itemStack.getItem().getUnlocalizedName().toLowerCase();
 
-        // Log the name to ensure it's what you expect
         System.out.println("Checking slot validity: Slot = " + i + ", Item = " + itemName);
 
-        // Check if the item name exists in your RP map
         boolean isValid = getRpValue.getRpMap().containsKey(itemName);
 
         System.out.println("Item valid: " + isValid);
@@ -178,8 +175,8 @@ public class labBlockTileEntity extends TileEntity implements ISidedInventory {
 
     @Override
     public int[] getAccessibleSlotsFromSide(int i) {
-        if (i == 5) { return slot_input; } // Only allow input slot
-        return new int[]{}; // Prevent external access to slot 1
+        if (i == 5) { return slot_input; }
+        return new int[]{};
     }
 
     @Override
@@ -192,7 +189,6 @@ public class labBlockTileEntity extends TileEntity implements ISidedInventory {
         return i == 1;
     }
     public int getResearchTimeRemainingScaled(int scale) {
-        // Changed to use timer instead of currentItemResearchTime
         if (this.researchTime == 0) return 0;
         return (this.timer * scale) / this.researchTime;
     }
@@ -203,7 +199,6 @@ public class labBlockTileEntity extends TileEntity implements ISidedInventory {
     @Override
     public void invalidate() {
         super.invalidate();
-        // Stop any ongoing research when the tile entity is invalidated
         this.isResearching = false;
         this.timer = 0;
     }
@@ -211,7 +206,6 @@ public class labBlockTileEntity extends TileEntity implements ISidedInventory {
     @Override
     public void onChunkUnload() {
         super.onChunkUnload();
-        // Clean up when chunk unloads
         this.isResearching = false;
         this.timer = 0;
     }
@@ -221,14 +215,11 @@ public class labBlockTileEntity extends TileEntity implements ISidedInventory {
         if (!worldObj.isRemote) {
             boolean wasResearching = isResearching;
 
-            // Check if we can research (has input, is valid item, and output slot is empty)
             if (slots[0] != null && isResearchItem(slots[0]) && slots[1] == null) {
                 isResearching = true;
             } else {
                 isResearching = false;
             }
-
-            // Handle research process
             if (isResearching && slots[0] != null) {
                 timer++;
 
@@ -257,18 +248,13 @@ public class labBlockTileEntity extends TileEntity implements ISidedInventory {
                     timer = 0;
                     isResearching = false;
                 }
-
-                // Mark dirty to ensure client gets updates
                 markDirty();
                 worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
             } else if (!isResearching && timer > 0) {
-                // Reset timer if we stopped researching
                 timer = 0;
                 markDirty();
                 worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
             }
-
-            // If research state changed, make sure client knows
             if (wasResearching != isResearching) {
                 markDirty();
                 worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);

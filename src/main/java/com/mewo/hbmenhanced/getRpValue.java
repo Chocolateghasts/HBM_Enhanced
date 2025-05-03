@@ -17,6 +17,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class getRpValue {
+    public static Map<String, Map<String, Boolean>> isResearched = new HashMap<>();
     private static final Log log = LogFactory.getLog(getRpValue.class);
     private static HashMap<String, EnumMap<researchType, Integer>> rpValues = new HashMap<>();
     private static HashMap<String, EnumMap<researchType, Integer>> teamRpValues = new HashMap<>();
@@ -95,6 +96,23 @@ public class getRpValue {
         return 1;
     }
 
+    public static boolean isResearched(Item item, String team) {
+        if (item == null || team == null) return false;
+
+        String itemName = StatCollector.translateToLocal(item.getUnlocalizedName() + ".name").toLowerCase();
+
+        Map<String, Boolean> teamResearch = isResearched.get(team);
+        return teamResearch != null && teamResearch.getOrDefault(itemName, false);
+    }
+
+    public static void markItemResearched(String team, Item item) {
+        if (team == null || item == null) return;
+
+        String itemName = StatCollector.translateToLocal(item.getUnlocalizedName() + ".name").toLowerCase();
+
+        isResearched.computeIfAbsent(team, k -> new HashMap<>()).put(itemName, true);
+    }
+
     private boolean isBlacklisted(Item item) {
         if (item == null) return true;
         String className = item.getClass().getName();
@@ -137,6 +155,7 @@ public class getRpValue {
                 className.contains("hbm.items.special")) {
             return true;
         }
+
         return false;
     }
 
