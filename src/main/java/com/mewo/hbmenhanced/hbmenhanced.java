@@ -90,6 +90,7 @@ public class hbmenhanced
     public void serverStarting(FMLServerStartingEvent event) {
         ResearchTree tree = new ResearchTree(event.getServer());
         tree.getNodes();
+
         Map<String, Boolean> testmap = new HashMap<>();
         testmap.put("test", true);
         List<Map<String, Object>> templates = tree.createTemplates(
@@ -98,9 +99,8 @@ public class hbmenhanced
                 "C", 5,
                 "A", 9
         );
-
-        //tree.editNode("node_1", null, null, null, null, null, templates, null, null, testmap, 30.0f, 30.0f, getRpValue.researchType.STRUCTURAL);
-        //tree.editNode("node_0", null, null, null, null, null, templates, null, null, testmap, 10.0f, 10.0f, getRpValue.researchType.NUCLEAR);
+//        tree.editNode("node_1", "Test Node", "Xue Hua Piao Piao", 1, false, , templates, null, null, testmap, 30.0f, 30.0f, getRpValue.researchType.STRUCTURAL);
+//        tree.editNode("node_0", null, null, null, null, null, templates, null, null, testmap, 10.0f, 10.0f, getRpValue.researchType.NUCLEAR);
 
         event.registerServerCommand(new RPCommand());
         event.registerServerCommand(new showRPCommand());
