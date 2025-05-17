@@ -11,6 +11,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.Slot;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraft.inventory.Container;
@@ -18,9 +19,11 @@ import net.minecraft.inventory.Container;
 public class labBlockContainer extends Container {
 
     private labBlockTileEntity labBlock;
-    public static boolean isActive = false;
+    public static boolean isActive = true;
     public int lastCurrentItemResearchTime;
     public int lastResearchTime;
+    private int lastTimer;
+    private boolean lastIsResearching;
     public labBlockContainer(InventoryPlayer playerInventory, labBlockTileEntity tileEntity) {
         this.labBlock = tileEntity;
         this.addSlotToContainer(new SlotResearchItem(tileEntity, 0, 38, 46));
@@ -35,28 +38,90 @@ public class labBlockContainer extends Container {
         }
     }
 
+    @Override
+    public ItemStack transferStackInSlot(EntityPlayer player, int slotIndex) {
+        ItemStack itemstack = null;
+        Slot slot = (Slot)this.inventorySlots.get(slotIndex);
+
+        if (slot != null && slot.getHasStack()) {
+            ItemStack itemstack1 = slot.getStack();
+            itemstack = itemstack1.copy();
+            if (slotIndex == 1) {
+                if (!this.mergeItemStack(itemstack1, 2, 38, true)) {
+                    return null;
+                }
+                slot.onSlotChange(itemstack1, itemstack);
+            }
+            else if (slotIndex == 0) {
+                if (!this.mergeItemStack(itemstack1, 2, 38, false)) {
+                    return null;
+                }
+            }
+            // If we're trying to move from the player's inventory
+            else if (labBlockTileEntity.isResearchItem(itemstack1)) {
+                // Try to move to input slot
+                if (!this.mergeItemStack(itemstack1, 0, 1, false)) {
+                    return null;
+                }
+            }
+            // Moving from player's inventory to player's hotbar or vice versa
+            else if (slotIndex >= 2 && slotIndex < 29) {
+                if (!this.mergeItemStack(itemstack1, 29, 38, false)) {
+                    return null;
+                }
+            } else if (slotIndex >= 29 && slotIndex < 38) {
+                if (!this.mergeItemStack(itemstack1, 2, 29, false)) {
+                    return null;
+                }
+            }
+
+            if (itemstack1.stackSize == 0) {
+                slot.putStack(null);
+            } else {
+                slot.onSlotChanged();
+            }
+
+            if (itemstack1.stackSize == itemstack.stackSize) {
+                return null;
+            }
+
+            slot.onPickupFromSlot(player, itemstack1);
+        }
+
+        return itemstack;
+    }
     public void addCraftingToCrafters(ICrafting crafting) {
         super.addCraftingToCrafters(crafting);
         crafting.sendProgressBarUpdate(this, 0, this.labBlock.researchTime);
         crafting.sendProgressBarUpdate(this, 0, this.labBlock.currentItemResearchTime);
     }
+    @Override
     public void detectAndSendChanges() {
         super.detectAndSendChanges();
-        for (int i = 0; i < this.crafters.size(); i++) {
-            ICrafting crafting = (ICrafting) this.crafters.get(i);
-            if (this.lastResearchTime != this.labBlock.researchTime) {
-                crafting.sendProgressBarUpdate(this, 0, this.labBlock.researchTime);
-            }
-            if (this.lastCurrentItemResearchTime != this.labBlock.currentItemResearchTime) {
-                crafting.sendProgressBarUpdate(this, 0, this.labBlock.currentItemResearchTime);
-            }
-            this.lastResearchTime = this.labBlock.researchTime;
-            this.lastCurrentItemResearchTime = this.labBlock.currentItemResearchTime;
-        }
-    }
-    @SideOnly(Side.CLIENT)
-    public void updateProgressBar(int slot, int newValue) {
 
+        for (int i = 0; i < this.crafters.size(); i++) {
+            ICrafting craft = (ICrafting) this.crafters.get(i);
+
+            if (this.lastTimer != this.labBlock.timer) {
+                craft.sendProgressBarUpdate(this, 0, this.labBlock.timer);
+            }
+            if (this.lastIsResearching != this.labBlock.isResearching) {
+                craft.sendProgressBarUpdate(this, 1, this.labBlock.isResearching ? 1 : 0);
+            }
+        }
+
+        this.lastTimer = this.labBlock.timer;
+        this.lastIsResearching = this.labBlock.isResearching;
+    }
+
+    @SideOnly(Side.CLIENT)
+    public void updateProgressBar(int id, int value) {
+        if (id == 0) {
+            this.labBlock.timer = value;
+        }
+        if (id == 1) {
+            this.labBlock.isResearching = value == 1;
+        }
     }
 
     @Override

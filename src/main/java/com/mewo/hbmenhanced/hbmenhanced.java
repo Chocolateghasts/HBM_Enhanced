@@ -2,8 +2,11 @@ package com.mewo.hbmenhanced;
 
 //import com.mewo.hbmenhanced.OpenComputers.RPComponentProvider;
 import com.mewo.hbmenhanced.Gui.labBlockGuiHandler;
+import com.mewo.hbmenhanced.OpenComputers.ResearchNode;
+import com.mewo.hbmenhanced.OpenComputers.ResearchTree;
 import com.mewo.hbmenhanced.blocks.LabBlock;
 import com.mewo.hbmenhanced.commands.RPCommand;
+import com.mewo.hbmenhanced.commands.TeamCommand;
 import com.mewo.hbmenhanced.commands.showRPCommand;
 import com.mewo.hbmenhanced.containers.labBlockTileEntity;
 import com.mewo.hbmenhanced.items.ItemResearchComponent;
@@ -26,8 +29,7 @@ import net.minecraft.item.ItemStack;
 
 
 import java.io.IOException;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
 
 @Mod(modid = hbmenhanced.MODID, version = hbmenhanced.VERSION)
 public class hbmenhanced
@@ -61,7 +63,6 @@ public class hbmenhanced
     @EventHandler
     public void init(FMLInitializationEvent event)
     {
-
         Driver.add(new com.mewo.hbmenhanced.OpenComputers.RPComponent());
 		// some example code
         System.out.println("DIRT BLOCK >> "+Blocks.dirt.getUnlocalizedName());
@@ -87,9 +88,24 @@ public class hbmenhanced
 
     @EventHandler
     public void serverStarting(FMLServerStartingEvent event) {
-        // Register your custom command
+        ResearchTree tree = new ResearchTree(event.getServer());
+        tree.getNodes();
+        Map<String, Boolean> testmap = new HashMap<>();
+        testmap.put("test", true);
+        List<Map<String, Object>> templates = tree.createTemplates(
+                "A", 1,
+                "B", 2,
+                "C", 5,
+                "A", 9
+        );
+
+        //tree.editNode("node_1", null, null, null, null, null, templates, null, null, testmap, 30.0f, 30.0f, getRpValue.researchType.STRUCTURAL);
+        //tree.editNode("node_0", null, null, null, null, null, templates, null, null, testmap, 10.0f, 10.0f, getRpValue.researchType.NUCLEAR);
+
         event.registerServerCommand(new RPCommand());
         event.registerServerCommand(new showRPCommand());
+        event.registerServerCommand(new TeamCommand());
+        getRpValue.setServer(event.getServer());
 
         Timer timer = new Timer(true);
         timer.scheduleAtFixedRate(new TimerTask() {

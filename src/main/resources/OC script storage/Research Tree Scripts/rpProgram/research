@@ -1,0 +1,15 @@
+local c = require("component")
+local rpc = c.RPComponent
+
+local node = require("/rpProgram/node")
+local tree = require("/rpProgram/Manager")
+local list = rpc.getNodes()
+
+if type(list) == "table" then
+    tree.loadAllNodes(list)
+    print("\nSaving nodes...")
+    local success = tree.saveAllNodes()
+    print("Save completed:", success)
+else
+    print("Error: getNodes did not return a table")
+end

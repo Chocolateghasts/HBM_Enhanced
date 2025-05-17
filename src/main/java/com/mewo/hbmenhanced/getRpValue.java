@@ -3,44 +3,35 @@ package com.mewo.hbmenhanced;
 import li.cil.repack.org.luaj.vm2.ast.Str;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.StatCollector;
+import net.minecraft.world.storage.ISaveHandler;
+import com.mewo.hbmenhanced.containers.labBlockTileEntity;
+import net.minecraft.world.storage.SaveHandler;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
+import java.io.*;
 import java.util.EnumMap;
 import java.util.HashMap;
+import java.util.Map;
 
 public class getRpValue {
-    /*
-    public int RpStructural;
-    public int RpNuclear;
-    public int RpSpace;
-    public int RpChemical;
-    public int RpExplosives;
-    public int RpMachinery;
-    public int RpWeaponry;
-    */
-    public enum researchType {
-        STRUCTURAL, NUCLEAR, SPACE, EXPLOSIVES, MACHINERY, WEAPONRY, CHEMICAL, EXOTIC, ELECTRONICS
-    }
+    public static Map<String, Map<String, Boolean>> isResearched = new HashMap<>();
+    private static final Log log = LogFactory.getLog(getRpValue.class);
     private static HashMap<String, EnumMap<researchType, Integer>> rpValues = new HashMap<>();
+    private static HashMap<String, EnumMap<researchType, Integer>> teamRpValues = new HashMap<>();
     public static HashMap<String, EnumMap<researchType, Integer>> getRpMap() {
         return rpValues;
     }
-    private static HashMap<String, EnumMap<researchType, Integer>> teamRpMap = new HashMap<>();
-
-
-    public static void addRpPoints(String team, researchType type, int points) {
-        teamRpMap.putIfAbsent(team, new EnumMap<>(researchType.class));
-        teamRpMap.get(team).merge(type, points, Integer::sum);
-    }
-    public static int getTeamResearchPoints(String teamName, researchType type) {
-        return teamRpMap
-                .getOrDefault(teamName, new EnumMap<>(researchType.class))
-                .getOrDefault(type, 0);
-    }
-    public EnumMap<researchType, Integer> getAllTeamPoints(String teamName) {
-        return teamRpMap.getOrDefault(teamName, new EnumMap<>(researchType.class));
+    public static MinecraftServer minecraftServer;
+    public static HashMap<String, EnumMap<researchType, Integer>> getTeamRpMap() {
+        return teamRpValues;
     }
 
+    public enum researchType {
+        STRUCTURAL, NUCLEAR, SPACE, EXPLOSIVES, MACHINERY, WEAPONRY, CHEMICAL, EXOTIC, ELECTRONICS
+    }
 
     public void loadHashMap() {
         for (Object obj : Item.itemRegistry) {
@@ -55,7 +46,47 @@ public class getRpValue {
             }
         }
     }
+    public static String getTeamDataAsString(String teamName) {
+        if (!teamRpValues.containsKey(teamName)) {
+            return "";
+        }
 
+        StringBuilder data = new StringBuilder();
+        EnumMap<researchType, Integer> teamData = teamRpValues.get(teamName);
+
+        for (Map.Entry<researchType, Integer> entry : teamData.entrySet()) {
+            data.append(entry.getKey()).append("=")
+                    .append(entry.getValue()).append(";");
+        }
+
+        return data.toString();
+    }
+
+    // Add method to load team data from string
+    public static void loadTeamDataFromString(String teamName, String data) {
+        if (data == null || data.isEmpty()) {
+            return;
+        }
+
+        EnumMap<researchType, Integer> teamData = new EnumMap<>(researchType.class);
+
+        String[] pointPairs = data.split(";");
+        for (String pair : pointPairs) {
+            if (pair.isEmpty()) continue;
+            String[] typeAndPoint = pair.split("=");
+            if (typeAndPoint.length != 2) continue;
+
+            try {
+                researchType type = researchType.valueOf(typeAndPoint[0]);
+                int points = Integer.parseInt(typeAndPoint[1]);
+                teamData.put(type, points);
+            } catch (IllegalArgumentException e) {
+                e.printStackTrace();
+            }
+        }
+
+        teamRpValues.put(teamName, teamData);
+    }
     private double RpMultiplier(Item item) {
         if (item == null) return 1;
         try {
@@ -65,15 +96,32 @@ public class getRpValue {
         return 1;
     }
 
+    public static boolean isResearched(Item item, String team) {
+        if (item == null || team == null) return false;
+
+        String itemName = StatCollector.translateToLocal(item.getUnlocalizedName() + ".name").toLowerCase();
+
+        Map<String, Boolean> teamResearch = isResearched.get(team);
+        return teamResearch != null && teamResearch.getOrDefault(itemName, false);
+    }
+
+    public static void markItemResearched(String team, Item item) {
+        if (team == null || item == null) return;
+
+        String itemName = StatCollector.translateToLocal(item.getUnlocalizedName() + ".name").toLowerCase();
+
+        isResearched.computeIfAbsent(team, k -> new HashMap<>()).put(itemName, true);
+    }
+
     private boolean isBlacklisted(Item item) {
         if (item == null) return true;
         String className = item.getClass().getName();
         String name;
         try {
-            name = item.getUnlocalizedName(); // Get name safely
-            if (name == null) return true; // Prevent further issues
+            name = item.getUnlocalizedName();
+            if (name == null) return true;
         } catch (Exception e) {
-            return true; // Handle potential errors gracefully
+            return true;
         }
         name = name.toLowerCase();
         String[] Keywords = {
@@ -107,19 +155,20 @@ public class getRpValue {
                 className.contains("hbm.items.special")) {
             return true;
         }
+
         return false;
-
-
     }
+
     public EnumMap<researchType, Integer> getRpValuesForItem(ItemStack item) {
         EnumMap<researchType, Integer> rpMap = new EnumMap<>(researchType.class);
         if (item == null || item.getItem() == null) return rpMap;
         String name = item.getDisplayName().toLowerCase();
         if (rpValues.containsKey(name)) return rpValues.get(name);
+
         if (name.contains("cadmium") || name.contains("technetium") && !(isBlacklisted(item.getItem()))) {
             rpMap.put(researchType.STRUCTURAL, 35);
         }
-        if (name.contains("iron")&& !(isBlacklisted(item.getItem()))) {
+        if (name.contains("iron") && !(isBlacklisted(item.getItem()))) {
             rpMap.put(researchType.STRUCTURAL, 10);
         }
         if (name.contains("steel") && !name.contains("cadmium") && !name.contains("technetium") && !(isBlacklisted(item.getItem()))) {
@@ -155,10 +204,9 @@ public class getRpValue {
             if (name.contains("uel")) {
                 rpMap.put(researchType.NUCLEAR, 60);
             }
-            if (name.contains("reactor"))  {
+            if (name.contains("reactor")) {
                 rpMap.put(researchType.NUCLEAR, 70);
-            }
-            else {
+            } else {
                 rpMap.put(researchType.NUCLEAR, 25);
             }
         }
@@ -175,9 +223,9 @@ public class getRpValue {
         }
         if (name.contains("americium")) {
             if (name.contains("241") || name.contains("242")) {
-                rpMap.put(researchType.NUCLEAR, 60);  // Americium 241 and 242 for advanced reactors
+                rpMap.put(researchType.NUCLEAR, 60);
             } else if (name.contains("reactor grade") || name.contains("fuel")) {
-                rpMap.put(researchType.NUCLEAR, 70);  // Americium Reactor Grade and Fuel for reactors
+                rpMap.put(researchType.NUCLEAR, 70);
             }
         }
         if (name.contains("radium")) {
@@ -286,52 +334,52 @@ public class getRpValue {
             rpMap.put(researchType.MACHINERY, 90);
         }
         if (name.contains("ferrouranium")) {
-            rpMap.put(researchType.MACHINERY, 30);  // Ferrouranium for advanced materials
+            rpMap.put(researchType.MACHINERY, 30);
         }
         if (name.contains("starmetal")) {
-            rpMap.put(researchType.MACHINERY, 100);  // Starmetal for high-end crafting and weapons
+            rpMap.put(researchType.MACHINERY, 100);
         }
         if (name.contains("niobium")) {
-            rpMap.put(researchType.ELECTRONICS, 30);  // Niobium for advanced machinery
+            rpMap.put(researchType.ELECTRONICS, 30);
         }
         if (name.contains("bismuth")) {
-            rpMap.put(researchType.ELECTRONICS, 65);  // Bismuth for machinery
+            rpMap.put(researchType.ELECTRONICS, 65);
         }
         if (name.contains("schrabidium")) {
-            rpMap.put(researchType.NUCLEAR, 40);  // Schrabidium for advanced nuclear tech
+            rpMap.put(researchType.NUCLEAR, 40);
         }
         if (name.contains("magnetized tungsten")) {
-            rpMap.put(researchType.MACHINERY, 60);  // Magnetized Tungsten for advanced machinery
+            rpMap.put(researchType.MACHINERY, 60);
         }
         if (name.contains("ferric schrabidate")) {
-            rpMap.put(researchType.MACHINERY, 50);  // Ferric Schrabidate for general machinery
+            rpMap.put(researchType.MACHINERY, 50);
         }
         if (name.contains("solinium")) {
-            rpMap.put(researchType.NUCLEAR, 90);  // Solinium for nuclear waste recycling
+            rpMap.put(researchType.NUCLEAR, 90);
         }
         if (name.contains("actinium")) {
-            rpMap.put(researchType.NUCLEAR, 25);  // Actinium for RTGs and reactors
+            rpMap.put(researchType.NUCLEAR, 25);
         }
         if (name.contains("australium")) {
-            rpMap.put(researchType.NUCLEAR, 80);  // Australium for nuclear tech
+            rpMap.put(researchType.NUCLEAR, 80);
         }
         if (name.contains("saturnite")) {
-            rpMap.put(researchType.MACHINERY, 70);  // Saturnite for high-end machinery
+            rpMap.put(researchType.MACHINERY, 70);
         }
         if (name.contains("euphenium")) {
-            rpMap.put(researchType.MACHINERY, 200);  // Euphenium for late-game tech (e.g., armor, fusion)
+            rpMap.put(researchType.MACHINERY, 200);
         }
         if (name.contains("dineutronium")) {
-            rpMap.put(researchType.MACHINERY, 250);  // Dineutronium for OP late-game armor and tech
+            rpMap.put(researchType.MACHINERY, 250);
         }
         if (name.contains("electronium")) {
-            rpMap.put(researchType.MACHINERY, 300);  // Electronium for extremely rare, high-end materials
+            rpMap.put(researchType.MACHINERY, 300);
         }
         if (name.contains("osmiridium")) {
-            rpMap.put(researchType.MACHINERY, 250);  // Osmiridium for exotic materials
+            rpMap.put(researchType.MACHINERY, 250);
         }
         if (name.contains("hafnium")) {
-            rpMap.put(researchType.MACHINERY, 100);  // Hafnium for advanced electronics
+            rpMap.put(researchType.MACHINERY, 100);
         }
         if (name.contains("chinesium")) {
             rpMap.put(researchType.STRUCTURAL, -9999999);
@@ -339,7 +387,86 @@ public class getRpValue {
 
         return rpMap;
     }
-    public int getRpForType(String itemName, researchType type) {
+
+    public static int getRpForType(String itemName, researchType type) {
         return rpValues.getOrDefault(itemName, new EnumMap<>(researchType.class)).getOrDefault(type, 0);
+    }
+
+    public static void setServer(MinecraftServer server) {
+        minecraftServer = server;
+    }
+    public static MinecraftServer getServer() {
+        return minecraftServer;
+    }
+    
+    public static void saveRp(String team) {
+        try {
+            
+            ISaveHandler saveHandler = minecraftServer.getEntityWorld().getSaveHandler();
+            File worldDir = saveHandler.getWorldDirectory();
+            File rpDir = new File(worldDir, "hbmenhanced");
+            if (!rpDir.exists()) {
+                rpDir.mkdirs();
+            }
+
+            File teamFile = new File(rpDir, team + ".dat");
+            if (!teamFile.exists()) {
+                teamFile.createNewFile();
+            }
+            FileWriter writer = new FileWriter(teamFile);
+            EnumMap<researchType, Integer> teamData = teamRpValues.get(team);
+            if (teamData != null) {
+                for (Map.Entry<researchType, Integer> entry : teamData.entrySet()) {
+                    writer.write(entry.getKey().name() + "=" + entry.getValue() + "\n");
+                    System.out.println(entry.getKey().name() + "=" + entry.getValue());
+                }
+            }
+            writer.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    public static EnumMap<researchType, Integer> loadRp(String team) {
+        EnumMap<researchType, Integer> teamData = new EnumMap<>(researchType.class);
+        try {
+            ISaveHandler handler = minecraftServer.getEntityWorld().getSaveHandler();
+            File worldDir = handler.getWorldDirectory();
+            File rpDir = new File(worldDir, "hbmenhanced");
+            File teamFile = new File(rpDir, team + ".dat");
+            if (teamFile.exists()) {
+                try (BufferedReader reader = new BufferedReader(new FileReader(teamFile))) {
+                    String line;
+                    while ((line = reader.readLine()) != null) {
+                        String[] parts = line.split("=");
+                        if (parts.length == 2) {
+                            try {
+                                researchType type = researchType.valueOf(parts[0].trim());
+                                int points = Integer.parseInt(parts[1].trim());
+                                teamData.put(type, points);
+                            } catch (IllegalArgumentException e) {
+                                System.out.println("Error parsing line: " + line);
+                            }
+                        }
+                    }
+                    teamRpValues.put(team, teamData);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                // Store loaded data in memory
+                if (!teamData.isEmpty()) {
+                    teamRpValues.put(team, teamData);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return teamData;
+    }
+
+    public static void addResearchPoints(String teamName, researchType type, int points) {
+        EnumMap<researchType, Integer> teamData = loadRp(teamName);
+        teamRpValues.put(teamName, teamData);
+        teamData.merge(type, points, Integer::sum);
+        saveRp(teamName);
     }
 }
