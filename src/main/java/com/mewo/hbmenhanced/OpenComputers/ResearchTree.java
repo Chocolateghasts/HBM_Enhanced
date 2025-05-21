@@ -53,7 +53,7 @@ public class ResearchTree {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        System.out.println("Loaded nodes: " + nodeList);
+//        System.out.println("Loaded nodes: " + nodeList);
         return nodeList;
     }
 

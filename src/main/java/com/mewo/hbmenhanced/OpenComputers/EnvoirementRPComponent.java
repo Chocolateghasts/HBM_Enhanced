@@ -203,6 +203,7 @@ public class EnvoirementRPComponent implements ManagedEnvironment {
         ItemStack itemStack = getDriveItem(drive, slot);
         NBTTagCompound nbt = itemStack.getTagCompound();
         String team = nbt.getString("oc:lock");
+        System.out.println("Team is: " + team);
         return new Object[]{team};
     }
 
