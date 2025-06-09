@@ -2,6 +2,7 @@ package com.mewo.hbmenhanced;
 
 import com.mewo.hbmenhanced.Gui.labBlockGuiHandler;
 import com.mewo.hbmenhanced.OpenComputers.*;
+import com.mewo.hbmenhanced.ReactorResearch.GuiHandlerResearchCore;
 import com.mewo.hbmenhanced.blocks.BlockResearchCore;
 import com.mewo.hbmenhanced.blocks.LabBlock;
 import com.mewo.hbmenhanced.commands.*;
@@ -66,6 +67,7 @@ public class hbmenhanced
         Driver.add(new com.mewo.hbmenhanced.OpenComputers.RPComponent());
 		// some example code
         System.out.println("DIRT BLOCK >> "+Blocks.dirt.getUnlocalizedName());
+        NetworkRegistry.INSTANCE.registerGuiHandler(instance, new GuiHandlerResearchCore());
     }
 
     @EventHandler
