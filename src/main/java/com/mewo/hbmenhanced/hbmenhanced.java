@@ -1,16 +1,12 @@
 package com.mewo.hbmenhanced;
 
-//import com.mewo.hbmenhanced.OpenComputers.RPComponentProvider;
 import com.mewo.hbmenhanced.Gui.labBlockGuiHandler;
-import com.mewo.hbmenhanced.OpenComputers.ResearchNode;
-import com.mewo.hbmenhanced.OpenComputers.ResearchTree;
+import com.mewo.hbmenhanced.OpenComputers.*;
+import com.mewo.hbmenhanced.blocks.BlockResearchCore;
 import com.mewo.hbmenhanced.blocks.LabBlock;
-import com.mewo.hbmenhanced.commands.RPCommand;
-import com.mewo.hbmenhanced.commands.TeamCommand;
-import com.mewo.hbmenhanced.commands.showRPCommand;
+import com.mewo.hbmenhanced.commands.*;
 import com.mewo.hbmenhanced.containers.labBlockTileEntity;
-import com.mewo.hbmenhanced.items.ItemResearchComponent;
-import com.mewo.hbmenhanced.items.ItemResearchPoint;
+import com.mewo.hbmenhanced.items.*;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
@@ -23,8 +19,7 @@ import net.minecraft.init.Blocks;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
+import net.minecraft.item.*;
 
 
 
@@ -41,7 +36,9 @@ public class hbmenhanced
 
     public static Item researchPoint;
     public static Item researchItem;
+    public static Item linker;
     public static Block labBlock;
+    public static Block researchCore;
 
 
 
@@ -51,12 +48,14 @@ public class hbmenhanced
     @EventHandler
     public void PreInit(FMLInitializationEvent event) {
         labBlock = new LabBlock(Material.anvil).setBlockName("labBlock");
+        researchCore = new BlockResearchCore();
         GameRegistry.registerTileEntity(labBlockTileEntity.class, "labBlock");
         researchItem = new ItemResearchComponent().setUnlocalizedName("Researcher");
         GameRegistry.registerItem(researchItem, "Researcher");
         //GameRegistry.registerItem(ItemResearchComponent.class, "Researcher");
         NetworkRegistry.INSTANCE.registerGuiHandler(this, new labBlockGuiHandler());
         GameRegistry.registerBlock(labBlock, "Lab Block").setCreativeTab(tabhbmenhanced);
+        GameRegistry.registerBlock(researchCore, "Research Core");
     }
 
 
@@ -74,7 +73,9 @@ public class hbmenhanced
         getRpValue rpCalculator = new getRpValue();
         rpCalculator.loadHashMap();
         saveRPData.loadRPData();
+        linker = new ItemLink().setUnlocalizedName("linker");
         researchPoint = new ItemResearchPoint().setUnlocalizedName("researchPoint");
+        GameRegistry.registerItem(linker, "Linker");
         GameRegistry.registerItem(researchPoint, "Research Point");
         GameRegistry.registerTileEntity(labBlockTileEntity.class, "labBlockTileEntity");
     }

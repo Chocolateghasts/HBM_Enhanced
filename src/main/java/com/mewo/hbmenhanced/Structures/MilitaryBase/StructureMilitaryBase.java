@@ -1,6 +1,7 @@
 package com.mewo.hbmenhanced.Structures.MilitaryBase;
 
 import com.mewo.hbmenhanced.Structures.SchematicLoader;
+import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.world.gen.structure.StructureMineshaftPieces;
 
 import net.minecraft.nbt.NBTTagCompound;
@@ -37,19 +38,20 @@ public class StructureMilitaryBase extends StructureComponent {
         this.boundingBox.minY = y;
         this.boundingBox.maxY = y + 5;
 
-        InputStream stream = getClass().getResourceAsStream("/assets/hbmenhanced/structures/Lamda_Core_Entrance.schematic");
+        InputStream stream = getClass().getResourceAsStream("/assets/hbmenhanced/structures/Lambda_Core/Lamda_Core_Entrance.schematic");
         if (stream == null) {
             System.out.println("Could not find schematic");
             return false;
         }
         try {
-            SchematicLoader.spawnSchematic(world, this.boundingBox.minX, this.boundingBox.maxY, this.boundingBox.minZ, stream);
+            NBTTagCompound schematic = CompressedStreamTools.readCompressed(stream);
+            SchematicLoader.spawnSchematic(world, this.boundingBox.minX, this.boundingBox.maxY, this.boundingBox.minZ, schematic, "Lambda_Core");
+
         } catch (IOException e) {
             e.printStackTrace();
             return false;
         }
 
-        //List<Blockpos>
         return true;
 
     }
