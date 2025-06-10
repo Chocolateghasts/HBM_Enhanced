@@ -9,7 +9,7 @@ import net.minecraft.tileentity.TileEntity;
 public class TileEntityResearchCore extends TileEntity implements IInventory {
 
     protected ItemStack[] inventory;
-    public static final int INVENTORY_SIZE = 4;
+    public static final int INVENTORY_SIZE = 3;
 
     public TileEntityResearchCore() {
         inventory = new ItemStack[INVENTORY_SIZE];
