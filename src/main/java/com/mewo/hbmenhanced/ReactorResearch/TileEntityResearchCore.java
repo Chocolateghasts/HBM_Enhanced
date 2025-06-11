@@ -1,10 +1,10 @@
 package com.mewo.hbmenhanced.ReactorResearch;
 
 import com.hbm.tileentity.machine.TileEntityReactorResearch;
+import com.mewo.hbmenhanced.getRpValue;
 import com.mewo.hbmenhanced.items.ItemLink;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -14,20 +14,45 @@ public class TileEntityResearchCore extends TileEntity implements IInventory {
     protected ItemStack[] inventory;
     public static final int INVENTORY_SIZE = 3;
     private float stabilityTimer = 0;
+    protected String teamName;
+
+    private int tickCounter = 0;
 
     public TileEntityResearchCore() {
         inventory = new ItemStack[INVENTORY_SIZE];
     }
 
-    @Override
-    public void updateEntity() {
-        TileEntityReactorResearch reactor = getReactor();
-        if (reactor != null) {
-            System.out.println("Got reactor!");
+    public void setTeam(EntityPlayer player) {
+        NBTTagCompound nbt = player.getEntityData();
+        String team = nbt.getString("hbmenhanced:team");
+        if (team != null) {
+            teamName = team;
         }
     }
 
-    private TileEntityReactorResearch getReactor() {
+    public String getTeam() {
+        if (teamName != null) {
+            return teamName;
+        }
+        System.out.println("No team found");
+        return null;
+    }
+
+    @Override
+    public void updateEntity() {
+        if (!worldObj.isRemote) {
+            tickCounter++;
+            if (tickCounter == 20) {
+                tickCounter = 0;
+                TileEntityReactorResearch reactor = getReactor();
+                if (reactor != null) {
+                    analyseReactor(reactor);
+                }
+            }
+        }
+    }
+
+    public TileEntityReactorResearch getReactor() {
         if (inventory[0] != null && inventory[0].getItem() instanceof ItemLink) {
             ItemStack itemStack = inventory[0];
             NBTTagCompound nbt = itemStack.getTagCompound();
@@ -45,21 +70,25 @@ public class TileEntityResearchCore extends TileEntity implements IInventory {
     }
 
     private void analyseReactor(TileEntityReactorResearch reactor) {
-        int heat = reactor.heat;
         int flux = reactor.totalFlux;
         int water = reactor.getWater();
-        int maxHeat = reactor.maxHeat;
-
+        int heat = (int) Math.round((reactor.heat) * 0.00002 * 980 + 20);
+        int maxHeat = (int) Math.round((reactor.maxHeat) * 0.00002 * 980 + 20);
         boolean isStable = true;
 
-        if (heat > maxHeat * 0.8) {
-            isStable = false;
-        }
+        float heatRatio = (float) heat / maxHeat;
 
-        if (isStable) {
-            stabilityTimer += 0.05F;
+        if (heatRatio > 0.4 && heatRatio < 0.6) {
+            getRpValue.addResearchPoints(teamName, getRpValue.researchType.NUCLEAR, 2);
+            System.out.println("Added Points to team " + teamName);
+            isStable = true;
+        } else if (heatRatio > 0.6 && heatRatio < 0.9) {
+            isStable = true;
+            getRpValue.addResearchPoints(teamName, getRpValue.researchType.NUCLEAR, 4);
+            System.out.println("Added Points to team " + teamName);
+            getRpValue.addResearchPoints(teamName, getRpValue.researchType.CHEMICAL, 2);
+            System.out.println("Added Points to team " + teamName);
         }
-
     }
 
     @Override
@@ -159,7 +188,7 @@ public class TileEntityResearchCore extends TileEntity implements IInventory {
     @Override
     public void writeToNBT(NBTTagCompound compound) {
         super.writeToNBT(compound);
-
+        NBTTagCompound data = new NBTTagCompound();
         NBTTagCompound items = new NBTTagCompound();
         for (int i = 0; i < inventory.length; i++) {
             if (inventory[i] != null) {
@@ -168,19 +197,28 @@ public class TileEntityResearchCore extends TileEntity implements IInventory {
                 items.setTag("Slot" + i, item);
             }
         }
+        if (teamName != null) {
+            data.setString("team", teamName);
+        }
+
+        compound.setTag("hbmenhanced:data", data);
         compound.setTag("Items", items);
     }
 
     @Override
     public void readFromNBT(NBTTagCompound compound) {
         super.readFromNBT(compound);
-
+        NBTTagCompound data = compound.getCompoundTag("hbmenhanced:data");
         NBTTagCompound items = compound.getCompoundTag("Items");
         for (int i = 0; i < inventory.length; i++) {
             if (items.hasKey("Slot" + i)) {
                 NBTTagCompound item = items.getCompoundTag("Slot" + i);
                 inventory[i] = ItemStack.loadItemStackFromNBT(item);
             }
+        }
+        String name = data.getString("team");
+        if (name != null) {
+            teamName = name;
         }
     }
 }

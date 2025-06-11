@@ -13,7 +13,7 @@ public class ContainerResearchCore extends Container {
     public ContainerResearchCore(InventoryPlayer inventory, TileEntityResearchCore te) {
         this.tileEntity = te;
 
-        addSlotToContainer(new Slot(te, 0, 56, 17)
+        addSlotToContainer(new Slot(te, 0,12, 10)
         {
             @Override
             public boolean isItemValid(ItemStack itemStack) {
@@ -25,8 +25,8 @@ public class ContainerResearchCore extends Container {
                 super.onSlotChanged();
             }
         });
-        addSlotToContainer(new Slot(te, 1, 56, 35));
-        addSlotToContainer(new Slot(te, 2, 56, 53));
+        addSlotToContainer(new Slot(te, 1,12, 30));
+        addSlotToContainer(new Slot(te, 2,12, 50));
 
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 9; j++) {

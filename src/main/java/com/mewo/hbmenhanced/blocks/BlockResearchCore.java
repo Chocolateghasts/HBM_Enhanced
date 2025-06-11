@@ -4,7 +4,10 @@ import com.mewo.hbmenhanced.ReactorResearch.TileEntityResearchCore;
 import com.mewo.hbmenhanced.hbmenhanced;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
@@ -28,11 +31,21 @@ public class BlockResearchCore extends Block {
     }
 
     @Override
+    public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase placer, ItemStack stack) {
+        if (!world.isRemote && placer instanceof EntityPlayer) {
+            TileEntity tile = world.getTileEntity(x, y, z);
+            if (tile instanceof TileEntityResearchCore) {
+                ((TileEntityResearchCore) tile).setTeam((EntityPlayer) placer);
+            }
+        }
+    }
+
+    @Override
     public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ) {
         if (!world.isRemote) {
             TileEntity tileEntity = world.getTileEntity(x, y, z);
             if (tileEntity instanceof TileEntityResearchCore) {
-                player.openGui(hbmenhanced.instance, 0, world, x, y, z);
+                player.openGui(hbmenhanced.instance, hbmenhanced.guiResearchCoreID, world, x, y, z);
             }
         }
         return true;

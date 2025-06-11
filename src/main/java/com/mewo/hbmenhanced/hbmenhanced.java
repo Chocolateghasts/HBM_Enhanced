@@ -1,5 +1,6 @@
 package com.mewo.hbmenhanced;
 
+import com.mewo.hbmenhanced.Gui.GuiHandler;
 import com.mewo.hbmenhanced.Gui.labBlockGuiHandler;
 import com.mewo.hbmenhanced.OpenComputers.*;
 import com.mewo.hbmenhanced.ReactorResearch.GuiHandlerResearchCore;
@@ -35,6 +36,7 @@ public class hbmenhanced
     public static final String VERSION = "1.0.0";
 
     public static final int guiLabBlockID = 0;
+    public static final int guiResearchCoreID = 1;
 
     public static Item researchPoint;
     public static Item researchItem;
@@ -54,8 +56,7 @@ public class hbmenhanced
         GameRegistry.registerTileEntity(labBlockTileEntity.class, "labBlock");
         researchItem = new ItemResearchComponent().setUnlocalizedName("Researcher");
         GameRegistry.registerItem(researchItem, "Researcher");
-        //GameRegistry.registerItem(ItemResearchComponent.class, "Researcher");
-        NetworkRegistry.INSTANCE.registerGuiHandler(this, new labBlockGuiHandler());
+        NetworkRegistry.INSTANCE.registerGuiHandler(instance, new GuiHandler());
         GameRegistry.registerBlock(labBlock, "Lab Block").setCreativeTab(tabhbmenhanced);
         GameRegistry.registerBlock(researchCore, "Research Core");
         GameRegistry.registerTileEntity(TileEntityResearchCore.class, "tileEntityResearchCore");
@@ -69,7 +70,6 @@ public class hbmenhanced
         Driver.add(new com.mewo.hbmenhanced.OpenComputers.RPComponent());
 		// some example code
         System.out.println("DIRT BLOCK >> "+Blocks.dirt.getUnlocalizedName());
-        NetworkRegistry.INSTANCE.registerGuiHandler(instance, new GuiHandlerResearchCore());
     }
 
     @EventHandler
