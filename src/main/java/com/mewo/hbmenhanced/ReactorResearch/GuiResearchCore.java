@@ -11,6 +11,10 @@ public class GuiResearchCore extends GuiContainer {
     private static final ResourceLocation texture = new ResourceLocation("hbmenhanced", "textures/gui/research_core.png");
     private TileEntityResearchCore tileEntity;
 
+    private static final int[] SLOT_X = {56, 56, 56};
+    private static final int[] SLOT_Y = {17, 35, 53};
+    private static final int SLOT_SIZE = 18;
+
     public GuiResearchCore(InventoryPlayer player, TileEntityResearchCore te) {
         super(new ContainerResearchCore(player, te));
         this.tileEntity = te;
@@ -31,6 +35,22 @@ public class GuiResearchCore extends GuiContainer {
         int k = (this.width - this.xSize) / 2;
         int l = (this.height - this.ySize) / 2;
         this.drawTexturedModalRect(k, l, 0, 0, this.xSize, this.ySize);
+
+        for (int i = 0; i < 3; i++) {
+            // Dark outer border
+            drawRect(k + SLOT_X[i] - 1, l + SLOT_Y[i] - 1,
+                    k + SLOT_X[i] + SLOT_SIZE + 1, l + SLOT_Y[i] + SLOT_SIZE + 1,
+                    0xFF373737);
+            // Light inner border
+            drawRect(k + SLOT_X[i], l + SLOT_Y[i],
+                    k + SLOT_X[i] + SLOT_SIZE, l + SLOT_Y[i] + SLOT_SIZE,
+                    0xFF8B8B8B);
+            // Slot background
+            drawRect(k + SLOT_X[i] + 1, l + SLOT_Y[i] + 1,
+                    k + SLOT_X[i] + SLOT_SIZE - 1, l + SLOT_Y[i] + SLOT_SIZE - 1,
+                    0xFF000000);
+        }
+
     }
 
 }

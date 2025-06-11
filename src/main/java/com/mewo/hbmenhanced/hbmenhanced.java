@@ -3,6 +3,7 @@ package com.mewo.hbmenhanced;
 import com.mewo.hbmenhanced.Gui.labBlockGuiHandler;
 import com.mewo.hbmenhanced.OpenComputers.*;
 import com.mewo.hbmenhanced.ReactorResearch.GuiHandlerResearchCore;
+import com.mewo.hbmenhanced.ReactorResearch.TileEntityResearchCore;
 import com.mewo.hbmenhanced.blocks.BlockResearchCore;
 import com.mewo.hbmenhanced.blocks.LabBlock;
 import com.mewo.hbmenhanced.commands.*;
@@ -57,6 +58,7 @@ public class hbmenhanced
         NetworkRegistry.INSTANCE.registerGuiHandler(this, new labBlockGuiHandler());
         GameRegistry.registerBlock(labBlock, "Lab Block").setCreativeTab(tabhbmenhanced);
         GameRegistry.registerBlock(researchCore, "Research Core");
+        GameRegistry.registerTileEntity(TileEntityResearchCore.class, "tileEntityResearchCore");
     }
 
 

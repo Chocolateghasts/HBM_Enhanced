@@ -1,5 +1,6 @@
 package com.mewo.hbmenhanced.ReactorResearch;
 
+import com.mewo.hbmenhanced.items.ItemLink;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
@@ -12,7 +13,18 @@ public class ContainerResearchCore extends Container {
     public ContainerResearchCore(InventoryPlayer inventory, TileEntityResearchCore te) {
         this.tileEntity = te;
 
-        addSlotToContainer(new Slot(te, 0, 56, 17));
+        addSlotToContainer(new Slot(te, 0, 56, 17)
+        {
+            @Override
+            public boolean isItemValid(ItemStack itemStack) {
+                return itemStack.getItem() instanceof ItemLink;
+            }
+
+            @Override
+            public void onSlotChanged() {
+                super.onSlotChanged();
+            }
+        });
         addSlotToContainer(new Slot(te, 1, 56, 35));
         addSlotToContainer(new Slot(te, 2, 56, 53));
 

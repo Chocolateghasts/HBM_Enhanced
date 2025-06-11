@@ -1,7 +1,10 @@
 package com.mewo.hbmenhanced.ReactorResearch;
 
+import com.hbm.tileentity.machine.TileEntityReactorResearch;
+import com.mewo.hbmenhanced.items.ItemLink;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -10,9 +13,53 @@ public class TileEntityResearchCore extends TileEntity implements IInventory {
 
     protected ItemStack[] inventory;
     public static final int INVENTORY_SIZE = 3;
+    private float stabilityTimer = 0;
 
     public TileEntityResearchCore() {
         inventory = new ItemStack[INVENTORY_SIZE];
+    }
+
+    @Override
+    public void updateEntity() {
+        TileEntityReactorResearch reactor = getReactor();
+        if (reactor != null) {
+            System.out.println("Got reactor!");
+        }
+    }
+
+    private TileEntityReactorResearch getReactor() {
+        if (inventory[0] != null && inventory[0].getItem() instanceof ItemLink) {
+            ItemStack itemStack = inventory[0];
+            NBTTagCompound nbt = itemStack.getTagCompound();
+            if (nbt != null) {
+                int x = nbt.getInteger("hbmenhanced:linkedX");
+                int y = nbt.getInteger("hbmenhanced:linkedY");
+                int z = nbt.getInteger("hbmenhanced:linkedZ");
+                TileEntity te = worldObj.getTileEntity(x, y, z);
+                if (te instanceof TileEntityReactorResearch) {
+                    return (TileEntityReactorResearch) te;
+                }
+            }
+        }
+        return null;
+    }
+
+    private void analyseReactor(TileEntityReactorResearch reactor) {
+        int heat = reactor.heat;
+        int flux = reactor.totalFlux;
+        int water = reactor.getWater();
+        int maxHeat = reactor.maxHeat;
+
+        boolean isStable = true;
+
+        if (heat > maxHeat * 0.8) {
+            isStable = false;
+        }
+
+        if (isStable) {
+            stabilityTimer += 0.05F;
+        }
+
     }
 
     @Override
@@ -97,8 +144,16 @@ public class TileEntityResearchCore extends TileEntity implements IInventory {
     }
 
     @Override
-    public boolean isItemValidForSlot(int p_94041_1_, ItemStack p_94041_2_) {
-        return true;
+    public boolean isItemValidForSlot(int slot, ItemStack itemStack) {
+        if (slot == 0) {
+            if (itemStack.getItem() instanceof ItemLink ) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return true;
+        }
     }
 
     @Override
