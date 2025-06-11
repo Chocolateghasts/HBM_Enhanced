@@ -41,23 +41,6 @@ public class GuiResearchCore extends GuiContainer {
     }
 
     @Override
-    protected void actionPerformed(GuiButton button) {
-        if (button.id == BUTTON_ID_EXPLODE) {
-            tileEntity.getReactor().heat = 999999;
-            tileEntity.getReactor().water = 0;
-            tileEntity.getReactor().level = 999;
-            tileEntity.getReactor().updateEntity();
-            try {
-                Method explodeMethod = TileEntityReactorResearch.class.getDeclaredMethod("explode");
-                explodeMethod.setAccessible(true); // bypass private access
-                explodeMethod.invoke(tileEntity.getReactor()); // call the method
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    @Override
     protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
         String name = "Research Core";
         this.fontRendererObj.drawString(name, this.xSize / 2 - this.fontRendererObj.getStringWidth(name) / 2, 6, 4210752);
@@ -97,6 +80,17 @@ public class GuiResearchCore extends GuiContainer {
                     0xFF000000);
         }
 
+    }
+
+    @Override
+    protected void actionPerformed(GuiButton button) {
+//        if (button.id == BUTTON_ID_EXPLODE) {
+//            tileEntity.getReactor().heat = 999999;
+//            tileEntity.getReactor().water = 0;
+//            tileEntity.getReactor().level = 999;
+//            tileEntity.getReactor().updateEntity();
+//            this.mc.playerController.sendEnchantPacket(this.inventorySlots.windowId, button.id);
+//        }
     }
 
 }

@@ -1,5 +1,6 @@
 package com.mewo.hbmenhanced.ReactorResearch;
 
+import com.hbm.tileentity.machine.TileEntityReactorResearch;
 import com.mewo.hbmenhanced.items.ItemLink;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -7,8 +8,30 @@ import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
+import java.lang.reflect.Method;
+
 public class ContainerResearchCore extends Container {
     private TileEntityResearchCore tileEntity;
+
+    @Override
+    public boolean enchantItem(EntityPlayer player, int buttonId) {
+        if (buttonId == 0) { // BUTTON_ID_EXPLODE
+            // This runs on the server side
+            tileEntity.getReactor().heat = 999999;
+            tileEntity.getReactor().water = 0;
+            tileEntity.getReactor().level = 999;
+            tileEntity.getReactor().updateEntity();
+            try {
+                Method explodeMethod = TileEntityReactorResearch.class.getDeclaredMethod("explode");
+                explodeMethod.setAccessible(true);
+                explodeMethod.invoke(tileEntity.getReactor());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return true;
+        }
+        return false;
+    }
 
     public ContainerResearchCore(InventoryPlayer inventory, TileEntityResearchCore te) {
         this.tileEntity = te;
