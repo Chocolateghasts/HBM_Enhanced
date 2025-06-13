@@ -1,10 +1,15 @@
 package com.mewo.hbmenhanced.ReactorResearch;
 
+import cofh.api.energy.IEnergyContainerItem;
 import cofh.api.energy.IEnergyHandler;
-import cofh.api.energy.IEnergyStorage;
+import com.hbm.items.machine.ItemBattery;
+import com.hbm.items.machine.ItemSelfcharger;
 import com.hbm.tileentity.machine.TileEntityReactorResearch;
+import com.mewo.hbmenhanced.Packets.EnergyPacket;
 import com.mewo.hbmenhanced.getRpValue;
+import com.mewo.hbmenhanced.hbmenhanced;
 import com.mewo.hbmenhanced.items.ItemLink;
+import cpw.mods.fml.common.network.NetworkRegistry;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -17,12 +22,16 @@ public class TileEntityResearchCore extends TileEntity implements IInventory, IE
 
     private int maxEnergy = 5000;
     private int currentEnergy;
+    private int clientEnergy;
 
     protected ItemStack[] inventory;
     protected String teamName;
 
     private int tickCounter = 0;
 
+    public void setClientEnergy(int energy) {
+        this.clientEnergy = energy;
+    }
 
     public TileEntityResearchCore() {
         inventory = new ItemStack[INVENTORY_SIZE];
@@ -54,7 +63,15 @@ public class TileEntityResearchCore extends TileEntity implements IInventory, IE
                 if (reactor != null) {
                     if (currentEnergy > 0) {
                         currentEnergy -= 100;
-                        System.out.println("Storing " + currentEnergy + "/" + maxEnergy);
+                        // Send sync packet
+                        hbmenhanced.network.sendToAllAround(
+                                new EnergyPacket(this),
+                                new NetworkRegistry.TargetPoint(
+                                        worldObj.provider.dimensionId,
+                                        xCoord, yCoord, zCoord,
+                                        64.0D
+                                )
+                        );
                         analyseReactor(reactor);
                         markDirty();
                     }
@@ -68,7 +85,6 @@ public class TileEntityResearchCore extends TileEntity implements IInventory, IE
         int energyReceived = Math.min(maxEnergy - currentEnergy, maxReceive);
         if (from == ForgeDirection.EAST) {
             if (!simulate) {
-                System.out.println("Received " + energyReceived);
                 currentEnergy += energyReceived;
                 markDirty();
             }
@@ -83,7 +99,7 @@ public class TileEntityResearchCore extends TileEntity implements IInventory, IE
 
     @Override
     public int getEnergyStored(ForgeDirection from) {
-        return currentEnergy;
+        return worldObj.isRemote ? clientEnergy : currentEnergy;
     }
 
     @Override
@@ -127,14 +143,14 @@ public class TileEntityResearchCore extends TileEntity implements IInventory, IE
 
         if (heatRatio > 0.4 && heatRatio < 0.6) {
             getRpValue.addResearchPoints(teamName, getRpValue.researchType.NUCLEAR, 2);
-            System.out.println("Added Points to team " + teamName);
+//            System.out.println("Added Points to team " + teamName);
             isStable = true;
         } else if (heatRatio > 0.6 && heatRatio < 0.9) {
             isStable = true;
             getRpValue.addResearchPoints(teamName, getRpValue.researchType.NUCLEAR, 4);
-            System.out.println("Added Points to team " + teamName);
+//            System.out.println("Added Points to team " + teamName);
             getRpValue.addResearchPoints(teamName, getRpValue.researchType.CHEMICAL, 2);
-            System.out.println("Added Points to team " + teamName);
+//            System.out.println("Added Points to team " + teamName);
         }
     }
 
@@ -221,14 +237,15 @@ public class TileEntityResearchCore extends TileEntity implements IInventory, IE
 
     @Override
     public boolean isItemValidForSlot(int slot, ItemStack itemStack) {
-        if (slot == 0) {
-            if (itemStack.getItem() instanceof ItemLink ) {
+        switch (slot) {
+            case 0:
+                return itemStack.getItem() instanceof ItemLink;
+            case 2:
+                if (itemStack.getItem() instanceof IEnergyContainerItem || itemStack.getItem() instanceof ItemBattery || itemStack.getItem() instanceof ItemSelfcharger) {
+                    return true;
+                }
+            default:
                 return true;
-            } else {
-                return false;
-            }
-        } else {
-            return true;
         }
     }
 

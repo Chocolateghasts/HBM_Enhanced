@@ -3,6 +3,7 @@ package com.mewo.hbmenhanced;
 import com.mewo.hbmenhanced.Gui.GuiHandler;
 import com.mewo.hbmenhanced.Gui.labBlockGuiHandler;
 import com.mewo.hbmenhanced.OpenComputers.*;
+import com.mewo.hbmenhanced.Packets.EnergyPacket;
 import com.mewo.hbmenhanced.ReactorResearch.GuiHandlerResearchCore;
 import com.mewo.hbmenhanced.ReactorResearch.TileEntityResearchCore;
 import com.mewo.hbmenhanced.blocks.BlockResearchCore;
@@ -13,7 +14,9 @@ import com.mewo.hbmenhanced.items.*;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
+import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.relauncher.Side;
 import li.cil.oc.api.Driver;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -34,6 +37,7 @@ public class hbmenhanced
 {
     public static final String MODID = "hbmenhanced";
     public static final String VERSION = "1.0.0";
+    public static SimpleNetworkWrapper network;
 
     public static final int guiLabBlockID = 0;
     public static final int guiResearchCoreID = 1;
@@ -67,9 +71,9 @@ public class hbmenhanced
     @EventHandler
     public void init(FMLInitializationEvent event)
     {
+        network = NetworkRegistry.INSTANCE.newSimpleChannel("hbmenhanced");
+        network.registerMessage(EnergyPacket.Handler.class, EnergyPacket.class, 0, Side.CLIENT);
         Driver.add(new com.mewo.hbmenhanced.OpenComputers.RPComponent());
-		// some example code
-        System.out.println("DIRT BLOCK >> "+Blocks.dirt.getUnlocalizedName());
     }
 
     @EventHandler
@@ -83,11 +87,6 @@ public class hbmenhanced
         GameRegistry.registerItem(researchPoint, "Research Point");
         GameRegistry.registerTileEntity(labBlockTileEntity.class, "labBlockTileEntity");
     }
-
-
-    //GameRegistry.addSmelting(oreIronOre, new ItemStack(itemIronIngot), 0);
-
-    //GameRegistry.registerFuelHandler(new FuelHandler());
 
 
 

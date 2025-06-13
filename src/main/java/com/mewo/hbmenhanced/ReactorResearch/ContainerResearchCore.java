@@ -1,5 +1,8 @@
 package com.mewo.hbmenhanced.ReactorResearch;
 
+import cofh.api.energy.IEnergyContainerItem;
+import com.hbm.items.machine.ItemBattery;
+import com.hbm.items.machine.ItemSelfcharger;
 import com.hbm.tileentity.machine.TileEntityReactorResearch;
 import com.mewo.hbmenhanced.items.ItemLink;
 import net.minecraft.entity.player.EntityPlayer;
@@ -12,7 +15,6 @@ import java.lang.reflect.Method;
 
 public class ContainerResearchCore extends Container {
     private TileEntityResearchCore tileEntity;
-
     @Override
     public boolean enchantItem(EntityPlayer player, int buttonId) {
         if (buttonId == 0) { // BUTTON_ID_EXPLODE
@@ -42,14 +44,21 @@ public class ContainerResearchCore extends Container {
             public boolean isItemValid(ItemStack itemStack) {
                 return itemStack.getItem() instanceof ItemLink;
             }
-
             @Override
-            public void onSlotChanged() {
-                super.onSlotChanged();
-            }
+            public void onSlotChanged() {super.onSlotChanged();}
         });
         addSlotToContainer(new Slot(te, 1,12, 30));
-        addSlotToContainer(new Slot(te, 2,12, 50));
+        addSlotToContainer(new Slot(te, 2,134, 37) {
+            @Override
+            public boolean isItemValid(ItemStack itemStack) {
+                if (itemStack.getItem() instanceof IEnergyContainerItem || itemStack.getItem() instanceof ItemBattery || itemStack.getItem() instanceof ItemSelfcharger) {
+                    return true;
+                }
+                return false;
+            }
+            @Override
+            public void onSlotChanged() {super.onSlotChanged();}
+        });
 
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 9; j++) {

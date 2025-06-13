@@ -1,25 +1,20 @@
 package com.mewo.hbmenhanced.ReactorResearch;
 
 import com.hbm.tileentity.machine.TileEntityReactorResearch;
-import com.mewo.hbmenhanced.hbmenhanced;
-import cpw.mods.fml.common.network.NetworkRegistry;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.common.network.ForgeNetworkHandler;
 import net.minecraftforge.common.util.ForgeDirection;
 import org.lwjgl.opengl.GL11;
-
-import java.lang.reflect.Method;
 
 public class GuiResearchCore extends GuiContainer {
 
     private static final ResourceLocation texture = new ResourceLocation("hbmenhanced", "textures/gui/research_core.png");
     private TileEntityResearchCore tileEntity;
 
-    private static final int[] SLOT_X = {12, 12, 12};
-    private static final int[] SLOT_Y = {10, 30, 50};
+    private static final int[] SLOT_X = {12, 12, 134};
+    private static final int[] SLOT_Y = {10, 30, 37};
     private static final int SLOT_SIZE = 18;
 
     public int BUTTON_ID_EXPLODE = 0;
@@ -41,17 +36,13 @@ public class GuiResearchCore extends GuiContainer {
 //        this.buttonList.add(new GuiButton(BUTTON_ID_EXPLODE, x + 10, y + 130, 80, 20, "Start Research"));
     }
 
-    public static float clamp(float value, float min, float max) {
-        return Math.max(min, Math.min(max, value));
-    }
-
     @Override
     protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
         String name = "Research Core";
         this.fontRendererObj.drawString(name, this.xSize / 2 - this.fontRendererObj.getStringWidth(name) / 2, 6, 4210752);
         TileEntityReactorResearch te = tileEntity.getReactor();
         if (te != null) {
-            int infoX = 50;
+            int infoX = 35;
             int infoY = 25;
             int heat = (int) Math.round((te.heat) * 0.00002 * 980 + 20);
             int maxHeat = (int) Math.round((te.maxHeat) * 0.00002 * 980 + 20);
@@ -66,9 +57,18 @@ public class GuiResearchCore extends GuiContainer {
         int currentEnergy = tileEntity.getEnergyStored(ForgeDirection.EAST);
         int maxEnergy = tileEntity.getMaxEnergyStored(ForgeDirection.EAST);
 
-        int progress = (int) clamp(currentEnergy, 0, maxEnergy);
+        if (mc.theWorld.isRemote) {
+            float progress = (float)currentEnergy / (float)maxEnergy;
+            int length = (int)(progress * 52);
 
-        System.out.println("Energy: " + currentEnergy + " / " + maxEnergy + " (" + (int) progress+ "%)");
+            int x = (width - xSize) / 2 + 156;
+            int y = (height - ySize) / 2 + 20;
+
+            drawRect(x, y, x + 14, y + 52, 0xFF404040);
+            if (length > 0) {
+                drawRect(x, y + (52 - length), x + 14, y + 52, 0xFF00FF00);
+            }
+        }
     }
 
     @Override
