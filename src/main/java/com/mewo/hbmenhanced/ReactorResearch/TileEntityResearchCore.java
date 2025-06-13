@@ -1,5 +1,7 @@
 package com.mewo.hbmenhanced.ReactorResearch;
 
+import cofh.api.energy.IEnergyHandler;
+import cofh.api.energy.IEnergyStorage;
 import com.hbm.tileentity.machine.TileEntityReactorResearch;
 import com.mewo.hbmenhanced.getRpValue;
 import com.mewo.hbmenhanced.items.ItemLink;
@@ -8,15 +10,19 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraftforge.common.util.ForgeDirection;
 
-public class TileEntityResearchCore extends TileEntity implements IInventory {
+public class TileEntityResearchCore extends TileEntity implements IInventory, IEnergyHandler {
+    public static final int INVENTORY_SIZE = 3;
+
+    private int maxEnergy = 5000;
+    private int currentEnergy;
 
     protected ItemStack[] inventory;
-    public static final int INVENTORY_SIZE = 3;
-    private float stabilityTimer = 0;
     protected String teamName;
 
     private int tickCounter = 0;
+
 
     public TileEntityResearchCore() {
         inventory = new ItemStack[INVENTORY_SIZE];
@@ -46,10 +52,49 @@ public class TileEntityResearchCore extends TileEntity implements IInventory {
                 tickCounter = 0;
                 TileEntityReactorResearch reactor = getReactor();
                 if (reactor != null) {
-                    analyseReactor(reactor);
+                    if (currentEnergy > 0) {
+                        currentEnergy -= 100;
+                        analyseReactor(reactor);
+                        markDirty();
+                    }
                 }
             }
         }
+    }
+
+    @Override
+    public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate) {
+        int energyReceived = Math.min(maxEnergy - currentEnergy, maxReceive);
+        if (from == ForgeDirection.EAST) {
+            if (!simulate) {
+                currentEnergy += energyReceived;
+                markDirty();
+            }
+        }
+        return energyReceived;
+    }
+
+    @Override
+    public int extractEnergy(ForgeDirection from, int maxExtract, boolean simulate) {
+        return 0;
+    }
+
+    @Override
+    public int getEnergyStored(ForgeDirection from) {
+        return currentEnergy;
+    }
+
+    @Override
+    public int getMaxEnergyStored(ForgeDirection from) {
+        return maxEnergy;
+    }
+
+    @Override
+    public boolean canConnectEnergy(ForgeDirection from) {
+        if (from == ForgeDirection.EAST) {
+            return true;
+        }
+        return false;
     }
 
     public TileEntityReactorResearch getReactor() {
@@ -203,6 +248,7 @@ public class TileEntityResearchCore extends TileEntity implements IInventory {
 
         compound.setTag("hbmenhanced:data", data);
         compound.setTag("Items", items);
+        compound.setInteger("Energy", currentEnergy);
     }
 
     @Override
@@ -220,5 +266,6 @@ public class TileEntityResearchCore extends TileEntity implements IInventory {
         if (name != null) {
             teamName = name;
         }
+        currentEnergy = compound.getInteger("Energy");
     }
 }

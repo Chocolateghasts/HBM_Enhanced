@@ -8,6 +8,7 @@ import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.network.ForgeNetworkHandler;
+import net.minecraftforge.common.util.ForgeDirection;
 import org.lwjgl.opengl.GL11;
 
 import java.lang.reflect.Method;
@@ -36,8 +37,8 @@ public class GuiResearchCore extends GuiContainer {
         int x = (this.width - this.xSize) / 2;
         int y = (this.height - this.ySize) / 2;
 
-        this.buttonList.clear(); // Clean previous buttons if reopened
-        this.buttonList.add(new GuiButton(BUTTON_ID_EXPLODE, x + 10, y + 130, 80, 20, "Start Research"));
+//        this.buttonList.clear(); // Clean previous buttons if reopened
+//        this.buttonList.add(new GuiButton(BUTTON_ID_EXPLODE, x + 10, y + 130, 80, 20, "Start Research"));
     }
 
     @Override
@@ -57,6 +58,15 @@ public class GuiResearchCore extends GuiContainer {
         }
     }
 
+    private void drawEnergyBar() {
+        int currentEnergy = tileEntity.getEnergyStored(ForgeDirection.EAST);
+        int maxEnergy = tileEntity.getMaxEnergyStored(ForgeDirection.EAST);
+
+        int progress = Math.max(0, Math.min(maxEnergy, currentEnergy));
+
+        System.out.println("Progress: " + progress + "%");
+    }
+
     @Override
     protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
@@ -64,7 +74,6 @@ public class GuiResearchCore extends GuiContainer {
         int k = (this.width - this.xSize) / 2;
         int l = (this.height - this.ySize) / 2;
         this.drawTexturedModalRect(k, l, 0, 0, this.xSize, this.ySize);
-
         for (int i = 0; i < 3; i++) {
             // Dark outer border
             drawRect(k + SLOT_X[i], l + SLOT_Y[i],
@@ -79,7 +88,7 @@ public class GuiResearchCore extends GuiContainer {
                     k + SLOT_X[i] + SLOT_SIZE - 1, l + SLOT_Y[i] + SLOT_SIZE - 1,
                     0xFF000000);
         }
-
+        drawEnergyBar();
     }
 
     @Override
