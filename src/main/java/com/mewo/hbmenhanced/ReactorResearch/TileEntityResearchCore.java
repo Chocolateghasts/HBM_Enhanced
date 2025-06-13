@@ -54,6 +54,7 @@ public class TileEntityResearchCore extends TileEntity implements IInventory, IE
                 if (reactor != null) {
                     if (currentEnergy > 0) {
                         currentEnergy -= 100;
+                        System.out.println("Storing " + currentEnergy + "/" + maxEnergy);
                         analyseReactor(reactor);
                         markDirty();
                     }
@@ -67,6 +68,7 @@ public class TileEntityResearchCore extends TileEntity implements IInventory, IE
         int energyReceived = Math.min(maxEnergy - currentEnergy, maxReceive);
         if (from == ForgeDirection.EAST) {
             if (!simulate) {
+                System.out.println("Received " + energyReceived);
                 currentEnergy += energyReceived;
                 markDirty();
             }

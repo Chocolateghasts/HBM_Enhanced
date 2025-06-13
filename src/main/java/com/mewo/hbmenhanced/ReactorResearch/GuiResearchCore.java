@@ -41,6 +41,10 @@ public class GuiResearchCore extends GuiContainer {
 //        this.buttonList.add(new GuiButton(BUTTON_ID_EXPLODE, x + 10, y + 130, 80, 20, "Start Research"));
     }
 
+    public static float clamp(float value, float min, float max) {
+        return Math.max(min, Math.min(max, value));
+    }
+
     @Override
     protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
         String name = "Research Core";
@@ -62,9 +66,9 @@ public class GuiResearchCore extends GuiContainer {
         int currentEnergy = tileEntity.getEnergyStored(ForgeDirection.EAST);
         int maxEnergy = tileEntity.getMaxEnergyStored(ForgeDirection.EAST);
 
-        int progress = Math.max(0, Math.min(maxEnergy, currentEnergy));
+        int progress = (int) clamp(currentEnergy, 0, maxEnergy);
 
-        System.out.println("Progress: " + progress + "%");
+        System.out.println("Energy: " + currentEnergy + " / " + maxEnergy + " (" + (int) progress+ "%)");
     }
 
     @Override
