@@ -20,7 +20,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 public class TileEntityResearchCore extends TileEntity implements IInventory, IEnergyHandler {
     public static final int INVENTORY_SIZE = 3;
 
-    private int maxEnergy = 5000;
+    private int maxEnergy = 100000;
     private int currentEnergy;
     private int clientEnergy;
 
@@ -96,35 +96,38 @@ public class TileEntityResearchCore extends TileEntity implements IInventory, IE
             ItemStack battery = inventory[2];
             if (battery != null && isBattery(battery)) {
                 if (battery.getItem() instanceof IEnergyContainerItem) {
-                    int extractedEnergy = ((IEnergyContainerItem) battery.getItem()).extractEnergy(battery, 100, false);
-                    currentEnergy = Math.min(maxEnergy, currentEnergy + extractedEnergy); // Add limit check
+                    IEnergyContainerItem currentBattery = (IEnergyContainerItem) battery.getItem();
+                    int extractedEnergy = ((IEnergyContainerItem) battery.getItem()).extractEnergy(battery, 1000, false);
+                    currentEnergy = Math.min(maxEnergy, currentEnergy + extractedEnergy);
                     sendEnergyPacket();
                 } else if (battery.getItem() instanceof ItemBattery) {
                     ItemBattery hbmBattery = (ItemBattery) battery.getItem();
                     int chargePreDischarge = getCharge(battery);
-                    hbmBattery.dischargeBattery(battery, 100);
+                    hbmBattery.dischargeBattery(battery, hbmBattery.getDischargeRate());
                     int chargePostDischarge = getCharge(battery);
                     int extracted = chargePreDischarge - chargePostDischarge;
-                    currentEnergy = Math.min(maxEnergy, currentEnergy + extracted); // Add limit check
+                    currentEnergy = Math.min(maxEnergy, currentEnergy + extracted);
                     sendEnergyPacket();
                 } else if (battery.getItem() instanceof ItemSelfcharger) {
                     ItemSelfcharger selfCharger = (ItemSelfcharger) battery.getItem();
-                    int chargePreDischarge = getCharge(battery);
-                    selfCharger.dischargeBattery(battery, 100);
-                    int chargePostDischarge = getCharge(battery);
-                    int extracted = chargePreDischarge - chargePostDischarge;
-                    currentEnergy = Math.min(maxEnergy, currentEnergy + extracted); // Add limit check
+                    int charge = (int) selfCharger.getDischargeRate();
+                    currentEnergy += charge;
+                    currentEnergy = Math.min(maxEnergy, currentEnergy + charge);
                     sendEnergyPacket();
                 }
             }
-            if (tickCounter == 20) {
+            boolean consumed = false;
+            if (currentEnergy >= 100) {
+                currentEnergy -= 100;
+                consumed = true;
+            }
+            if (tickCounter >= 20) {
                 tickCounter = 0;
-                TileEntityReactorResearch reactor = getReactor();
-                if (reactor != null) {
-                    if (currentEnergy > 0) {
-                        currentEnergy -= 100;
-                        sendEnergyPacket();
+                if (consumed) {
+                    TileEntityReactorResearch reactor = getReactor();
+                    if (reactor != null) {
                         analyseReactor(reactor);
+                        sendEnergyPacket();
                         markDirty();
                     }
                 }
