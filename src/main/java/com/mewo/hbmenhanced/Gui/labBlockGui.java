@@ -29,14 +29,23 @@ public class labBlockGui extends GuiContainer {
         this.fontRendererObj.drawString("Inventory", 8, this.ySize - 96 + 2, 4210752);
     }
 
+    private void drawGame() {
+        int paddleX = this.guiLeft + 120;
+        int paddleY = this.guiTop + 140;
+
+        int ballX = this.guiLeft + 90;
+        int ballY = this.guiTop + 100;
+
+        drawRect(paddleX, paddleY, paddleX + 5, paddleY + 1, 0xFF0000FF);
+        drawRect(ballX, ballY, 2, 2, 0xFFFFFF00);
+    }
+
+
     @Override
     protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
-        // Bind background texture
+        boolean shouldPlayGame = false;
         this.mc.getTextureManager().bindTexture(LAB_BLOCK_GUI_TEXTURE);
         this.drawTexturedModalRect(this.guiLeft, this.guiTop, 0, 0, this.xSize, this.ySize);
-
-        // Optional: draw base arrow texture under it
-        //this.drawTexturedModalRect(this.guiLeft + 80, this.guiTop + 42, 40, 21, 7, 11);
 
         if (this.labBlock.isResearching) {
             int arrowX = this.guiLeft + 80;
@@ -59,7 +68,6 @@ public class labBlockGui extends GuiContainer {
                     "01100000"
             };
 
-            // Determine max width (horizontal progress) from 0–7
             int progress = this.labBlock.getResearchTimeRemainingScaled(10);
 
             for (int row = 0; row < arrowShape.length; row++) {
@@ -73,5 +81,10 @@ public class labBlockGui extends GuiContainer {
                 }
             }
         }
+
+//        if (shouldPlayGame) {
+//            shouldPlayGame = false;
+//            drawGame();
+//        }
     }
 }

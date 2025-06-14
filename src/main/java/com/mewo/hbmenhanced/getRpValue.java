@@ -468,5 +468,6 @@ public class getRpValue {
         teamRpValues.put(teamName, teamData);
         teamData.merge(type, points, Integer::sum);
         saveRp(teamName);
+        System.out.println("Added " + points + " of type " + type.toString() + " to " + teamName);
     }
 }
