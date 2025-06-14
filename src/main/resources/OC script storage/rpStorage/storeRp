@@ -1,0 +1,13 @@
+-- Example usage:
+local component = require("component")
+local rp = component.RPComponent
+
+-- Store RP data (correct way - number first, then string)
+local result = rp.storeRp(0, "/rpdata.txt")
+print(result)
+
+-- Get player RP data
+local playerData = rp.getPlayerRP()
+for player, value in pairs(playerData) do
+    print(player .. ": " .. value)
+end
