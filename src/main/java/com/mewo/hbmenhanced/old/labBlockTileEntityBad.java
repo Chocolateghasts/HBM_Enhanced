@@ -1,6 +1,5 @@
-package com.mewo.hbmenhanced.containers;
+package com.mewo.hbmenhanced.old;
 
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 
 public class labBlockTileEntityBad extends TileEntity {

@@ -4,6 +4,7 @@ import com.mewo.hbmenhanced.Gui.GuiHandler;
 import com.mewo.hbmenhanced.OpenComputers.*;
 import com.mewo.hbmenhanced.Packets.EnergyPacket;
 import com.mewo.hbmenhanced.ReactorResearch.TileEntityResearchCore;
+import com.mewo.hbmenhanced.ResearchBlock.ResearchBlock;
 import com.mewo.hbmenhanced.ResearchManager.PointManager;
 import com.mewo.hbmenhanced.blocks.BlockResearchCore;
 import com.mewo.hbmenhanced.blocks.LabBlock;
@@ -39,11 +40,13 @@ public class hbmenhanced
 
     public static final int guiLabBlockID = 0;
     public static final int guiResearchCoreID = 1;
+    public static final int guiResearchBlockID = 2;
 
     public static Item researchPoint;
     public static Item researchItem;
     public static Item linker;
     public static Block labBlock;
+    public static Block researchBlock;
     public static Block researchCore;
 
 
@@ -84,6 +87,8 @@ public class hbmenhanced
         GameRegistry.registerItem(linker, "Linker");
         GameRegistry.registerItem(researchPoint, "Research Point");
         GameRegistry.registerTileEntity(labBlockTileEntity.class, "labBlockTileEntity");
+        researchBlock = new ResearchBlock(1, "researchBlock").setBlockName("researchBlock");
+        GameRegistry.registerBlock(researchBlock, "researchBlock");
     }
 
 

@@ -1,15 +1,6 @@
-package com.mewo.hbmenhanced.containers;
+package com.mewo.hbmenhanced.old;
 
 //import com.hbm.util.fauxpointtwelve.BlockPos;
-import net.minecraft.block.BlockContainer;
-import net.minecraft.block.material.Material;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.Slot;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.World;
 
 public class labBlockContainerBad /*extends BlockContainer */{
     /*public labBlockContainerBad(InventoryPlayer inventory, World world, int x, int y, int z) {
