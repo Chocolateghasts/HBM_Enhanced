@@ -32,8 +32,8 @@ public class GuiResearchCore extends GuiContainer {
         int x = (this.width - this.xSize) / 2;
         int y = (this.height - this.ySize) / 2;
 
-//        this.buttonList.clear(); // Clean previous buttons if reopened
-//        this.buttonList.add(new GuiButton(BUTTON_ID_EXPLODE, x + 10, y + 130, 80, 20, "Start Research"));
+this.buttonList.clear(); // Clean previous buttons if reopened
+this.buttonList.add(new GuiButton(BUTTON_ID_EXPLODE, x + 10, y + 130, 80, 20, "Start Research"));
     }
 
     @Override
@@ -97,13 +97,13 @@ public class GuiResearchCore extends GuiContainer {
 
     @Override
     protected void actionPerformed(GuiButton button) {
-//        if (button.id == BUTTON_ID_EXPLODE) {
-//            tileEntity.getReactor().heat = 999999;
-//            tileEntity.getReactor().water = 0;
-//            tileEntity.getReactor().level = 999;
-//            tileEntity.getReactor().updateEntity();
-//            this.mc.playerController.sendEnchantPacket(this.inventorySlots.windowId, button.id);
-//        }
+        if (button.id == BUTTON_ID_EXPLODE) {
+            tileEntity.getReactor().heat = 999999;
+            tileEntity.getReactor().water = 0;
+            tileEntity.getReactor().level = 999;
+            tileEntity.getReactor().updateEntity();
+            this.mc.playerController.sendEnchantPacket(this.inventorySlots.windowId, button.id);
+        }
     }
 
 }

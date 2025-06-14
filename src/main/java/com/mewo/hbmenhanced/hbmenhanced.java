@@ -1,11 +1,10 @@
 package com.mewo.hbmenhanced;
 
 import com.mewo.hbmenhanced.Gui.GuiHandler;
-import com.mewo.hbmenhanced.Gui.labBlockGuiHandler;
 import com.mewo.hbmenhanced.OpenComputers.*;
 import com.mewo.hbmenhanced.Packets.EnergyPacket;
-import com.mewo.hbmenhanced.ReactorResearch.GuiHandlerResearchCore;
 import com.mewo.hbmenhanced.ReactorResearch.TileEntityResearchCore;
+import com.mewo.hbmenhanced.ResearchManager.PointManager;
 import com.mewo.hbmenhanced.blocks.BlockResearchCore;
 import com.mewo.hbmenhanced.blocks.LabBlock;
 import com.mewo.hbmenhanced.commands.*;
@@ -21,7 +20,6 @@ import li.cil.oc.api.Driver;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.init.Blocks;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
@@ -112,17 +110,20 @@ public class hbmenhanced
         event.registerServerCommand(new TeamCommand());
         getRpValue.setServer(event.getServer());
 
+        PointManager manager = new PointManager();
+        manager.createFile(event.getServer().getEntityWorld());
+
         Timer timer = new Timer(true);
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
                 try {
-                    saveRPData.saveRPData();  // Periodically save RP data
+                    saveRPData.saveRPData();
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
             }
-        }, 0, 60000);  // Save every 60 seconds
+        }, 0, 60000);
     }
 
     public static CreativeTabs tabhbmenhanced = new CreativeTabs("tabhbmenhanced") {
