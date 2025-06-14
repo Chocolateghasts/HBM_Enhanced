@@ -5,6 +5,7 @@ import cofh.api.energy.IEnergyHandler;
 import com.hbm.items.machine.ItemBattery;
 import com.hbm.items.machine.ItemSelfcharger;
 import com.hbm.tileentity.machine.TileEntityReactorResearch;
+import com.hbm.tileentity.machine.rbmk.TileEntityRBMKBase;
 import com.mewo.hbmenhanced.Packets.EnergyPacket;
 import com.mewo.hbmenhanced.getRpValue;
 import com.mewo.hbmenhanced.hbmenhanced;
