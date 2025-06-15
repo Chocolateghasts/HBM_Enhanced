@@ -51,6 +51,7 @@ public class GuiHandler implements IGuiHandler {
                 if (tileEntity instanceof TileEntityResearchBlock) {
                     return new GuiResearchBlock(player.inventory, (TileEntityResearchBlock) tileEntity);
                 }
+                break;
         }
         return null;
     }
