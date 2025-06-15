@@ -3,6 +3,7 @@ package com.mewo.hbmenhanced.Gui;
 import com.mewo.hbmenhanced.ReactorResearch.ContainerResearchCore;
 import com.mewo.hbmenhanced.ReactorResearch.GuiResearchCore;
 import com.mewo.hbmenhanced.ReactorResearch.TileEntityResearchCore;
+import com.mewo.hbmenhanced.ResearchBlock.ContainerResearchBlock;
 import com.mewo.hbmenhanced.ResearchBlock.GuiResearchBlock;
 import com.mewo.hbmenhanced.ResearchBlock.TileEntityResearchBlock;
 import com.mewo.hbmenhanced.containers.labBlockContainer;
@@ -28,6 +29,10 @@ public class GuiHandler implements IGuiHandler {
                     return new ContainerResearchCore(player.inventory, (TileEntityResearchCore) tileEntity);
                 }
                 break;
+            case 2:
+                if (tileEntity instanceof TileEntityResearchBlock) {
+                    return new ContainerResearchBlock(player.inventory, (TileEntityResearchBlock) tileEntity);
+                }
         }
         return null;
     }
