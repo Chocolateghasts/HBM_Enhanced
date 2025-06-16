@@ -2,6 +2,7 @@ package com.mewo.hbmenhanced.Util;
 
 import com.mewo.hbmenhanced.ResearchManager.PointManager;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 
 import java.util.*;
 
@@ -35,6 +36,10 @@ public class getItemValues {
 
     public static boolean isResearchItem(String name) {
         return !isBlackListed(name);
+    }
+
+    public static int getResearchTime(ItemStack researchable) {
+        return 5;
     }
 
     public Map<PointManager.ResearchType, Integer> pointValue(ItemStack itemStack) {

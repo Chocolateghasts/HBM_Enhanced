@@ -16,18 +16,24 @@ public class TileEntityResearchBlock extends TileEntity implements IInventory {
     public int tier = 1;
     private List<ChunkCoordinates> connectedBlockPositions = new ArrayList<ChunkCoordinates>();
 
+    private Research research;
     public int INVENTORY_SIZE = 3;
 
     public ItemStack[] inventory;
 
     public TileEntityResearchBlock() {
         inventory = new ItemStack[INVENTORY_SIZE];
+        research = new Research();
     }
 
     @Override
     public void updateEntity() {
         if (!worldObj.isRemote) {
             updateMultiBlock();
+            switch (tier) {
+                case 1:
+                    research.Tier1(inventory, 0, 1, worldObj, this);
+            }
         }
     }
 
