@@ -1,5 +1,8 @@
 package com.mewo.hbmenhanced.Util;
 
+import com.mewo.hbmenhanced.ResearchManager.PointManager;
+import net.minecraft.item.ItemStack;
+
 import java.util.*;
 
 public class getItemValues {
@@ -32,5 +35,11 @@ public class getItemValues {
 
     public static boolean isResearchItem(String name) {
         return !isBlackListed(name);
+    }
+
+    public Map<PointManager.ResearchType, Integer> pointValue(ItemStack itemStack) {
+        Map<PointManager.ResearchType, Integer> temp = new HashMap<>();
+        temp.put(PointManager.ResearchType.CHEMICAL, 5);
+        return temp;
     }
 }
