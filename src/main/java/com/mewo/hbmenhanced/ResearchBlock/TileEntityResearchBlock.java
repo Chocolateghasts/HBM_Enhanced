@@ -52,15 +52,14 @@ public class TileEntityResearchBlock extends TileEntity implements IInventory {
             int dy = y + offset[1];
             int dz = z + offset[2];
 
-            Block neighbor = worldObj.getBlock(dx, dy, dz);
-            if (neighbor instanceof ResearchBlock) {
+            TileEntity tileEntity = worldObj.getTileEntity(dx, dy, dz);
+            if (tileEntity instanceof TileEntityResearchBlock) {
                 connectedBlockPositions.add(new ChunkCoordinates(dx, dy, dz));
                 count++;
             }
         }
         this.tier = Math.min(count, 3);
     }
-
 
     @Override
     public int getSizeInventory() {
