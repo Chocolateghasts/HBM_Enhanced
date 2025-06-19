@@ -3,7 +3,9 @@ package com.mewo.hbmenhanced.ResearchBlock;
 import com.mewo.hbmenhanced.hbmenhanced;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
@@ -22,6 +24,16 @@ public class ResearchBlock extends Block {
         setHardness(3);
         setResistance(3);
         setBlockName(name);
+    }
+
+    @Override
+    public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase placer, ItemStack stack) {
+        if (!world.isRemote && placer instanceof EntityPlayer) {
+            TileEntity tile = world.getTileEntity(x, y, z);
+            if (tile instanceof TileEntityResearchBlock) {
+                ((TileEntityResearchBlock) tile).setTeam((EntityPlayer) placer);
+            }
+        }
     }
 
     @Override

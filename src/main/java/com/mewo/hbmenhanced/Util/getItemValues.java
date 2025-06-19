@@ -42,9 +42,7 @@ public class getItemValues {
         return 5;
     }
 
-    public Map<PointManager.ResearchType, Integer> pointValue(ItemStack itemStack) {
-        Map<PointManager.ResearchType, Integer> temp = new HashMap<>();
-        temp.put(PointManager.ResearchType.CHEMICAL, 5);
-        return temp;
+    public static ResearchValue getPoints(ItemStack stack) {
+        return new ResearchValue(PointManager.ResearchType.CHEMICAL, 5);
     }
 }

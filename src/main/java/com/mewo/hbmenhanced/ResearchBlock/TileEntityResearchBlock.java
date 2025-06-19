@@ -19,11 +19,29 @@ public class TileEntityResearchBlock extends TileEntity implements IInventory {
     private Research research;
     public int INVENTORY_SIZE = 3;
 
+    public int currentBurnTime = 0;
+    public int researchProgress = 0;
+    public int maxResearchProgress = 0;
+    public boolean isResearching = false;
+    private String team;
+
     public ItemStack[] inventory;
 
     public TileEntityResearchBlock() {
         inventory = new ItemStack[INVENTORY_SIZE];
         research = new Research();
+    }
+
+    public void setTeam(EntityPlayer placer) {
+        NBTTagCompound nbt = placer.getEntityData();
+        if (nbt != null) {
+            String team = nbt.getString("hbmenhanced:team");
+            this.team = team;
+        }
+    }
+
+    public String getTeam() {
+        return this.team;
     }
 
     @Override
@@ -32,7 +50,7 @@ public class TileEntityResearchBlock extends TileEntity implements IInventory {
             updateMultiBlock();
             switch (tier) {
                 case 1:
-                    research.Tier1(inventory, 0, 1, worldObj, this);
+
             }
         }
     }
@@ -165,6 +183,10 @@ public class TileEntityResearchBlock extends TileEntity implements IInventory {
             }
         }
         compound.setTag("Items", items);
+        compound.setInteger("BurnTime", currentBurnTime);
+        compound.setInteger("ResearchProgress", researchProgress);
+        compound.setInteger("MaxResearch", maxResearchProgress);
+        compound.setBoolean("IsResearching", isResearching);
     }
 
     @Override
@@ -177,5 +199,9 @@ public class TileEntityResearchBlock extends TileEntity implements IInventory {
                 inventory[i] = ItemStack.loadItemStackFromNBT(item);
             }
         }
+        currentBurnTime = compound.getInteger("BurnTime");
+        researchProgress = compound.getInteger("ResearchProgress");
+        maxResearchProgress = compound.getInteger("MaxResearch");
+        isResearching = compound.getBoolean("IsResearching");
     }
 }
