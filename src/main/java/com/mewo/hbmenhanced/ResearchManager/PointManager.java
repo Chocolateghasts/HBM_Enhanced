@@ -14,9 +14,9 @@ public class PointManager {
 
     public enum ResearchType {STRUCTURAL, NUCLEAR, SPACE, EXPLOSIVES, MACHINERY, WEAPONRY, CHEMICAL, EXOTIC, ELECTRONICS}
 
-    File dataFile;
+    static File dataFile;
 
-    public void createFile(World world) {
+    public static void createFile(World world) {
         dataFile = new File(getDataFolder(world), "teamData.json");
         if (!dataFile.exists()) {
             try {
@@ -28,7 +28,7 @@ public class PointManager {
         }
     }
 
-    public File getDataFolder(World world) {
+    public static File getDataFolder(World world) {
         File worldFolder = world.getSaveHandler().getWorldDirectory();
         File myDataFolder = new File(worldFolder, "hbmenhanced");
         if (!myDataFolder.exists()) {
@@ -37,17 +37,17 @@ public class PointManager {
         return myDataFolder;
     }
 
-    public Map<String, EnumMap<ResearchType, Integer>> teamMap = new HashMap<>();
+    public static Map<String, EnumMap<ResearchType, Integer>> teamMap = new HashMap<>();
 
-    public List<String> getTeams() {
+    public static List<String> getTeams() {
         return new ArrayList<>(teamMap.keySet());
     }
 
-    private String normalizeTeam(String team) {
+    private static String normalizeTeam(String team) {
         return (team == null) ? null : team.toLowerCase().trim();
     }
 
-    public Result addTeam(String team) {
+    public static Result addTeam(String team) {
         if (team == null) return new Result(false, "Team is null");
         team = normalizeTeam(team);
         if (teamMap.containsKey(team)) {
@@ -57,7 +57,7 @@ public class PointManager {
         return new Result(true, "Registered " + team);
     }
 
-    public Result removeTeam(String team) {
+    public static Result removeTeam(String team) {
         if (team == null) return new Result(false, "Team is null");
         team = normalizeTeam(team);
         if (!teamMap.containsKey(team)) {
@@ -67,7 +67,7 @@ public class PointManager {
         return new Result(true, "Removed " + team);
     }
 
-    public Result addPoints(String team, ResearchType type, int points) {
+    public static Result addPoints(String team, ResearchType type, int points) {
         if (team == null || type == null || points == 0) {
             return new Result(false, "Values are null or zero");
         }
@@ -78,7 +78,7 @@ public class PointManager {
         return new Result(true, "Added " + points + " points to " + type + " for team " + team);
     }
 
-    public Result saveData() {
+    public static Result saveData() {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         try (FileWriter writer = new FileWriter(dataFile)) {
             gson.toJson(teamMap, writer);
@@ -89,7 +89,7 @@ public class PointManager {
         return new Result(true, "Saved data to Json");
     }
 
-    public Result loadData() {
+    public static Result loadData() {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         try (FileReader reader = new FileReader(dataFile)) {
             Type type = new TypeToken<Map<String, EnumMap<ResearchType, Integer>>>(){}.getType();
@@ -101,11 +101,11 @@ public class PointManager {
         return new Result(true, "Loaded from Json");
     }
 
-    public Map<String, EnumMap<ResearchType, Integer>> getTeamMap() {
+    public static Map<String, EnumMap<ResearchType, Integer>> getTeamMap() {
         return teamMap;
     }
 
-    public int getPoints(String team, ResearchType type) {
+    public static int getPoints(String team, ResearchType type) {
         if (team == null || type == null) {
             return 0;
         }
@@ -116,7 +116,7 @@ public class PointManager {
         return teamMap.get(team).getOrDefault(type, 0);
     }
 
-    public Result setPoints(String team, ResearchType type, int points) {
+    public static Result setPoints(String team, ResearchType type, int points) {
         if (team == null || type == null || points == 0) {
             return new Result(false, "Values are null or zero");
         }

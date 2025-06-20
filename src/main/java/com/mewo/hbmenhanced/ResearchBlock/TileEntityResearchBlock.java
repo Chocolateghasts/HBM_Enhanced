@@ -50,7 +50,7 @@ public class TileEntityResearchBlock extends TileEntity implements IInventory {
             updateMultiBlock();
             switch (tier) {
                 case 1:
-
+                    research.Tier1(inventory, 0, 1, this);
             }
         }
     }

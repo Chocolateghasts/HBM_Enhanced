@@ -5,7 +5,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
 import java.util.*;
-
 public class getItemValues {
 
     public static boolean isBlackListed(String key) {
