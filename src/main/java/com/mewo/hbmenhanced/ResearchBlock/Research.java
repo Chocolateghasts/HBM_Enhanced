@@ -24,12 +24,12 @@ public class Research {
 
         if (!te.isResearching && te.currentBurnTime <= 0) {
             if (fuel != null && TileEntityFurnace.getItemBurnTime(fuel) > 0) {
-                Log("Burning");
                 te.currentBurnTime = TileEntityFurnace.getItemBurnTime(fuel);
+                ItemStack containerItem = fuel.getItem().getContainerItem(fuel);
+
                 fuel.stackSize--;
                 if (fuel.stackSize <= 0) {
-                    Log("Spending fuel");
-                    inventory[fuelSlot] = fuel.getItem().getContainerItem(fuel);
+                    inventory[fuelSlot] = containerItem;
                 }
                 te.isResearching = true;
                 te.maxResearchProgress = 200;
@@ -40,20 +40,31 @@ public class Research {
         }
 
         if (te.isResearching) {
-            Log("Started Research");
             if (te.currentBurnTime > 0) {
                 te.currentBurnTime--;
                 te.researchProgress++;
 
                 if (te.researchProgress >= te.maxResearchProgress) {
                     Log("Completed");
-                    ResearchValue points = getItemValues.getPoints(input);
                     input.stackSize--;
                     if (input.stackSize <= 0) {
                         inventory[mainSlot] = null;
                     }
 
-                    PointManager.addPoints(te.getTeam(), points.getType(), points.getPoints());
+                    if (te.researchProgress >= te.maxResearchProgress) {
+                        ResearchValue points = getItemValues.getPoints(input);
+                        if (points != null && te.getTeam() != null && !te.getTeam().isEmpty()) {
+                            input.stackSize--;
+                            if (input.stackSize <= 0) {
+                                inventory[mainSlot] = null;
+                            }
+
+                            PointManager.addPoints(te.getTeam(), points.getType(), points.getPoints());
+                            te.researchProgress = 0;
+                            te.maxResearchProgress = 0;
+                            te.isResearching = false;
+                        }
+                    }
                     te.researchProgress = 0;
                     te.maxResearchProgress = 0;
                     te.isResearching = false;
