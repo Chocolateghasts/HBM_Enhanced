@@ -46,7 +46,7 @@ public class Research {
                 te.researchProgress++;
 
                 if (te.researchProgress >= te.maxResearchProgress) {
-                    Log("COmpleted");
+                    Log("Completed");
                     ResearchValue points = getItemValues.getPoints(input);
                     input.stackSize--;
                     if (input.stackSize <= 0) {
