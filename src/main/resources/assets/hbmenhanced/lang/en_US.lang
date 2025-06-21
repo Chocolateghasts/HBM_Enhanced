@@ -3,6 +3,9 @@ tile.labBlock.name=Lab Block
 ^ for blocks ^
 
 item.researchPoint.name=Research Point
+item.smallPropAirframe.name=Small Prop Airframe
+item.mediumPropAirframe.name=Medium Prop Airframe
+item.largePropAirframe.name=Large Prop Airframe
 
 ^ for items ^
 

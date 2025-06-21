@@ -1,14 +1,15 @@
 package com.mewo.hbmenhanced.Gui;
 
 import com.mewo.hbmenhanced.containers.labBlockTileEntity;
+import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
 import com.mewo.hbmenhanced.containers.labBlockContainer;
+import com.mewo.hbmenhanced.Gui.GuiPongGame;
 
 public class labBlockGui extends GuiContainer {
     private static final ResourceLocation LAB_BLOCK_GUI_TEXTURE = new ResourceLocation("hbmenhanced", "textures/gui/LAB_BLOCK_GUI_TEXTURE.png");
-
     public labBlockTileEntity labBlock;
 
     public labBlockGui(InventoryPlayer player, labBlockTileEntity entity) {
@@ -16,6 +17,12 @@ public class labBlockGui extends GuiContainer {
         this.labBlock = entity;
         this.xSize = 176;
         this.ySize = 166;
+    }
+
+    @Override
+    public void initGui() {
+        super.initGui();
+        this.buttonList.add(new GuiButton(1, this.guiLeft + 10, this.guiTop + 20, 60, 20, "Play Pong"));
     }
 
     @Override
@@ -36,6 +43,12 @@ public class labBlockGui extends GuiContainer {
         drawRect(ballX, ballY, 2, 2, 0xFFFFFF00);
     }
 
+    @Override
+    protected void actionPerformed(GuiButton button) {
+        if (button.id == 1) {
+            mc.displayGuiScreen(new GuiPongGame());
+        }
+    }
 
     @Override
     protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
@@ -48,7 +61,6 @@ public class labBlockGui extends GuiContainer {
             int arrowY = this.guiTop + 42;
             int pixelSize = 2;
 
-            // Fill shape: 12 rows of 7 columns
             String[] arrowShape = new String[]{
                     "01100000",
                     "11110000",
@@ -72,15 +84,10 @@ public class labBlockGui extends GuiContainer {
                     if (col < line.length() && line.charAt(col) == '1') {
                         int x = arrowX + col * pixelSize;
                         int y = arrowY + row * pixelSize;
-                        drawRect(x, y, x + pixelSize, y + pixelSize, 0xFF00FF00); // Green
+                        drawRect(x, y, x + pixelSize, y + pixelSize, 0xFF00FF00);
                     }
                 }
             }
         }
-
-//        if (shouldPlayGame) {
-//            shouldPlayGame = false;
-//            drawGame();
-//        }
     }
 }
