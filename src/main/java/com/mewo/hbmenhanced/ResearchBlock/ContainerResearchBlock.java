@@ -4,19 +4,22 @@ import net.minecraft.block.BlockWood;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
+import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntityFurnace;
 
 public class ContainerResearchBlock extends Container {
+    private int lastBurnTime;
+    private int lastProgress;
     private int tier;
     private TileEntityResearchBlock tileEntity;
 
     public ContainerResearchBlock(InventoryPlayer inventory, TileEntityResearchBlock te) {
         this.tileEntity = te;
         this.tier = te.tier;
-        addSlotToContainer(new Slot(te, 0, 12, 10));
-        addSlotToContainer(new Slot(te, 1, 12, 30){
+        addSlotToContainer(new Slot(te, 0, 9, 28));
+        addSlotToContainer(new Slot(te, 1, 9, 62){
             @Override
             public boolean isItemValid(ItemStack itemStack) {
                 switch (tier) {
@@ -30,7 +33,7 @@ public class ContainerResearchBlock extends Container {
             @Override
             public void onSlotChanged() {super.onSlotChanged();}
         });
-        addSlotToContainer(new Slot(te, 2, 12, 50));
+        addSlotToContainer(new Slot(te, 2, 55, 28));
 
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 9; j++) {

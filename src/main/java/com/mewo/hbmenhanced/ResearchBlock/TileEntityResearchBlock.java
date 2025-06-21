@@ -1,7 +1,9 @@
 package com.mewo.hbmenhanced.ResearchBlock;
 
-import com.mewo.hbmenhanced.ReactorResearch.TileEntityResearchCore;
-import net.minecraft.block.Block;
+import com.mewo.hbmenhanced.Packets.ResearchTier1Packet;
+import com.mewo.hbmenhanced.hbmenhanced;
+import cpw.mods.fml.common.network.NetworkRegistry;
+import net.minecraft.client.gui.inventory.GuiFurnace;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -11,6 +13,18 @@ import net.minecraft.util.ChunkCoordinates;
 
 import java.util.ArrayList;
 import java.util.List;
+
+/*
+Start with a basic Research Block (Tier 1) that can perform simple research tasks.
+
+As you progress, unlock Tier 2, which lets you craft a second Research Block and place it next to the first.
+
+When placed together, these blocks form a Tier 2 multiblock structure that unlocks new research options (like oil).
+
+Later, you unlock Tier 3, adding another Research Block to the structure to create a larger multiblock and access even more advanced research.
+
+The ResearchCore grows over time by adding blocks and upgrading tiers, expanding research capabilities as the game progresses.
+ */
 
 public class TileEntityResearchBlock extends TileEntity implements IInventory {
     public int tier = 1;
@@ -24,8 +38,16 @@ public class TileEntityResearchBlock extends TileEntity implements IInventory {
     public int maxResearchProgress = 0;
     public boolean isResearching = false;
     private String team;
-
     public ItemStack[] inventory;
+
+    public int getBurnTimeScaled(int scale) {
+        return Math.min(scale, (currentBurnTime * scale) / 200); // Assuming 200 is full burn time
+    }
+
+    public int getResearchProgressScaled(int scale) {
+        if (maxResearchProgress == 0) return 0;
+        return (researchProgress * scale) / maxResearchProgress;
+    }
 
     public TileEntityResearchBlock() {
         inventory = new ItemStack[INVENTORY_SIZE];
@@ -35,8 +57,7 @@ public class TileEntityResearchBlock extends TileEntity implements IInventory {
     public void setTeam(EntityPlayer placer) {
         NBTTagCompound nbt = placer.getEntityData();
         if (nbt != null) {
-            String team = nbt.getString("hbmenhanced:team");
-            this.team = team;
+            this.team = nbt.getString("hbmenhanced:team");
         }
     }
 
@@ -50,6 +71,14 @@ public class TileEntityResearchBlock extends TileEntity implements IInventory {
             updateMultiBlock();
             switch (tier) {
                 case 1:
+                    hbmenhanced.network.sendToAllAround(
+                        new ResearchTier1Packet(xCoord, yCoord, zCoord, currentBurnTime, researchProgress, maxResearchProgress, isResearching),
+                        new NetworkRegistry.TargetPoint(
+                                worldObj.provider.dimensionId,
+                                xCoord, yCoord, zCoord,
+                                64.0D
+                        )
+                    );
                     research.Tier1(inventory, 0, 1, this);
             }
         }
@@ -58,7 +87,7 @@ public class TileEntityResearchBlock extends TileEntity implements IInventory {
     public void updateMultiBlock() {
         connectedBlockPositions.clear();
 
-        int count = 1; // self
+        int count = 1;
         int x = this.xCoord;
         int y = this.yCoord;
         int z = this.zCoord;

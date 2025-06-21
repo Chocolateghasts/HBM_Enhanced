@@ -43,7 +43,6 @@ public class EnergyPacket implements IMessage {
     public static class Handler implements IMessageHandler<EnergyPacket, IMessage> {
         @Override
         public IMessage onMessage(EnergyPacket message, MessageContext ctx) {
-            // Make sure we're on the client side
             if (ctx.side.isClient()) {
                 TileEntity te = Minecraft.getMinecraft().theWorld.getTileEntity(
                         message.x, message.y, message.z);

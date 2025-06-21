@@ -7,74 +7,54 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntityFurnace;
 
 public class Research {
-
-    private void Log(String text) {
-        System.out.println(text);
-    }
-
     public void Tier1(ItemStack[] inventory, int mainSlot, int fuelSlot, TileEntityResearchBlock te) {
         if (te.getWorldObj().isRemote) return;
         ItemStack input = inventory[mainSlot];
-        ItemStack fuel = inventory[fuelSlot];
-
         if (input == null) {
             te.isResearching = false;
             return;
         }
 
+        ItemStack fuel = inventory[fuelSlot];
         if (!te.isResearching && te.currentBurnTime <= 0) {
-            if (fuel != null && TileEntityFurnace.getItemBurnTime(fuel) > 0) {
-                te.currentBurnTime = TileEntityFurnace.getItemBurnTime(fuel);
-                ItemStack containerItem = fuel.getItem().getContainerItem(fuel);
+            int burnTime = (fuel != null) ? TileEntityFurnace.getItemBurnTime(fuel) : 0;
 
-                fuel.stackSize--;
-                if (fuel.stackSize <= 0) {
-                    inventory[fuelSlot] = containerItem;
-                }
-                te.isResearching = true;
-                te.maxResearchProgress = 200;
-            } else {
-                Log("Fuel null");
+            if (burnTime <= 0) {
                 return;
             }
-        }
 
+            te.currentBurnTime = burnTime;
+
+            if (--fuel.stackSize <= 0) {
+                inventory[fuelSlot] = fuel.getItem().getContainerItem(fuel);
+            }
+
+            te.isResearching = true;
+            te.maxResearchProgress = 200;
+            te.researchProgress = 0;
+        }
         if (te.isResearching) {
             if (te.currentBurnTime > 0) {
                 te.currentBurnTime--;
                 te.researchProgress++;
 
                 if (te.researchProgress >= te.maxResearchProgress) {
-                    Log("Completed");
-                    input.stackSize--;
-                    if (input.stackSize <= 0) {
+
+                    ResearchValue points = getItemValues.getPoints(input);
+                    if (--input.stackSize <= 0) {
                         inventory[mainSlot] = null;
                     }
 
-                    if (te.researchProgress >= te.maxResearchProgress) {
-                        ResearchValue points = getItemValues.getPoints(input);
-                        if (points != null && te.getTeam() != null && !te.getTeam().isEmpty()) {
-                            input.stackSize--;
-                            if (input.stackSize <= 0) {
-                                inventory[mainSlot] = null;
-                            }
-
-                            PointManager.addPoints(te.getTeam(), points.getType(), points.getPoints());
-                            te.researchProgress = 0;
-                            te.maxResearchProgress = 0;
-                            te.isResearching = false;
-                        }
+                    if (points != null) {
+                        PointManager.addPoints(te.getTeam(), points.getType(), points.getPoints());
                     }
-                    te.researchProgress = 0;
-                    te.maxResearchProgress = 0;
+
                     te.isResearching = false;
                 }
             } else {
-                Log("No burntime");
                 te.isResearching = false;
             }
         }
-
         te.markDirty();
     }
 }
