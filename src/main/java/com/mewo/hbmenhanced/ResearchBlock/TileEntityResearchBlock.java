@@ -37,6 +37,7 @@ public class TileEntityResearchBlock extends TileEntity implements IInventory {
     public int researchProgress = 0;
     public int maxResearchProgress = 0;
     public boolean isResearching = false;
+    public boolean isBurning = false;
     private String team;
     public ItemStack[] inventory;
 
@@ -79,7 +80,7 @@ public class TileEntityResearchBlock extends TileEntity implements IInventory {
                                 64.0D
                         )
                     );
-                    research.Tier1(inventory, 0, 1, this);
+                    research.Tier1(inventory, 0, 1, 2, this);
             }
         }
     }

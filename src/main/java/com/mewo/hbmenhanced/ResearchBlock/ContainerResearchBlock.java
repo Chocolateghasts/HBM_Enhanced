@@ -22,16 +22,9 @@ public class ContainerResearchBlock extends Container {
         addSlotToContainer(new Slot(te, 1, 9, 62){
             @Override
             public boolean isItemValid(ItemStack itemStack) {
-                switch (tier) {
-                    case 1:
-                        return TileEntityFurnace.getItemBurnTime(itemStack) > 0;
-                    case 2:
-                    case 3:
-                    default: return false;
-                }
+                // Allow fuel items regardless of tier
+                return TileEntityFurnace.getItemBurnTime(itemStack) > 0;
             }
-            @Override
-            public void onSlotChanged() {super.onSlotChanged();}
         });
         addSlotToContainer(new Slot(te, 2, 55, 28));
 
