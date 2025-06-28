@@ -43,6 +43,7 @@ public class Research {
         }
 
         if (te.isBurning && te.isResearching) {
+            te.maxResearchProgress = getItemValues.getResearchTime(input);
             te.researchProgress++;
             if (te.researchProgress >= te.maxResearchProgress) {
                 te.isResearching = false;
@@ -50,6 +51,10 @@ public class Research {
                 te.maxResearchProgress = 0;
                 ResearchValue value = getItemValues.getPoints(input);
                 PointManager.addPoints(te.getTeam(), value.getType(), value.getPoints());
+                input.stackSize--;
+                if (input.stackSize <= 0) {
+                    inventory[mainSlot] = null;
+                }
             }
         }
     }

@@ -68,6 +68,7 @@ public class PointManager {
     }
 
     public static Result addPoints(String team, ResearchType type, int points) {
+        loadData();
         if (team == null || type == null || points == 0) {
             return new Result(false, "Values are null or zero");
         }
@@ -75,6 +76,7 @@ public class PointManager {
         teamMap.putIfAbsent(team, new EnumMap<>(ResearchType.class));
         EnumMap<ResearchType, Integer> map = teamMap.get(team);
         map.put(type, map.getOrDefault(type, 0) + points);
+        saveData();
         return new Result(true, "Added " + points + " points to " + type + " for team " + team);
     }
 
