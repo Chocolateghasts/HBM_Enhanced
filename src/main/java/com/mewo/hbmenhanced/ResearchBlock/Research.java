@@ -1,5 +1,7 @@
 package com.mewo.hbmenhanced.ResearchBlock;
 
+import com.hbm.items.machine.ItemBattery;
+import com.hbm.items.machine.ItemSelfcharger;
 import com.mewo.hbmenhanced.ResearchManager.PointManager;
 import com.mewo.hbmenhanced.Util.ResearchValue;
 import com.mewo.hbmenhanced.Util.Result;
@@ -60,6 +62,24 @@ public class Research {
                 }
             }
         }
+    }
+
+    public void Tier2(ItemStack[] inventory, int mainSlot, int energySlot, int outputSlot, TileEntityResearchBlock te) {
+        if (te.getWorldObj().isRemote) return;
+
+        ItemStack input = inventory[mainSlot];
+        ItemStack battery = inventory[energySlot];
+
+        if (input == null) return;
+
+        if (te.isResearching) {
+            if (te.currentEnergy >= 100) {
+                te.currentEnergy -= 100;
+                te.researchProgress++;
+            }
+
+        }
+
     }
 
 }

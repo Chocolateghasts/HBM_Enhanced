@@ -1,5 +1,8 @@
 package com.mewo.hbmenhanced.ResearchBlock;
 
+import cofh.api.energy.IEnergyContainerItem;
+import com.hbm.items.machine.ItemBattery;
+import com.hbm.items.machine.ItemSelfcharger;
 import net.minecraft.block.BlockWood;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -22,8 +25,15 @@ public class ContainerResearchBlock extends Container {
         addSlotToContainer(new Slot(te, 1, 9, 62){
             @Override
             public boolean isItemValid(ItemStack itemStack) {
-                // Allow fuel items regardless of tier
-                return TileEntityFurnace.getItemBurnTime(itemStack) > 0;
+                switch (tier) {
+                    case 1:
+                        return TileEntityFurnace.getItemBurnTime(itemStack) > 0;
+                    case 2:
+                        if (itemStack.getItem() instanceof IEnergyContainerItem || itemStack.getItem() instanceof ItemBattery || itemStack.getItem() instanceof ItemSelfcharger) {
+                            return true;
+                        }
+                }
+                return false;
             }
         });
         addSlotToContainer(new Slot(te, 2, 55, 28));

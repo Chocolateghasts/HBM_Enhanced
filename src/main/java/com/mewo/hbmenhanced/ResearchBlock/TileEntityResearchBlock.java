@@ -1,5 +1,8 @@
 package com.mewo.hbmenhanced.ResearchBlock;
 
+import cofh.api.energy.IEnergyContainerItem;
+import com.hbm.items.machine.ItemBattery;
+import com.hbm.items.machine.ItemSelfcharger;
 import com.mewo.hbmenhanced.Packets.ResearchTier1Packet;
 import com.mewo.hbmenhanced.hbmenhanced;
 import cpw.mods.fml.common.network.NetworkRegistry;
@@ -33,6 +36,8 @@ public class TileEntityResearchBlock extends TileEntity implements IInventory {
     private Research research;
     public int INVENTORY_SIZE = 3;
 
+    public int currentEnergy = 0;
+    public int maxEnergy = 50000;
     public int currentBurnTime = 0;
     public int researchProgress = 0;
     public int maxResearchProgress = 0;
@@ -81,6 +86,21 @@ public class TileEntityResearchBlock extends TileEntity implements IInventory {
                         )
                     );
                     research.Tier1(inventory, 0, 1, 2, this);
+                case 2:
+                    if (currentEnergy < maxEnergy) {
+                        ItemStack battery =  inventory[1];
+
+                        if (battery.getItem() instanceof ItemBattery) {
+                            ((ItemBattery) battery.getItem()).dischargeBattery(battery, ((ItemBattery) battery.getItem()).getDischargeRate());
+                            currentEnergy += (int) ((ItemBattery) battery.getItem()).getDischargeRate();
+                        } else if (battery.getItem() instanceof ItemSelfcharger) {
+                            currentEnergy += (int) ((ItemSelfcharger) battery.getItem()).getDischargeRate();
+                        } else if (battery.getItem() instanceof IEnergyContainerItem) {
+                            ((IEnergyContainerItem) battery.getItem()).extractEnergy(battery, 3000, false);
+                            currentEnergy += 3000;
+                        }
+
+                    }
             }
         }
     }
