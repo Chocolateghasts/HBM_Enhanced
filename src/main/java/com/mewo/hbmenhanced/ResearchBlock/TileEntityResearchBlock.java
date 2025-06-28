@@ -89,7 +89,7 @@ public class TileEntityResearchBlock extends TileEntity implements IInventory {
                 case 2:
                     if (currentEnergy < maxEnergy) {
                         ItemStack battery =  inventory[1];
-
+                        // TODO: fix
                         if (battery.getItem() instanceof ItemBattery) {
                             ((ItemBattery) battery.getItem()).dischargeBattery(battery, ((ItemBattery) battery.getItem()).getDischargeRate());
                             currentEnergy += (int) ((ItemBattery) battery.getItem()).getDischargeRate();
