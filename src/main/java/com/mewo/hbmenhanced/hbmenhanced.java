@@ -7,6 +7,7 @@ import com.mewo.hbmenhanced.ReactorResearch.TileEntityResearchCore;
 import com.mewo.hbmenhanced.ResearchBlock.ResearchBlock;
 import com.mewo.hbmenhanced.ResearchBlock.TileEntityResearchBlock;
 import com.mewo.hbmenhanced.ResearchManager.PointManager;
+import com.mewo.hbmenhanced.Util.Result;
 import com.mewo.hbmenhanced.blocks.BlockResearchCore;
 import com.mewo.hbmenhanced.blocks.LabBlock;
 import com.mewo.hbmenhanced.commands.*;
@@ -124,11 +125,8 @@ public class hbmenhanced
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
-                try {
-                    saveRPData.saveRPData();
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
+                Result res = PointManager.saveData();
+                System.out.println(res.isSuccess() + res.getMessage());
             }
         }, 0, 60000);
     }

@@ -2,6 +2,7 @@ package com.mewo.hbmenhanced.ResearchBlock;
 
 import com.mewo.hbmenhanced.ResearchManager.PointManager;
 import com.mewo.hbmenhanced.Util.ResearchValue;
+import com.mewo.hbmenhanced.Util.Result;
 import com.mewo.hbmenhanced.Util.getItemValues;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntityFurnace;
@@ -50,7 +51,9 @@ public class Research {
                 te.researchProgress = 0;
                 te.maxResearchProgress = 0;
                 ResearchValue value = getItemValues.getPoints(input);
-                PointManager.addPoints(te.getTeam(), value.getType(), value.getPoints());
+                System.out.println("Team: " + te.getTeam() + " type: " + value.getType() + " points: " + value.getPoints());
+                Result res = PointManager.addPoints(te.getTeam(), value.getType(), value.getPoints());
+                System.out.println(res.isSuccess() + res.getMessage());
                 input.stackSize--;
                 if (input.stackSize <= 0) {
                     inventory[mainSlot] = null;
