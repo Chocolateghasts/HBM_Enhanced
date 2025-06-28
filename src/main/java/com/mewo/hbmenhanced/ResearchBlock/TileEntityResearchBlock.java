@@ -213,6 +213,7 @@ public class TileEntityResearchBlock extends TileEntity implements IInventory {
             }
         }
         compound.setTag("Items", items);
+        compound.setString("Team", team);
         compound.setInteger("BurnTime", currentBurnTime);
         compound.setInteger("ResearchProgress", researchProgress);
         compound.setInteger("MaxResearch", maxResearchProgress);
@@ -229,6 +230,7 @@ public class TileEntityResearchBlock extends TileEntity implements IInventory {
                 inventory[i] = ItemStack.loadItemStackFromNBT(item);
             }
         }
+        team = compound.getString("Team");
         currentBurnTime = compound.getInteger("BurnTime");
         researchProgress = compound.getInteger("ResearchProgress");
         maxResearchProgress = compound.getInteger("MaxResearch");

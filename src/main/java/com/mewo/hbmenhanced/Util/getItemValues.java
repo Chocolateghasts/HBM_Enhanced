@@ -38,7 +38,7 @@ public class getItemValues {
     }
 
     public static int getResearchTime(ItemStack researchable) {
-        return 5;
+        return 60;
     }
 
     public static ResearchValue getPoints(ItemStack stack) {
