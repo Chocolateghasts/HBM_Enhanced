@@ -86,6 +86,7 @@ public class TileEntityResearchBlock extends TileEntity implements IInventory {
                         )
                     );
                     research.Tier1(inventory, 0, 1, 2, this);
+                    break;
                 case 2:
                     if (currentEnergy < maxEnergy) {
                         ItemStack battery =  inventory[1];
@@ -99,7 +100,8 @@ public class TileEntityResearchBlock extends TileEntity implements IInventory {
                             ((IEnergyContainerItem) battery.getItem()).extractEnergy(battery, 3000, false);
                             currentEnergy += 3000;
                         }
-
+                        research.Tier2(inventory, 0, 1, 2, this);
+                        break;
                     }
             }
         }

@@ -62,26 +62,55 @@ public class Research {
                 }
             }
         }
+        te.markDirty();
     }
 
     public void Tier2(ItemStack[] inventory, int mainSlot, int energySlot, int outputSlot, TileEntityResearchBlock te) {
         if (te.getWorldObj().isRemote) return;
 
         ItemStack input = inventory[mainSlot];
-        ItemStack battery = inventory[energySlot];
+        ItemStack fuel = inventory[energySlot];
 
-        if (input == null) return;
-
-        if (te.isResearching) {
-            if (te.currentEnergy >= 100) {
-                te.currentEnergy -= 100;
-                te.researchProgress++;
-            }
-
+        if (input == null) {
+            te.isResearching = false;
+            te.researchProgress = 0;
+            te.maxResearchProgress = 0;
+            return;
         }
 
-    }
+        if (te.currentEnergy >= 100) {
+            te.currentEnergy -= 100;
+        } else {
+            return;
+        }
 
+        if (!te.isResearching) {
+            te.isResearching = true;
+            te.researchProgress = 0;
+            te.maxResearchProgress = getItemValues.getResearchTime(input);
+        }
+
+
+
+        if (te.isResearching) {
+            te.maxResearchProgress = getItemValues.getResearchTime(input);
+            te.researchProgress++;
+            if (te.researchProgress >= te.maxResearchProgress) {
+                te.isResearching = false;
+                te.researchProgress = 0;
+                te.maxResearchProgress = 0;
+                ResearchValue value = getItemValues.getPoints(input);
+                System.out.println("Team: " + te.getTeam() + " type: " + value.getType() + " points: " + value.getPoints());
+                Result res = PointManager.addPoints(te.getTeam(), value.getType(), value.getPoints());
+                System.out.println(res.isSuccess() + res.getMessage());
+                input.stackSize--;
+                if (input.stackSize <= 0) {
+                    inventory[mainSlot] = null;
+                }
+            }
+        }
+        te.markDirty();
+    }
 }
 
 //    public void Tier1(ItemStack[] inventory, int mainSlot, int fuelSlot, TileEntityResearchBlock te) {
