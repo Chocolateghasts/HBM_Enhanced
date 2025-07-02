@@ -1,14 +1,21 @@
-package com.mewo.hbmenhanced.ResearchBlock.Tier1;
+package com.mewo.hbmenhanced.ResearchBlock;
 
+import cofh.api.energy.IEnergyContainerItem;
+import com.hbm.items.machine.ItemBattery;
+import com.hbm.items.machine.ItemSelfcharger;
 import com.mewo.hbmenhanced.Packets.ResearchTier1Packet;
-import com.mewo.hbmenhanced.ResearchBlock.Research;
 import com.mewo.hbmenhanced.hbmenhanced;
 import cpw.mods.fml.common.network.NetworkRegistry;
+import net.minecraft.client.gui.inventory.GuiFurnace;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ChunkCoordinates;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /*
 Start with a basic Research Block (Tier 1) that can perform simple research tasks.
@@ -23,6 +30,8 @@ The ResearchCore grows over time by adding blocks and upgrading tiers, expanding
  */
 
 public class TileEntityResearchBlock extends TileEntity implements IInventory {
+    public int tier = 1;
+    private List<ChunkCoordinates> connectedBlockPositions = new ArrayList<ChunkCoordinates>();
 
     private Research research;
     public int INVENTORY_SIZE = 3;
@@ -34,6 +43,7 @@ public class TileEntityResearchBlock extends TileEntity implements IInventory {
     public int maxResearchProgress = 0;
     public boolean isResearching = false;
     public boolean isBurning = false;
+    public boolean isCore = true;
     private String team;
     public ItemStack[] inventory;
 
@@ -65,16 +75,70 @@ public class TileEntityResearchBlock extends TileEntity implements IInventory {
     @Override
     public void updateEntity() {
         if (!worldObj.isRemote) {
-            hbmenhanced.network.sendToAllAround(
-                    new ResearchTier1Packet(xCoord, yCoord, zCoord, currentBurnTime, researchProgress, maxResearchProgress, isResearching),
-                    new NetworkRegistry.TargetPoint(
-                            worldObj.provider.dimensionId,
-                            xCoord, yCoord, zCoord,
-                            64.0D
-                    )
-            );
-            research.Tier1(inventory, 0, 1, 2, this);
+            updateMultiBlock();
+            switch (tier) {
+                case 1:
+                    hbmenhanced.network.sendToAllAround(
+                        new ResearchTier1Packet(xCoord, yCoord, zCoord, currentBurnTime, researchProgress, maxResearchProgress, isResearching),
+                        new NetworkRegistry.TargetPoint(
+                                worldObj.provider.dimensionId,
+                                xCoord, yCoord, zCoord,
+                                64.0D
+                        )
+                    );
+                    research.Tier1(inventory, 0, 1, 2, this);
+                    break;
+                case 2:
+                    System.out.println("Energy: " + currentEnergy);
+                    if (currentEnergy < maxEnergy) {
+                        ItemStack battery =  inventory[1];
+                        if (battery != null) {
+                            // TODO: fix
+                            if (battery.getItem() instanceof ItemBattery) {
+                                ((ItemBattery) battery.getItem()).dischargeBattery(battery, ((ItemBattery) battery.getItem()).getDischargeRate());
+                                currentEnergy += (int) ((ItemBattery) battery.getItem()).getDischargeRate();
+                            } else if (battery.getItem() instanceof ItemSelfcharger) {
+                                currentEnergy += (int) ((ItemSelfcharger) battery.getItem()).getDischargeRate();
+                            } else if (battery.getItem() instanceof IEnergyContainerItem) {
+                                ((IEnergyContainerItem) battery.getItem()).extractEnergy(battery, 3000, false);
+                                currentEnergy += 3000;
+                            }
+                            research.Tier2(inventory, 0, 1, 2, this);
+                            break;
+                        }
+                    }
+            }
         }
+    }
+
+    public void updateMultiBlock() {
+        connectedBlockPositions.clear();
+
+        int count = 1;
+        int x = this.xCoord;
+        int y = this.yCoord;
+        int z = this.zCoord;
+
+        // 4 cardinal directions (NSEW)
+        int[][] offsets = {
+                { 1,  0,  0},
+                {-1,  0,  0},
+                { 0,  0,  1},
+                { 0,  0, -1}
+        };
+
+        for (int[] offset : offsets) {
+            int dx = x + offset[0];
+            int dy = y + offset[1];
+            int dz = z + offset[2];
+
+            TileEntity tileEntity = worldObj.getTileEntity(dx, dy, dz);
+            if (tileEntity instanceof TileEntityResearchBlock) {
+                connectedBlockPositions.add(new ChunkCoordinates(dx, dy, dz));
+                count++;
+            }
+        }
+        this.tier = Math.min(count, 3);
     }
 
     @Override
