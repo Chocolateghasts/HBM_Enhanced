@@ -1,7 +1,5 @@
-package com.mewo.hbmenhanced.ResearchBlock;
+package com.mewo.hbmenhanced.ResearchBlock.Tier1;
 
-import com.hbm.items.machine.ItemBattery;
-import com.hbm.items.machine.ItemSelfcharger;
 import com.mewo.hbmenhanced.ResearchManager.PointManager;
 import com.mewo.hbmenhanced.Util.ResearchValue;
 import com.mewo.hbmenhanced.Util.Result;

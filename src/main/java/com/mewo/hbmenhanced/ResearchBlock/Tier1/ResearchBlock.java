@@ -1,4 +1,4 @@
-package com.mewo.hbmenhanced.ResearchBlock;
+package com.mewo.hbmenhanced.ResearchBlock.Tier1;
 
 import com.mewo.hbmenhanced.hbmenhanced;
 import net.minecraft.block.Block;
@@ -31,7 +31,35 @@ public class ResearchBlock extends Block {
         if (!world.isRemote && placer instanceof EntityPlayer) {
             TileEntity tile = world.getTileEntity(x, y, z);
             if (tile instanceof TileEntityResearchBlock) {
-                ((TileEntityResearchBlock) tile).setTeam((EntityPlayer) placer);
+                TileEntityResearchBlock researchBlock = (TileEntityResearchBlock) tile;
+                researchBlock.setTeam((EntityPlayer) placer);
+
+                // Check surrounding blocks for existing research blocks
+                boolean foundMainBlock = false;
+                int[][] offsets = {
+                        { 1,  0,  0},
+                        {-1,  0,  0},
+                        { 0,  0,  1},
+                        { 0,  0, -1}
+                };
+
+                for (int[] offset : offsets) {
+                    int dx = x + offset[0];
+                    int dy = y + offset[1];
+                    int dz = z + offset[2];
+
+                    TileEntity neighbor = world.getTileEntity(dx, dy, dz);
+                    if (neighbor instanceof TileEntityResearchBlock &&
+                            ((TileEntityResearchBlock) neighbor).isMainBlock()) {
+                        foundMainBlock = true;
+                        break;
+                    }
+                }
+
+                // If no main block found nearby, set this as main block
+                if (!foundMainBlock) {
+                    researchBlock.setAsMainBlock();
+                }
             }
         }
     }

@@ -1,13 +1,11 @@
-package com.mewo.hbmenhanced.ResearchBlock;
+package com.mewo.hbmenhanced.ResearchBlock.Tier1;
 
 import cofh.api.energy.IEnergyContainerItem;
 import com.hbm.items.machine.ItemBattery;
 import com.hbm.items.machine.ItemSelfcharger;
-import net.minecraft.block.BlockWood;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
-import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntityFurnace;

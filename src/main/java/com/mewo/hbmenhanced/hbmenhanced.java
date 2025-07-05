@@ -4,8 +4,8 @@ import com.mewo.hbmenhanced.Gui.GuiHandler;
 import com.mewo.hbmenhanced.OpenComputers.*;
 import com.mewo.hbmenhanced.Packets.EnergyPacket;
 import com.mewo.hbmenhanced.ReactorResearch.TileEntityResearchCore;
-import com.mewo.hbmenhanced.ResearchBlock.ResearchBlock;
-import com.mewo.hbmenhanced.ResearchBlock.TileEntityResearchBlock;
+import com.mewo.hbmenhanced.ResearchBlock.Tier1.ResearchBlock;
+import com.mewo.hbmenhanced.ResearchBlock.Tier1.TileEntityResearchBlock;
 import com.mewo.hbmenhanced.ResearchManager.PointManager;
 import com.mewo.hbmenhanced.Util.Result;
 import com.mewo.hbmenhanced.blocks.BlockResearchCore;
@@ -29,8 +29,6 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import net.minecraft.item.*;
 
 
-
-import java.io.IOException;
 import java.util.*;
 
 @Mod(modid = hbmenhanced.MODID, version = hbmenhanced.VERSION)
