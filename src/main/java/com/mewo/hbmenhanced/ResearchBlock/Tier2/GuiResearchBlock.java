@@ -82,6 +82,6 @@ public TileEntityResearchBlock tileEntity;
     protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
         String name = "Research Core";
         this.fontRendererObj.drawString(name, this.xSize / 2 - this.fontRendererObj.getStringWidth(name) / 2, 6, 4210752);
-        this.fontRendererObj.drawString("Tier " + tileEntity.tier, 132, 6, 0x00BFFF);
+        this.fontRendererObj.drawString("Tier 2", 132, 6, 0x00BFFF);
     }
 }

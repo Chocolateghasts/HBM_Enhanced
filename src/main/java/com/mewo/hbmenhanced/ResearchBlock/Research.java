@@ -1,5 +1,6 @@
-package com.mewo.hbmenhanced.ResearchBlock.Tier1;
+package com.mewo.hbmenhanced.ResearchBlock;
 
+import com.mewo.hbmenhanced.ResearchBlock.Tier1.TileEntityResearchBlock;
 import com.mewo.hbmenhanced.ResearchManager.PointManager;
 import com.mewo.hbmenhanced.Util.ResearchValue;
 import com.mewo.hbmenhanced.Util.Result;
@@ -63,7 +64,7 @@ public class Research {
         te.markDirty();
     }
 
-    public void Tier2(ItemStack[] inventory, int mainSlot, int energySlot, int outputSlot, TileEntityResearchBlock te) {
+    public void Tier2(ItemStack[] inventory, int mainSlot, int energySlot, int outputSlot, com.mewo.hbmenhanced.ResearchBlock.Tier2.TileEntityResearchBlock te) {
         if (te.getWorldObj().isRemote) return;
 
         ItemStack input = inventory[mainSlot];

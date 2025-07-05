@@ -18,7 +18,6 @@ public class ContainerResearchBlock extends Container {
 
     public ContainerResearchBlock(InventoryPlayer inventory, TileEntityResearchBlock te) {
         this.tileEntity = te;
-        this.tier = te.tier;
         addSlotToContainer(new Slot(te, 0, 9, 28));
         addSlotToContainer(new Slot(te, 1, 9, 62){
             @Override

@@ -11,25 +11,16 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntityFurnace;
 
 public class ContainerResearchBlock extends Container {
-    private int lastBurnTime;
-    private int lastProgress;
-    private int tier;
     private TileEntityResearchBlock tileEntity;
 
     public ContainerResearchBlock(InventoryPlayer inventory, TileEntityResearchBlock te) {
         this.tileEntity = te;
-        this.tier = te.tier;
         addSlotToContainer(new Slot(te, 0, 9, 28));
         addSlotToContainer(new Slot(te, 1, 9, 62){
             @Override
             public boolean isItemValid(ItemStack itemStack) {
-                switch (tier) {
-                    case 1:
-                        return TileEntityFurnace.getItemBurnTime(itemStack) > 0;
-                    case 2:
-                        if (itemStack.getItem() instanceof IEnergyContainerItem || itemStack.getItem() instanceof ItemBattery || itemStack.getItem() instanceof ItemSelfcharger) {
-                            return true;
-                        }
+                if (itemStack.getItem() instanceof IEnergyContainerItem || itemStack.getItem() instanceof ItemBattery || itemStack.getItem() instanceof ItemSelfcharger) {
+                    return true;
                 }
                 return false;
             }
