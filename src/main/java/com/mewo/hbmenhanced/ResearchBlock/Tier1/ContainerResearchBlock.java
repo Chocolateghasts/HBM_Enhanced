@@ -23,15 +23,7 @@ public class ContainerResearchBlock extends Container {
         addSlotToContainer(new Slot(te, 1, 9, 62){
             @Override
             public boolean isItemValid(ItemStack itemStack) {
-                switch (tier) {
-                    case 1:
-                        return TileEntityFurnace.getItemBurnTime(itemStack) > 0;
-                    case 2:
-                        if (itemStack.getItem() instanceof IEnergyContainerItem || itemStack.getItem() instanceof ItemBattery || itemStack.getItem() instanceof ItemSelfcharger) {
-                            return true;
-                        }
-                }
-                return false;
+                return TileEntityFurnace.getItemBurnTime(itemStack) > 0;
             }
         });
         addSlotToContainer(new Slot(te, 2, 55, 28));

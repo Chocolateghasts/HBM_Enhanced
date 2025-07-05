@@ -158,38 +158,15 @@ public class TileEntityResearchBlock extends TileEntity implements IInventory {
     public void updateEntity() {
         if (!worldObj.isRemote) {
             updateMultiBlock();
-            switch (tier) {
-                case 1:
-                    hbmenhanced.network.sendToAllAround(
-                            new ResearchTier1Packet(xCoord, yCoord, zCoord, currentBurnTime, researchProgress, maxResearchProgress, isResearching),
-                            new NetworkRegistry.TargetPoint(
-                                    worldObj.provider.dimensionId,
-                                    xCoord, yCoord, zCoord,
-                                    64.0D
-                            )
-                    );
-                    research.Tier1(inventory, 0, 1, 2, this);
-                    break;
-                case 2:
-                    System.out.println("Energy: " + currentEnergy);
-                    if (currentEnergy < maxEnergy) {
-                        ItemStack battery =  inventory[1];
-                        if (battery != null) {
-                            // TODO: fix
-                            if (battery.getItem() instanceof ItemBattery) {
-                                ((ItemBattery) battery.getItem()).dischargeBattery(battery, ((ItemBattery) battery.getItem()).getDischargeRate());
-                                currentEnergy += (int) ((ItemBattery) battery.getItem()).getDischargeRate();
-                            } else if (battery.getItem() instanceof ItemSelfcharger) {
-                                currentEnergy += (int) ((ItemSelfcharger) battery.getItem()).getDischargeRate();
-                            } else if (battery.getItem() instanceof IEnergyContainerItem) {
-                                ((IEnergyContainerItem) battery.getItem()).extractEnergy(battery, 3000, false);
-                                currentEnergy += 3000;
-                            }
-                            research.Tier2(inventory, 0, 1, 2, this);
-                            break;
-                        }
-                    }
-            }
+            hbmenhanced.network.sendToAllAround(
+                    new ResearchTier1Packet(xCoord, yCoord, zCoord, currentBurnTime, researchProgress, maxResearchProgress, isResearching),
+                    new NetworkRegistry.TargetPoint(
+                            worldObj.provider.dimensionId,
+                            xCoord, yCoord, zCoord,
+                            64.0D
+                    )
+            );
+            research.Tier1(inventory, 0, 1, 2, this);
         }
     }
 
