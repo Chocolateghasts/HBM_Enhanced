@@ -30,8 +30,11 @@ The ResearchCore grows over time by adding blocks and upgrading tiers, expanding
  */
 
 public class TileEntityResearchBlock extends TileEntity implements IInventory {
+
+    private boolean isMainBlock = false;
+    private ChunkCoordinates mainBlockPos = null;
     public int tier = 1;
-    private List<ChunkCoordinates> connectedBlockPositions = new ArrayList<ChunkCoordinates>();
+    private List<ChunkCoordinates> connectedBlockPositions = new ArrayList<>();
 
     private Research research;
     public int INVENTORY_SIZE = 3;
@@ -46,6 +49,87 @@ public class TileEntityResearchBlock extends TileEntity implements IInventory {
     public boolean isCore = true;
     private String team;
     public ItemStack[] inventory;
+
+    public void setAsMainBlock() {
+        this.isMainBlock = true;
+        this.mainBlockPos = new ChunkCoordinates(xCoord, yCoord, zCoord);
+    }
+
+    public boolean isMainBlock() {
+        return isMainBlock;
+    }
+
+    public void updateMultiBlock() {
+        connectedBlockPositions.clear();
+
+        // If this is not the main block, don't perform structure validation
+        if (!isMainBlock) {
+            return;
+        }
+
+        int count = 1;
+        int x = this.xCoord;
+        int y = this.yCoord;
+        int z = this.zCoord;
+
+        // Check cardinal directions (NSEW)
+        int[][] offsets = {
+                { 1,  0,  0},
+                {-1,  0,  0},
+                { 0,  0,  1},
+                { 0,  0, -1}
+        };
+
+        // Track blocks by tier
+        List<TileEntityResearchBlock> tierOneBlocks = new ArrayList<>();
+        List<TileEntityResearchBlock> tierTwoBlocks = new ArrayList<>();
+
+        for (int[] offset : offsets) {
+            int dx = x + offset[0];
+            int dy = y + offset[1];
+            int dz = z + offset[2];
+
+            TileEntity tileEntity = worldObj.getTileEntity(dx, dy, dz);
+            if (tileEntity instanceof TileEntityResearchBlock) {
+                TileEntityResearchBlock researchBlock = (TileEntityResearchBlock) tileEntity;
+
+                // Skip if it's another main block
+                if (researchBlock.isMainBlock()) {
+                    continue;
+                }
+
+                // Add to appropriate tier list
+                if (researchBlock.tier == 1) {
+                    tierOneBlocks.add(researchBlock);
+                } else if (researchBlock.tier == 2) {
+                    tierTwoBlocks.add(researchBlock);
+                }
+
+                connectedBlockPositions.add(new ChunkCoordinates(dx, dy, dz));
+                count++;
+            }
+        }
+
+        // Validate structure requirements
+        if (tier == 2 && tierOneBlocks.size() >= 1) {
+            // Tier 2 requires at least one Tier 1 block
+            this.tier = 2;
+        } else if (tier == 3 && tierOneBlocks.size() >= 1 && tierTwoBlocks.size() >= 1) {
+            // Tier 3 requires at least one of each previous tier
+            this.tier = 3;
+        } else {
+            this.tier = 1;
+        }
+
+        // Update connected blocks
+        for (ChunkCoordinates pos : connectedBlockPositions) {
+            TileEntity te = worldObj.getTileEntity(pos.posX, pos.posY, pos.posZ);
+            if (te instanceof TileEntityResearchBlock) {
+                ((TileEntityResearchBlock) te).mainBlockPos = new ChunkCoordinates(x, y, z);
+            }
+        }
+    }
+
 
     public int getBurnTimeScaled(int scale) {
         return Math.min(scale, (currentBurnTime * scale) / 200); // Assuming 200 is full burn time
@@ -109,36 +193,6 @@ public class TileEntityResearchBlock extends TileEntity implements IInventory {
                     }
             }
         }
-    }
-
-    public void updateMultiBlock() {
-        connectedBlockPositions.clear();
-
-        int count = 1;
-        int x = this.xCoord;
-        int y = this.yCoord;
-        int z = this.zCoord;
-
-        // 4 cardinal directions (NSEW)
-        int[][] offsets = {
-                { 1,  0,  0},
-                {-1,  0,  0},
-                { 0,  0,  1},
-                { 0,  0, -1}
-        };
-
-        for (int[] offset : offsets) {
-            int dx = x + offset[0];
-            int dy = y + offset[1];
-            int dz = z + offset[2];
-
-            TileEntity tileEntity = worldObj.getTileEntity(dx, dy, dz);
-            if (tileEntity instanceof TileEntityResearchBlock) {
-                connectedBlockPositions.add(new ChunkCoordinates(dx, dy, dz));
-                count++;
-            }
-        }
-        this.tier = Math.min(count, 3);
     }
 
     @Override
@@ -244,6 +298,12 @@ public class TileEntityResearchBlock extends TileEntity implements IInventory {
         compound.setInteger("ResearchProgress", researchProgress);
         compound.setInteger("MaxResearch", maxResearchProgress);
         compound.setBoolean("IsResearching", isResearching);
+        compound.setBoolean("IsMainBlock", isMainBlock);
+        if (mainBlockPos != null) {
+            compound.setInteger("MainX", mainBlockPos.posX);
+            compound.setInteger("MainY", mainBlockPos.posY);
+            compound.setInteger("MainZ", mainBlockPos.posZ);
+        }
     }
 
     @Override
@@ -261,5 +321,13 @@ public class TileEntityResearchBlock extends TileEntity implements IInventory {
         researchProgress = compound.getInteger("ResearchProgress");
         maxResearchProgress = compound.getInteger("MaxResearch");
         isResearching = compound.getBoolean("IsResearching");
+        isMainBlock = compound.getBoolean("IsMainBlock");
+        if (compound.hasKey("MainX")) {
+            mainBlockPos = new ChunkCoordinates(
+                    compound.getInteger("MainX"),
+                    compound.getInteger("MainY"),
+                    compound.getInteger("MainZ")
+            );
+        }
     }
 }

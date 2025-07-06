@@ -1,4 +1,4 @@
-package com.mewo.hbmenhanced.ResearchBlock.Tier1;
+package com.mewo.hbmenhanced.ResearchBlock;
 
 import com.mewo.hbmenhanced.hbmenhanced;
 import net.minecraft.block.Block;
@@ -12,11 +12,13 @@ import net.minecraft.world.World;
 import java.util.*;
 
 public class ResearchBlock extends Block {
+    public final int tier;
     public List<ResearchBlock> researchBlocks;
 
     public ResearchBlock(int tier, String name) {
         super(Material.anvil);
         this.researchBlocks = new ArrayList<>();
+        this.tier = tier;
 
         setCreativeTab(hbmenhanced.tabhbmenhanced);
         setHardness(3);
@@ -31,6 +33,32 @@ public class ResearchBlock extends Block {
             if (tile instanceof TileEntityResearchBlock) {
                 TileEntityResearchBlock researchBlock = (TileEntityResearchBlock) tile;
                 researchBlock.setTeam((EntityPlayer) placer);
+
+                // Check surrounding blocks for existing research blocks
+                boolean foundMainBlock = false;
+                int[][] offsets = {
+                        { 1,  0,  0},
+                        {-1,  0,  0},
+                        { 0,  0,  1},
+                        { 0,  0, -1}
+                };
+
+                for (int[] offset : offsets) {
+                    int dx = x + offset[0];
+                    int dy = y + offset[1];
+                    int dz = z + offset[2];
+
+                    TileEntity neighbor = world.getTileEntity(dx, dy, dz);
+                    if (neighbor instanceof TileEntityResearchBlock &&
+                            ((TileEntityResearchBlock) neighbor).isMainBlock()) {
+                        foundMainBlock = true;
+                        break;
+                    }
+                }
+
+                if (!foundMainBlock) {
+                    researchBlock.setAsMainBlock();
+                }
             }
         }
     }
@@ -43,6 +71,34 @@ public class ResearchBlock extends Block {
     @Override
     public TileEntity createTileEntity(World world, int meta) {
         return new TileEntityResearchBlock();
+    }
+
+    @Override
+    public void onNeighborBlockChange(World world, int x, int y, int z, Block neighbor) {
+        super.onNeighborBlockChange(world, x, y, z, neighbor);
+        updateNearbyCores(world, x, y, z);
+    }
+
+    private void updateNearbyCores(World world, int x, int y, int z) {
+        int[][] offsets = {
+                { 1,  0,  0},
+                {-1,  0,  0},
+                { 0,  0,  1},
+                { 0,  0, -1},
+                { 0,  1,  0},
+                { 0, -1,  0}
+        };
+
+        for (int[] offset : offsets) {
+            int dx = x + offset[0];
+            int dy = y + offset[1];
+            int dz = z + offset[2];
+
+            TileEntity te = world.getTileEntity(dx, dy, dz);
+            if (te instanceof TileEntityResearchBlock) {
+                ((TileEntityResearchBlock) te).updateMultiBlock();
+            }
+        }
     }
 
     @Override
