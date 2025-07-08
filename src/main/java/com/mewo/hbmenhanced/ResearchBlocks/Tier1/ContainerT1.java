@@ -3,7 +3,6 @@ package com.mewo.hbmenhanced.ResearchBlocks.Tier1;
 import cofh.api.energy.IEnergyContainerItem;
 import com.hbm.items.machine.ItemBattery;
 import com.hbm.items.machine.ItemSelfcharger;
-import com.mewo.hbmenhanced.ResearchBlock.TileEntityResearchBlock;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;

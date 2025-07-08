@@ -17,7 +17,7 @@ public class TileEntityT1 extends TileEntity implements IInventory {
     public Research research;
     public String team;
 
-    public void TileEntityT1() {
+    public TileEntityT1() {
         inventory = new ItemStack[INV_SIZE];
         research = new Research();
     }

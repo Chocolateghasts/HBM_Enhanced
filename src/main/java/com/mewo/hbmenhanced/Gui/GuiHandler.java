@@ -3,9 +3,9 @@ package com.mewo.hbmenhanced.Gui;
 import com.mewo.hbmenhanced.ReactorResearch.ContainerResearchCore;
 import com.mewo.hbmenhanced.ReactorResearch.GuiResearchCore;
 import com.mewo.hbmenhanced.ReactorResearch.TileEntityResearchCore;
-import com.mewo.hbmenhanced.ResearchBlock.Tier1.ContainerResearchBlock;
-import com.mewo.hbmenhanced.ResearchBlock.Tier1.GuiResearchBlock;
-import com.mewo.hbmenhanced.ResearchBlock.Tier1.TileEntityResearchBlock;
+import com.mewo.hbmenhanced.ResearchBlocks.Tier1.ContainerT1;
+import com.mewo.hbmenhanced.ResearchBlocks.Tier1.GuiT1;
+import com.mewo.hbmenhanced.ResearchBlocks.Tier1.TileEntityT1;
 import com.mewo.hbmenhanced.containers.labBlockContainer;
 import com.mewo.hbmenhanced.containers.labBlockTileEntity;
 import cpw.mods.fml.common.network.IGuiHandler;
@@ -30,8 +30,8 @@ public class GuiHandler implements IGuiHandler {
                 }
                 break;
             case 2:
-                if (tileEntity instanceof TileEntityResearchBlock) {
-                    return new ContainerResearchBlock(player.inventory, (TileEntityResearchBlock) tileEntity);
+                if (tileEntity instanceof TileEntityT1) {
+                    return new ContainerT1(player.inventory, (TileEntityT1) tileEntity);
                 }
         }
         return null;
@@ -53,8 +53,8 @@ public class GuiHandler implements IGuiHandler {
                 }
                 break;
             case 2:
-                if (tileEntity instanceof TileEntityResearchBlock) {
-                    return new GuiResearchBlock(player.inventory, (TileEntityResearchBlock) tileEntity);
+                if (tileEntity instanceof TileEntityT1) {
+                    return new GuiT1(player.inventory, (TileEntityT1) tileEntity);
                 }
                 break;
         }
