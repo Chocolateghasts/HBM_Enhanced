@@ -4,8 +4,7 @@ import com.mewo.hbmenhanced.Gui.GuiHandler;
 import com.mewo.hbmenhanced.OpenComputers.*;
 import com.mewo.hbmenhanced.Packets.EnergyPacket;
 import com.mewo.hbmenhanced.ReactorResearch.TileEntityResearchCore;
-import com.mewo.hbmenhanced.ResearchBlock.Tier1.ResearchBlock;
-import com.mewo.hbmenhanced.ResearchBlock.Tier1.TileEntityResearchBlock;
+import com.mewo.hbmenhanced.ResearchBlocks.Tier1.T1Block;
 import com.mewo.hbmenhanced.ResearchManager.PointManager;
 import com.mewo.hbmenhanced.Util.Result;
 import com.mewo.hbmenhanced.blocks.BlockResearchCore;
@@ -87,9 +86,11 @@ public class hbmenhanced
         GameRegistry.registerItem(linker, "Linker");
         GameRegistry.registerItem(researchPoint, "Research Point");
         GameRegistry.registerTileEntity(labBlockTileEntity.class, "labBlockTileEntity");
-        researchBlock = new ResearchBlock(1, "researchBlock").setBlockName("researchBlock");
-        GameRegistry.registerBlock(researchBlock, "researchBlock");
-        GameRegistry.registerTileEntity(TileEntityResearchBlock.class, "TileEntityResearchBlock");
+        researchBlock = new T1Block().setBlockName("researchBlockT1");
+        GameRegistry.registerBlock(researchBlock, "researchBlockT1");
+//        researchBlock = new ResearchBlock(1, "researchBlock").setBlockName("researchBlock");
+//        GameRegistry.registerBlock(researchBlock, "researchBlock");
+//        GameRegistry.registerTileEntity(TileEntityResearchBlock.class, "TileEntityResearchBlock");
     }
 
 

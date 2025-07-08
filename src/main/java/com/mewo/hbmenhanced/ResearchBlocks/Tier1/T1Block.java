@@ -11,7 +11,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
 public class T1Block extends Block {
-    protected T1Block() {
+    public T1Block() {
         super(Material.anvil);
 
         setCreativeTab(hbmenhanced.tabhbmenhanced);
