@@ -40,15 +40,14 @@ public class T1Block extends Block {
 
     @Override
     public TileEntity createTileEntity(World world, int meta) {
-        return null;
+        return new TileEntityT1();
     }
 
     @Override
     public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ) {
         if (!world.isRemote) {
-            return true;
+            player.openGui(hbmenhanced.instance, hbmenhanced.guiResearchBlockID, world, x, y, z);
         }
         return true;
     }
-
 }
