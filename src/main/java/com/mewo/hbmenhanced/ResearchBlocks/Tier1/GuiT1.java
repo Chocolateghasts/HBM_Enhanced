@@ -26,9 +26,27 @@ public class GuiT1 extends GuiContainer {
         this.mc.getTextureManager().bindTexture(texture);
         int guiLeft = (this.width - this.xSize) / 2;
         int guiTop = (this.height - this.ySize) / 2;
-
         this.drawTexturedModalRect(guiLeft, guiTop, 0, 0, this.xSize, this.ySize);
 
+        if (tileEntity.isBurning && tileEntity.totalBurnTime > 0) {
+            int flameHeight = 14;  // full flame height in texture & on screen
+            int burnHeight = (tileEntity.currentBurnTime * flameHeight) / tileEntity.totalBurnTime;
+            int yPos = guiTop + 61 - burnHeight;  // 61 should be guiTop + 47 + flameHeight (47 + 14)
+            this.drawTexturedModalRect(guiLeft + 12, yPos, 177, flameHeight - burnHeight, 11, burnHeight);
+
+        }
+
+        if (tileEntity.isResearching && tileEntity.maxResearchProgress > 0) {
+            int progressWidth = (tileEntity.researchProgress * 25) / tileEntity.maxResearchProgress;
+            this.drawTexturedModalRect(
+                    guiLeft + 28,
+                    guiTop + 28,
+                    177,
+                    17,
+                    progressWidth,
+                    17
+            );
+        }
     }
 
 

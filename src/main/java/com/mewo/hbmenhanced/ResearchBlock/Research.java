@@ -5,6 +5,8 @@ import com.mewo.hbmenhanced.ResearchManager.PointManager;
 import com.mewo.hbmenhanced.Util.ResearchValue;
 import com.mewo.hbmenhanced.Util.Result;
 import com.mewo.hbmenhanced.Util.getItemValues;
+import com.mewo.hbmenhanced.hbmenhanced;
+import com.mewo.hbmenhanced.items.ItemResearchPoint;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntityFurnace;
 
@@ -18,6 +20,8 @@ public class Research {
         ItemStack input = inventory[mainSlot];
         ItemStack output = inventory[outputSlot];
         ItemStack fuel = inventory[fuelSlot];
+
+        if (output != null) return;
 
         if (input == null) {
             te.isResearching = false;
@@ -48,7 +52,12 @@ public class Research {
                     ResearchValue points = getItemValues.getPoints(input);
                     input.stackSize--;
                     inventory[mainSlot] = input.stackSize <= 0 ? null : input;
-                    PointManager.addPoints(te.team, points.getType(), points.getPoints());
+                    // PointManager.addPoints(te.team, points.getType(), points.getPoints());
+                    ItemStack itemStack = new ItemStack(hbmenhanced.researchPoint, 1);
+                    ItemResearchPoint.setRp(itemStack, PointManager.ResearchType.CHEMICAL.toString(), 5);
+                    ItemResearchPoint.setRp(itemStack, PointManager.ResearchType.NUCLEAR.toString(), 2);
+                    output = itemStack;
+                    inventory[outputSlot] = output;
                 }
             }
         }
