@@ -5,6 +5,7 @@ import com.mewo.hbmenhanced.OpenComputers.*;
 import com.mewo.hbmenhanced.Packets.EnergyPacket;
 import com.mewo.hbmenhanced.ReactorResearch.TileEntityResearchCore;
 import com.mewo.hbmenhanced.ResearchBlocks.Tier1.T1Block;
+import com.mewo.hbmenhanced.ResearchBlocks.Tier1.TileEntityT1;
 import com.mewo.hbmenhanced.ResearchManager.PointManager;
 import com.mewo.hbmenhanced.Util.Result;
 import com.mewo.hbmenhanced.blocks.BlockResearchCore;
@@ -64,6 +65,7 @@ public class hbmenhanced
         GameRegistry.registerBlock(labBlock, "Lab Block").setCreativeTab(tabhbmenhanced);
         GameRegistry.registerBlock(researchCore, "Research Core");
         GameRegistry.registerTileEntity(TileEntityResearchCore.class, "tileEntityResearchCore");
+        GameRegistry.registerTileEntity(TileEntityT1.class, "tileEntityT1");
     }
 
 

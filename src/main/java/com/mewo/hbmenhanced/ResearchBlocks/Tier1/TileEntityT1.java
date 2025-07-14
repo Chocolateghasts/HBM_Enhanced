@@ -5,21 +5,46 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.Packet;
+import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 
 public class TileEntityT1 extends TileEntity implements IInventory {
 
     // Constants
-    private int INV_SIZE = 3;
+    private final int INV_SIZE = 3;
+    public final int MAIN_SLOT = 0;
+    public final int FUEL_SLOT = 1;
+    public final int OUTPUT_SLOT = 2;
 
     // Properties ?
     public ItemStack[] inventory;
     public Research research;
     public String team;
 
+    // Variables
+    public int totalBurnTime;
+    public boolean isResearching;
+    public int researchProgress;
+    public int currentBurnTime;
+    public int maxResearchProgress;
+    public boolean isBurning;
+
+    private int tickCounter = 0;
+
     public TileEntityT1() {
         inventory = new ItemStack[INV_SIZE];
         research = new Research();
+    }
+
+    @Override
+    public void updateEntity() {
+        if (!worldObj.isRemote) {
+            research.Tier1(this);
+            markDirty();
+            worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+        }
     }
 
     @Override
@@ -107,8 +132,41 @@ public class TileEntityT1 extends TileEntity implements IInventory {
     }
 
     @Override
+    public Packet getDescriptionPacket() {
+        NBTTagCompound nbt = new NBTTagCompound();
+        this.writeToNBT(nbt);
+        return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 1, nbt);
+    }
+
+    @Override
+    public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
+        this.readFromNBT(pkt.func_148857_g());
+    }
+
+    @Override
     public void writeToNBT(NBTTagCompound compound) {
         super.writeToNBT(compound);
+//        // Variables
+//        public boolean isResearching;
+//        public int researchProgress;
+//        public int currentBurnTime;
+//        public int maxResearchProgress;
+//        public boolean isBurning;
+//
+//        private int tickCounter = 0;
+
+        NBTTagCompound researchData = new NBTTagCompound();
+        researchData.setInteger("totalBurnTime", totalBurnTime);
+        researchData.setBoolean("isResearching", isResearching);
+        researchData.setInteger("researchProgress", researchProgress);
+        researchData.setInteger("currentBurnTime", currentBurnTime);
+        researchData.setInteger("maxResearchProgress", maxResearchProgress);
+        researchData.setBoolean("isBurning", isBurning);
+        // Is the tickcounter needed in the NBT save/load?
+        researchData.setInteger("tickCounter", tickCounter);
+
+
+
         NBTTagCompound items = new NBTTagCompound();
         for (int i = 0; i < inventory.length; i++) {
             if (inventory[i] != null) {
@@ -118,16 +176,29 @@ public class TileEntityT1 extends TileEntity implements IInventory {
             }
         }
         compound.setTag("Items", items);
+        compound.setTag("researchData", researchData);
     }
 
     @Override
     public void readFromNBT(NBTTagCompound compound) {
         super.readFromNBT(compound);
-        NBTTagCompound items = compound.getCompoundTag("Items");
+
+        NBTTagCompound researchData = compound.hasKey("researchData") ? compound.getCompoundTag("researchData") : new NBTTagCompound();
+        totalBurnTime = researchData.getInteger("totalBurnTime");
+        isResearching = researchData.getBoolean("isResearching");
+        researchProgress = researchData.getInteger("researchProgress");
+        currentBurnTime = researchData.getInteger("currentBurnTime");
+        maxResearchProgress = researchData.getInteger("maxResearchProgress");
+        isBurning = researchData.getBoolean("isBurning");
+
+        NBTTagCompound items = compound.hasKey("Items") ? compound.getCompoundTag("Items") : new NBTTagCompound();
         for (int i = 0; i < inventory.length; i++) {
             if (items.hasKey("Slot" + i)) {
                 NBTTagCompound item = items.getCompoundTag("Slot" + i);
-                inventory[i] = ItemStack.loadItemStackFromNBT(item);
+                ItemStack loaded = ItemStack.loadItemStackFromNBT(item);
+                inventory[i] = loaded != null ? loaded : null;
+            } else {
+                inventory[i] = null;
             }
         }
     }
