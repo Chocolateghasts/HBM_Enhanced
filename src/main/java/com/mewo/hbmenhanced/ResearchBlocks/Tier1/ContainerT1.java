@@ -42,31 +42,59 @@ public class ContainerT1 extends Container {
     }
 
     @Override
-    public ItemStack transferStackInSlot(EntityPlayer player, int slotIndex) {
-        ItemStack itemstack = null;
-        Slot slot = (Slot)this.inventorySlots.get(slotIndex);
-
-        if (slot != null && slot.getHasStack()) {
-            ItemStack itemstack1 = slot.getStack();
-            itemstack = itemstack1.copy();
-
-            if (slotIndex < tileEntity.getSizeInventory()) {
-                if (!this.mergeItemStack(itemstack1, tileEntity.getSizeInventory(), this.inventorySlots.size(), true)) {
+    public ItemStack transferStackInSlot(EntityPlayer player, int clickedSlotIndex) {
+        ItemStack transferredStack = null;
+        Slot clickedSlot = (Slot)this.inventorySlots.get(clickedSlotIndex);
+        if (clickedSlot != null && clickedSlot.getHasStack()) {
+            ItemStack originalStack = clickedSlot.getStack();
+            transferredStack = originalStack.copy();
+            if (clickedSlotIndex == 2) {
+                if (!this.mergeItemStack(originalStack, 3, 39, true)) {
                     return null;
                 }
-            } else if (!this.mergeItemStack(itemstack1, 0, tileEntity.getSizeInventory(), false)) {
+
+                clickedSlot.onSlotChange(originalStack, transferredStack);
+            }
+            else if (clickedSlotIndex >= 3 && clickedSlotIndex < 39) {
+                if (TileEntityFurnace.isItemFuel(originalStack)) {
+                    if (!this.mergeItemStack(originalStack, 1, 2, false)) {
+                        return null;
+                    }
+                }
+                else if (tileEntity.isItemValidForSlot(0, originalStack)) {
+                    if (!this.mergeItemStack(originalStack, 0, 1, false)) {
+                        return null;
+                    }
+                }
+                else if (clickedSlotIndex < 30) {
+                    if (!this.mergeItemStack(originalStack, 30, 39, false)) {
+                        return null;
+                    }
+                } else {
+                    if (!this.mergeItemStack(originalStack, 3, 30, false)) {
+                        return null;
+                    }
+                }
+            }
+            else {
+                if (!this.mergeItemStack(originalStack, 3, 39, false)) {
+                    return null;
+                }
+            }
+            if (originalStack.stackSize == 0) {
+                clickedSlot.putStack(null);
+            } else {
+                clickedSlot.onSlotChanged();
+            }
+            if (originalStack.stackSize == transferredStack.stackSize) {
                 return null;
             }
-
-            if (itemstack1.stackSize == 0) {
-                slot.putStack((ItemStack)null);
-            } else {
-                slot.onSlotChanged();
-            }
+            clickedSlot.onPickupFromSlot(player, originalStack);
         }
-
-        return itemstack;
+        return transferredStack;
     }
+
+
 
     @Override
     public boolean canInteractWith(EntityPlayer player) {
