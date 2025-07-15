@@ -8,11 +8,13 @@ import com.mewo.hbmenhanced.ResearchBlocks.Tier1.T1Block;
 import com.mewo.hbmenhanced.ResearchBlocks.Tier1.TileEntityT1;
 import com.mewo.hbmenhanced.ResearchManager.PointManager;
 import com.mewo.hbmenhanced.Util.Result;
+import com.mewo.hbmenhanced.Util.getItemValues;
 import com.mewo.hbmenhanced.blocks.BlockResearchCore;
 import com.mewo.hbmenhanced.blocks.LabBlock;
 import com.mewo.hbmenhanced.commands.*;
 import com.mewo.hbmenhanced.containers.labBlockTileEntity;
 import com.mewo.hbmenhanced.items.*;
+import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
@@ -55,6 +57,11 @@ public class hbmenhanced
     public static hbmenhanced instance;
 
     @EventHandler
+    public void postInit(FMLPostInitializationEvent event) {
+        getItemValues.init();
+    }
+
+    @EventHandler
     public void PreInit(FMLInitializationEvent event) {
         labBlock = new LabBlock(Material.anvil).setBlockName("labBlock");
         researchCore = new BlockResearchCore();
@@ -90,6 +97,7 @@ public class hbmenhanced
         GameRegistry.registerTileEntity(labBlockTileEntity.class, "labBlockTileEntity");
         researchBlock = new T1Block().setBlockName("researchBlockT1");
         GameRegistry.registerBlock(researchBlock, "researchBlockT1");
+
 //        researchBlock = new ResearchBlock(1, "researchBlock").setBlockName("researchBlock");
 //        GameRegistry.registerBlock(researchBlock, "researchBlock");
 //        GameRegistry.registerTileEntity(TileEntityResearchBlock.class, "TileEntityResearchBlock");
@@ -100,6 +108,7 @@ public class hbmenhanced
 
     @EventHandler
     public void serverStarting(FMLServerStartingEvent event) {
+
         ResearchTree tree = new ResearchTree(event.getServer());
         tree.getNodes();
         Map<String, Boolean> testmap = new HashMap<>();

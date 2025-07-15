@@ -1,11 +1,16 @@
 package com.mewo.hbmenhanced.Util;
 
+import com.hbm.items.ModItems;
+import com.mewo.hbmenhanced.ResearchManager.PointManager;
+import com.mewo.hbmenhanced.items.ItemResearchPoint;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 
 import java.util.*;
 public class getItemValues {
 
-    public static Map<Item, ResearchValue> Values;
+    public static Map<Item, ResearchValue> Values = new HashMap<>();
 
     public static boolean isBlackListed(String key) {
         String[] keywords = {
@@ -36,17 +41,50 @@ public class getItemValues {
     public static boolean isResearchItem(String name) {
         return !isBlackListed(name);
     }
-
-    public ResearchValue getItemValue(Item item) {
-        return new ResearchValue();
+    public static ResearchValue getItemValue(Item item) {
+        System.out.println("Item is: " + item);
+        System.out.println(Values.keySet());
+        if (Values.containsKey(item)) {
+            System.out.println("Found item in map");
+        }
+        return Values.getOrDefault(item, new ResearchValue());
     }
 
     public static void init() {
         for (Object obj : Item.itemRegistry) {
             Item item = (Item) obj;
-            if (isResearchItem(item.getUnlocalizedName())) {
-                //Values.put(item, )
+            String name = item.getUnlocalizedName().toLowerCase();
+            if (isResearchItem(name)) continue;
+            ResearchValue value = new ResearchValue();
+            for (Map.Entry<String, ResearchValue> entry : ResearchMap.keywordMap.entrySet()) {
+                String keyword = entry.getKey().toLowerCase();
+                if (name.contains(keyword)) {
+                    System.out.println(name + " contains " + keyword);
+                    ResearchValue toAdd = entry.getValue();
+                    for (Map.Entry<PointManager.ResearchType, Integer> point : toAdd.getAllPoints().entrySet()) {
+                        value.addPoints(point.getKey(), point.getValue());
+                    }
+                }
             }
+
+            if (!value.getAllPoints().isEmpty()) {
+                Values.put(item, value);
+            }
+
+        }
+    }
+
+    public static void setValues(ResearchValue value, ItemStack stack) {
+        ItemResearchPoint.setRp(stack, "CHEMICAL", 0);
+        System.out.println("setValues called for: " + stack);
+        if (value == null) {
+            System.out.println("value is null!");
+            return;
+        }
+        Map<PointManager.ResearchType, Integer> map = value.getAllPoints();
+        System.out.println("Map size: " + map.size());
+        for (Map.Entry<PointManager.ResearchType, Integer> entry : map.entrySet()) {
+            System.out.println("KEY: " + entry.getKey() + " VALUE: " + entry.getValue());
         }
     }
 }

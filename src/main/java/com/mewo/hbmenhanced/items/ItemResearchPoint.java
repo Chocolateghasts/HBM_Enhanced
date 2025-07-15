@@ -1,5 +1,7 @@
 package com.mewo.hbmenhanced.items;
 
+import com.mewo.hbmenhanced.ResearchManager.PointManager;
+import com.mewo.hbmenhanced.Util.Result;
 import com.mewo.hbmenhanced.getRpValue;
 import com.mewo.hbmenhanced.hbmenhanced;
 import cpw.mods.fml.relauncher.Side;
@@ -54,12 +56,10 @@ public class ItemResearchPoint extends Item {
                 player.addChatMessage(new ChatComponentText("You must be in a team to research items!"));
                 return itemStack;
             }
-            for (getRpValue.researchType type : getRpValue.researchType.values()) {
-                int points = getRp(itemStack, type.toString());
-                if (points > 0) {
-                    getRpValue.addResearchPoints(team, type, points);
-                    HashMap<String, EnumMap<getRpValue.researchType, Integer>> teamValues = getRpValue.getTeamRpMap();
-                    System.out.println(teamValues);
+            for (PointManager.ResearchType type : PointManager.ResearchType.values()) {
+                if (nbt.getInteger(type.toString()) > 0) {
+                    Result res =  PointManager.addPoints(team, type, nbt.getByte(type.toString()));
+                    System.out.println(res.isSuccess() + res.getMessage());
                 }
             }
         }

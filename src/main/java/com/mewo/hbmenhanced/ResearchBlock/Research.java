@@ -10,6 +10,8 @@ import com.mewo.hbmenhanced.items.ItemResearchPoint;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntityFurnace;
 
+import java.util.Map;
+
 public class Research {
     public void Tier1(TileEntityT1 te) {
         int mainSlot = te.MAIN_SLOT;
@@ -52,15 +54,13 @@ public class Research {
                     input.stackSize--;
                     inventory[mainSlot] = input.stackSize <= 0 ? null : input;
                     ItemStack itemStack = new ItemStack(hbmenhanced.researchPoint, 1);
-
-//                    getItemValues.Values
-//
-//                    output = itemStack;
-//                    inventory[outputSlot] = output;
+                    ResearchValue researchValue = getItemValues.getItemValue(input.getItem());
+                    getItemValues.setValues(researchValue, itemStack);
+                    output = itemStack;
+                    inventory[outputSlot] = output;
                 }
             }
         }
-
     }
 }
 

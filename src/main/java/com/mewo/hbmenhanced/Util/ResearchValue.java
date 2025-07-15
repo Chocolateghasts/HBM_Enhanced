@@ -16,6 +16,7 @@ public class ResearchValue {
 
     public void addPoints(PointManager.ResearchType type, int points) {
         researchPoints.merge(type, points, Integer::sum);
+        System.out.println("Added " + points + " to type " + type.toString());
     }
 
     public int getPoints(PointManager.ResearchType type) {
