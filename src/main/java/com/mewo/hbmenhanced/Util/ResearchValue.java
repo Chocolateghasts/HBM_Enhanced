@@ -2,20 +2,31 @@ package com.mewo.hbmenhanced.Util;
 
 import com.mewo.hbmenhanced.ResearchManager.PointManager;
 
+import java.util.*;
+
 public class ResearchValue {
-    private final PointManager.ResearchType type;
-    private final int points;
+    private final Map<PointManager.ResearchType, Integer> researchPoints;
 
-    public ResearchValue(PointManager.ResearchType type, int points) {
-        this.type = type;
-        this.points = points;
+    public ResearchValue() {
+        this.researchPoints = new HashMap<>();
+    }
+    public ResearchValue(Map<PointManager.ResearchType, Integer> researchPoints) {
+        this.researchPoints = new HashMap<>(researchPoints);
     }
 
-    public int getPoints() {
-        return points;
+    public void addPoints(PointManager.ResearchType type, int points) {
+        researchPoints.merge(type, points, Integer::sum);
     }
 
-    public PointManager.ResearchType getType() {
-        return type;
+    public int getPoints(PointManager.ResearchType type) {
+        return researchPoints.getOrDefault(type, 0);
+    }
+
+    public Map<PointManager.ResearchType, Integer> getAllPoints() {
+        return Collections.unmodifiableMap(researchPoints);
+    }
+
+    public boolean hasType(PointManager.ResearchType type) {
+        return researchPoints.containsKey(type);
     }
 }

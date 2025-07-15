@@ -30,7 +30,7 @@ public class Research {
         } else {
             te.isResearching = true;
             if (te.researchProgress == 0) {
-                te.maxResearchProgress = getItemValues.getResearchTime(input);
+                te.maxResearchProgress = 60;
             }
         }
 
@@ -49,15 +49,14 @@ public class Research {
                 if (te.researchProgress >= te.maxResearchProgress) {
                     te.researchProgress = 0;
                     te.maxResearchProgress = 0;
-                    ResearchValue points = getItemValues.getPoints(input);
                     input.stackSize--;
                     inventory[mainSlot] = input.stackSize <= 0 ? null : input;
-                    // PointManager.addPoints(te.team, points.getType(), points.getPoints());
                     ItemStack itemStack = new ItemStack(hbmenhanced.researchPoint, 1);
-                    ItemResearchPoint.setRp(itemStack, PointManager.ResearchType.CHEMICAL.toString(), 5);
-                    ItemResearchPoint.setRp(itemStack, PointManager.ResearchType.NUCLEAR.toString(), 2);
-                    output = itemStack;
-                    inventory[outputSlot] = output;
+
+//                    getItemValues.Values
+//
+//                    output = itemStack;
+//                    inventory[outputSlot] = output;
                 }
             }
         }

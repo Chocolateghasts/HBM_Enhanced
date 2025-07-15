@@ -1,11 +1,11 @@
 package com.mewo.hbmenhanced.Util;
 
-import com.mewo.hbmenhanced.ResearchManager.PointManager;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.item.Item;
 
 import java.util.*;
 public class getItemValues {
+
+    public static Map<Item, ResearchValue> Values;
 
     public static boolean isBlackListed(String key) {
         String[] keywords = {
@@ -37,11 +37,16 @@ public class getItemValues {
         return !isBlackListed(name);
     }
 
-    public static int getResearchTime(ItemStack researchable) {
-        return 60;
+    public ResearchValue getItemValue(Item item) {
+        return new ResearchValue();
     }
 
-    public static ResearchValue getPoints(ItemStack stack) {
-        return new ResearchValue(PointManager.ResearchType.CHEMICAL, 5);
+    public static void init() {
+        for (Object obj : Item.itemRegistry) {
+            Item item = (Item) obj;
+            if (isResearchItem(item.getUnlocalizedName())) {
+                //Values.put(item, )
+            }
+        }
     }
 }
