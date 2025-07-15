@@ -10,7 +10,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import java.util.*;
 public class getItemValues {
 
-    public static Map<Item, ResearchValue> Values = new HashMap<>();
+    public static Map<String, ResearchValue> Values = new HashMap<>();
 
     public static boolean isBlackListed(String key) {
         String[] keywords = {
@@ -42,23 +42,28 @@ public class getItemValues {
         return !isBlackListed(name);
     }
     public static ResearchValue getItemValue(Item item) {
-        System.out.println("Item is: " + item);
-        System.out.println(Values.keySet());
-        if (Values.containsKey(item)) {
+        System.out.println("Item is: " + item.getUnlocalizedName());
+        if (Values.containsKey(item.getUnlocalizedName().toLowerCase())) {
             System.out.println("Found item in map");
         }
-        return Values.getOrDefault(item, new ResearchValue());
+        return Values.getOrDefault(item.getUnlocalizedName().toLowerCase(), new ResearchValue());
     }
 
     public static void init() {
         for (Object obj : Item.itemRegistry) {
+
             Item item = (Item) obj;
             String name = item.getUnlocalizedName().toLowerCase();
+
             if (isResearchItem(name)) continue;
+            if (item.getUnlocalizedName().toLowerCase().contains("uranium")) {
+                System.out.println("Found uranium!" + item.getUnlocalizedName());
+            }
             ResearchValue value = new ResearchValue();
             for (Map.Entry<String, ResearchValue> entry : ResearchMap.keywordMap.entrySet()) {
                 String keyword = entry.getKey().toLowerCase();
                 if (name.contains(keyword)) {
+                    System.out.println("Registered " + name);
                     System.out.println(name + " contains " + keyword);
                     ResearchValue toAdd = entry.getValue();
                     for (Map.Entry<PointManager.ResearchType, Integer> point : toAdd.getAllPoints().entrySet()) {
@@ -68,10 +73,12 @@ public class getItemValues {
             }
 
             if (!value.getAllPoints().isEmpty()) {
-                Values.put(item, value);
+                System.out.println("Added " + item.getUnlocalizedName());
+                Values.put(item.getUnlocalizedName().toLowerCase(), value);
             }
 
         }
+        System.out.println("VALUES OF RESEARCHMAPIDK: " + Values.keySet());
     }
 
     public static void setValues(ResearchValue value, ItemStack stack) {

@@ -27,36 +27,36 @@ public class ResearchMap {
                 ResearchType.STRUCTURAL, 40,
                 ResearchType.SPACE, 25));
 
-        keywordMap.put("uranium 238", mapOf(ResearchType.WEAPONRY, 45));
-        keywordMap.put("uranium 235", mapOf(ResearchType.NUCLEAR, 50));
-        keywordMap.put("uranium 233", mapOf(ResearchType.NUCLEAR, 40));
+        keywordMap.put("uranium-238", mapOf(ResearchType.WEAPONRY, 45));
+        keywordMap.put("uranium-235", mapOf(ResearchType.NUCLEAR, 50));
+        keywordMap.put("uranium-233", mapOf(ResearchType.NUCLEAR, 40));
 
-        keywordMap.put("plutonium 240", mapOf(ResearchType.NUCLEAR, 40));
-        keywordMap.put("plutonium 241", mapOf(ResearchType.NUCLEAR, 75));
-        keywordMap.put("plutonium 238", mapOf(ResearchType.NUCLEAR, 60));
-        keywordMap.put("plutonium 239", mapOf(
+        keywordMap.put("plutonium-240", mapOf(ResearchType.NUCLEAR, 40));
+        keywordMap.put("plutonium-241", mapOf(ResearchType.NUCLEAR, 75));
+        keywordMap.put("plutonium-238", mapOf(ResearchType.NUCLEAR, 60));
+        keywordMap.put("plutonium-239", mapOf(
                 ResearchType.EXPLOSIVES, 75,
                 ResearchType.NUCLEAR, 25));
         keywordMap.put("plutonium fuel", mapOf(ResearchType.NUCLEAR, 60));
         keywordMap.put("plutonium reactor", mapOf(ResearchType.NUCLEAR, 70));
         keywordMap.put("plutonium", mapOf(ResearchType.NUCLEAR, 25));
 
-        keywordMap.put("thorium 232", mapOf(ResearchType.NUCLEAR, 40));
+        keywordMap.put("thorium-232", mapOf(ResearchType.NUCLEAR, 40));
         keywordMap.put("thorium fuel", mapOf(ResearchType.NUCLEAR, 50));
 
         keywordMap.put("digamma", mapOf(ResearchType.EXOTIC, 100));
 
-        keywordMap.put("americium 241", mapOf(ResearchType.NUCLEAR, 60));
-        keywordMap.put("americium 242", mapOf(ResearchType.NUCLEAR, 60));
+        keywordMap.put("americium-241", mapOf(ResearchType.NUCLEAR, 60));
+        keywordMap.put("americium-242", mapOf(ResearchType.NUCLEAR, 60));
         keywordMap.put("americium reactor grade", mapOf(ResearchType.NUCLEAR, 70));
         keywordMap.put("americium fuel", mapOf(ResearchType.NUCLEAR, 70));
 
         keywordMap.put("radium", mapOf(ResearchType.NUCLEAR, 50));
         keywordMap.put("polonium", mapOf(ResearchType.NUCLEAR, 60));
-        keywordMap.put("gold 198", mapOf(ResearchType.NUCLEAR, 30));
-        keywordMap.put("lead 209", mapOf(ResearchType.NUCLEAR, 30));
-        keywordMap.put("strontium 90", mapOf(ResearchType.NUCLEAR, 40));
-        keywordMap.put("cobalt 60", mapOf(ResearchType.NUCLEAR, 50));
+        keywordMap.put("gold-198", mapOf(ResearchType.NUCLEAR, 30));
+        keywordMap.put("lead-209", mapOf(ResearchType.NUCLEAR, 30));
+        keywordMap.put("strontium-90", mapOf(ResearchType.NUCLEAR, 40));
+        keywordMap.put("cobalt-60", mapOf(ResearchType.NUCLEAR, 50));
         keywordMap.put("neptunium", mapOf(ResearchType.NUCLEAR, 60));
         keywordMap.put("curium", mapOf(ResearchType.NUCLEAR, 20));
 
