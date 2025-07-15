@@ -55,10 +55,7 @@ public class getItemValues {
             Item item = (Item) obj;
             String name = item.getUnlocalizedName().toLowerCase();
 
-            if (isResearchItem(name)) continue;
-            if (item.getUnlocalizedName().toLowerCase().contains("uranium")) {
-                System.out.println("Found uranium!" + item.getUnlocalizedName());
-            }
+            if (!isResearchItem(name)) continue;
             ResearchValue value = new ResearchValue();
             for (Map.Entry<String, ResearchValue> entry : ResearchMap.keywordMap.entrySet()) {
                 String keyword = entry.getKey().toLowerCase();
@@ -91,7 +88,7 @@ public class getItemValues {
         Map<PointManager.ResearchType, Integer> map = value.getAllPoints();
         System.out.println("Map size: " + map.size());
         for (Map.Entry<PointManager.ResearchType, Integer> entry : map.entrySet()) {
-            System.out.println("KEY: " + entry.getKey() + " VALUE: " + entry.getValue());
+            stack.getTagCompound().setInteger(entry.getKey().toString(), entry.getValue());
         }
     }
 }
