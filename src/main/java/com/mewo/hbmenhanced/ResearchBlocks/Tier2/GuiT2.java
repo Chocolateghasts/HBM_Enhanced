@@ -1,7 +1,5 @@
 package com.mewo.hbmenhanced.ResearchBlocks.Tier2;
 
-import com.mewo.hbmenhanced.ResearchBlocks.Tier1.ContainerT1;
-import com.mewo.hbmenhanced.ResearchBlocks.Tier1.TileEntityT1;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;

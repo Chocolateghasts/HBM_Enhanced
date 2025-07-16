@@ -3,6 +3,7 @@ package com.mewo.hbmenhanced.ResearchBlocks.Tier2;
 import com.mewo.hbmenhanced.ResearchBlocks.Tier1.TileEntityT1;
 import com.mewo.hbmenhanced.hbmenhanced;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -42,6 +43,11 @@ public class T2Block extends Block {
     public TileEntity createTileEntity(World world, int meta) {
         return new TileEntityT2();
     }
+
+//    @Override
+//    public TileEntity createNewTileEntity(World world, int meta) {
+//        return new TileEntityT2();
+//    }
 
     @Override
     public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ) {

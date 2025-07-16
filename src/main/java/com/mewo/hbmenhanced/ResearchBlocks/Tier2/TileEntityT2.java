@@ -1,5 +1,10 @@
 package com.mewo.hbmenhanced.ResearchBlocks.Tier2;
 
+import api.hbm.fluid.IFluidStandardReceiver;
+import com.hbm.inventory.fluid.FluidType;
+import com.hbm.inventory.fluid.Fluids;
+import com.hbm.inventory.fluid.tank.FluidTank;
+import com.hbm.tileentity.IFluidCopiable;
 import com.mewo.hbmenhanced.ResearchBlock.Research;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -9,8 +14,9 @@ import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraftforge.common.util.ForgeDirection;
 
-public class TileEntityT2 extends TileEntity implements IInventory {
+public class TileEntityT2 extends TileEntity implements IInventory, IFluidStandardReceiver {
 
     // Constants
     public final int INV_SIZE = 3;
@@ -27,11 +33,25 @@ public class TileEntityT2 extends TileEntity implements IInventory {
     public int researchProgress;
     public int maxResearchProgress;
     public boolean isResearching;
-
+    public FluidTank tank;
+    private int tickCounter;
 
     public TileEntityT2() {
         inventory = new ItemStack[INV_SIZE];
         research = new Research();
+        tank = new FluidTank(Fluids.WATER, 16000);
+    }
+
+    @Override
+    public void updateEntity() {
+        if (worldObj.isRemote) return;
+        tickCounter++;
+        if (tickCounter >= 20) {
+            tickCounter = 0;
+            System.out.println(tank.getFill());
+            subscribeToAllAround(Fluids.WATER, this);
+        }
+
     }
 
     @Override
@@ -133,6 +153,7 @@ public class TileEntityT2 extends TileEntity implements IInventory {
     @Override
     public void writeToNBT(NBTTagCompound compound) {
         super.writeToNBT(compound);
+        tank.writeToNBT(compound, "tank");
         NBTTagCompound items = new NBTTagCompound();
         for (int i = 0; i < inventory.length; i++) {
             if (inventory[i] != null) {
@@ -147,6 +168,7 @@ public class TileEntityT2 extends TileEntity implements IInventory {
     @Override
     public void readFromNBT(NBTTagCompound compound) {
         super.readFromNBT(compound);
+        tank.readFromNBT(compound, "tank");
         NBTTagCompound items = compound.hasKey("Items") ? compound.getCompoundTag("Items") : new NBTTagCompound();
         for (int i = 0; i < inventory.length; i++) {
             if (items.hasKey("Slot" + i)) {
@@ -158,4 +180,57 @@ public class TileEntityT2 extends TileEntity implements IInventory {
             }
         }
     }
+    @Override
+    public FluidTank[] getAllTanks() {
+        return new FluidTank[] { tank };
+    }
+
+    @Override
+    public FluidTank[] getReceivingTanks() {
+        System.out.println("[HBM] getReceivingTanks() called");
+        return new FluidTank[] { tank };
+    }
+
+    @Override
+    public boolean canConnect(FluidType type, ForgeDirection dir) {
+        return true;
+    }
+
+    @Override
+    public boolean isLoaded() {
+        return true;
+    }
+
+    @Override
+    public long transferFluid(FluidType type, int pressure, long amount) {
+        int tanks = 0;
+        for(FluidTank tank : getReceivingTanks()) {
+            if(tank.getTankType() == type && tank.getPressure() == pressure) tanks++;
+        }
+        if(tanks > 1) {
+            System.out.println("Attempting transfer");
+            int firstRound = (int) Math.floor((double) amount / (double) tanks);
+            for(FluidTank tank : getReceivingTanks()) {
+                System.out.println("Checking for tank " + tank.getTankType());
+                if(tank.getTankType() == type && tank.getPressure() == pressure) {
+                    System.out.println("Pressure is correct!");
+                    int toAdd = Math.min(firstRound, tank.getMaxFill() - tank.getFill());
+                    tank.setFill(tank.getFill() + toAdd);
+                    amount -= toAdd;
+                }
+            }
+        }
+        if(amount > 0) for(FluidTank tank : getReceivingTanks()) {
+            System.out.println("[Bottom method]: Checking for tank " + tank.getTankType());
+            if(tank.getTankType() == type && tank.getPressure() == pressure) {
+                System.out.println("[Bottom method]: Pressure and type is correct!");
+                int toAdd = (int) Math.min(amount, tank.getMaxFill() - tank.getFill());
+                tank.setFill(tank.getFill() + toAdd);
+                amount -= toAdd;
+            }
+        }
+        System.out.println("Amount: " + amount);
+        return amount;
+    }
+
 }
