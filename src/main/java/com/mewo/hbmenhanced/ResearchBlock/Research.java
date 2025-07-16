@@ -12,6 +12,9 @@ import net.minecraft.tileentity.TileEntityFurnace;
 
 import java.util.Map;
 
+// TODO: Research May Produce Waste Or Fail Research
+// TODO: Tier 1 May Only Research Low Level Items
+
 public class Research {
     public void Tier1(TileEntityT1 te) {
         int mainSlot = te.MAIN_SLOT;

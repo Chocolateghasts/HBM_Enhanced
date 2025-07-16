@@ -1,4 +1,4 @@
-package com.mewo.hbmenhanced.ResearchBlocks.Tier1;
+package com.mewo.hbmenhanced.ResearchBlocks.Tier2;
 
 import com.mewo.hbmenhanced.ResearchBlock.Research;
 import net.minecraft.entity.player.EntityPlayer;
@@ -9,43 +9,29 @@ import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.tileentity.TileEntityFurnace;
 
-public class TileEntityT1 extends TileEntity implements IInventory {
+public class TileEntityT2 extends TileEntity implements IInventory {
 
     // Constants
-    private final int INV_SIZE = 3;
+    public final int INV_SIZE = 3;
     public final int MAIN_SLOT = 0;
-    public final int FUEL_SLOT = 1;
+    public final int SECOND_SLOT = 1;
     public final int OUTPUT_SLOT = 2;
 
     // Properties ?
-    public ItemStack[] inventory;
     public Research research;
+    public ItemStack[] inventory;
     public String team;
 
     // Variables
-    public int totalBurnTime;
-    public boolean isResearching;
     public int researchProgress;
-    public int currentBurnTime;
     public int maxResearchProgress;
-    public boolean isBurning;
+    public boolean isResearching;
 
-    private int tickCounter = 0;
 
-    public TileEntityT1() {
+    public TileEntityT2() {
         inventory = new ItemStack[INV_SIZE];
         research = new Research();
-    }
-
-    @Override
-    public void updateEntity() {
-        if (!worldObj.isRemote) {
-            research.Tier1(this);
-            markDirty();
-            worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-        }
     }
 
     @Override
@@ -98,7 +84,7 @@ public class TileEntityT1 extends TileEntity implements IInventory {
 
     @Override
     public String getInventoryName() {
-        return "Research Block MK1";
+        return "Research Block MK2";
     }
 
     @Override
@@ -128,14 +114,8 @@ public class TileEntityT1 extends TileEntity implements IInventory {
     }
 
     @Override
-    public boolean isItemValidForSlot(int slot, ItemStack stack) {
-        switch (slot) {
-            case 0: return true;
-            case 1: return TileEntityFurnace.getItemBurnTime(stack) > 0;
-            case 2: return true;
-            default: return true;
-        }
-
+    public boolean isItemValidForSlot(int slot, ItemStack p_94041_2_) {
+        return false;
     }
 
     @Override
@@ -153,27 +133,6 @@ public class TileEntityT1 extends TileEntity implements IInventory {
     @Override
     public void writeToNBT(NBTTagCompound compound) {
         super.writeToNBT(compound);
-//        // Variables
-//        public boolean isResearching;
-//        public int researchProgress;
-//        public int currentBurnTime;
-//        public int maxResearchProgress;
-//        public boolean isBurning;
-//
-//        private int tickCounter = 0;
-
-        NBTTagCompound researchData = new NBTTagCompound();
-        researchData.setInteger("totalBurnTime", totalBurnTime);
-        researchData.setBoolean("isResearching", isResearching);
-        researchData.setInteger("researchProgress", researchProgress);
-        researchData.setInteger("currentBurnTime", currentBurnTime);
-        researchData.setInteger("maxResearchProgress", maxResearchProgress);
-        researchData.setBoolean("isBurning", isBurning);
-        // Is the tickcounter needed in the NBT save/load?
-        researchData.setInteger("tickCounter", tickCounter);
-
-
-
         NBTTagCompound items = new NBTTagCompound();
         for (int i = 0; i < inventory.length; i++) {
             if (inventory[i] != null) {
@@ -183,21 +142,11 @@ public class TileEntityT1 extends TileEntity implements IInventory {
             }
         }
         compound.setTag("Items", items);
-        compound.setTag("researchData", researchData);
     }
 
     @Override
     public void readFromNBT(NBTTagCompound compound) {
         super.readFromNBT(compound);
-
-        NBTTagCompound researchData = compound.hasKey("researchData") ? compound.getCompoundTag("researchData") : new NBTTagCompound();
-        totalBurnTime = researchData.getInteger("totalBurnTime");
-        isResearching = researchData.getBoolean("isResearching");
-        researchProgress = researchData.getInteger("researchProgress");
-        currentBurnTime = researchData.getInteger("currentBurnTime");
-        maxResearchProgress = researchData.getInteger("maxResearchProgress");
-        isBurning = researchData.getBoolean("isBurning");
-
         NBTTagCompound items = compound.hasKey("Items") ? compound.getCompoundTag("Items") : new NBTTagCompound();
         for (int i = 0; i < inventory.length; i++) {
             if (items.hasKey("Slot" + i)) {

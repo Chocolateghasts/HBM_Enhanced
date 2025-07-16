@@ -6,6 +6,8 @@ import com.mewo.hbmenhanced.Packets.EnergyPacket;
 import com.mewo.hbmenhanced.ReactorResearch.TileEntityResearchCore;
 import com.mewo.hbmenhanced.ResearchBlocks.Tier1.T1Block;
 import com.mewo.hbmenhanced.ResearchBlocks.Tier1.TileEntityT1;
+import com.mewo.hbmenhanced.ResearchBlocks.Tier2.T2Block;
+import com.mewo.hbmenhanced.ResearchBlocks.Tier2.TileEntityT2;
 import com.mewo.hbmenhanced.ResearchManager.PointManager;
 import com.mewo.hbmenhanced.Util.Result;
 import com.mewo.hbmenhanced.Util.getItemValues;
@@ -43,6 +45,7 @@ public class hbmenhanced
     public static final int guiLabBlockID = 0;
     public static final int guiResearchCoreID = 1;
     public static final int guiResearchBlockID = 2;
+    public static final int guiResearchBlockT2ID = 3;
 
     public static Item researchPoint;
     public static Item researchItem;
@@ -50,6 +53,7 @@ public class hbmenhanced
     public static Block labBlock;
     public static Block researchBlock;
     public static Block researchCore;
+    public static Block researchBlockT2;
 
 
 
@@ -73,6 +77,7 @@ public class hbmenhanced
         GameRegistry.registerBlock(researchCore, "Research Core");
         GameRegistry.registerTileEntity(TileEntityResearchCore.class, "tileEntityResearchCore");
         GameRegistry.registerTileEntity(TileEntityT1.class, "tileEntityT1");
+        GameRegistry.registerTileEntity(TileEntityT2.class, "tileEntityT2");
     }
 
 
@@ -97,6 +102,8 @@ public class hbmenhanced
         GameRegistry.registerTileEntity(labBlockTileEntity.class, "labBlockTileEntity");
         researchBlock = new T1Block().setBlockName("researchBlockT1");
         GameRegistry.registerBlock(researchBlock, "researchBlockT1");
+        researchBlockT2 = new T2Block().setBlockName("researchBlockT2");
+        GameRegistry.registerBlock(researchBlockT2, "researchBlockT2");
 
 //        researchBlock = new ResearchBlock(1, "researchBlock").setBlockName("researchBlock");
 //        GameRegistry.registerBlock(researchBlock, "researchBlock");

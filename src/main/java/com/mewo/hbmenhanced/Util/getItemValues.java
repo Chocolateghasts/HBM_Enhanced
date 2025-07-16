@@ -49,6 +49,15 @@ public class getItemValues {
         return Values.getOrDefault(item.getUnlocalizedName().toLowerCase(), new ResearchValue());
     }
 
+    public static int getResearchTime(int tier) {
+        switch (tier) {
+            case 1: return 1200;
+            case 2: return 800;
+            case 3: return 600;
+            default: return 1200;
+        }
+    }
+
     public static void init() {
         for (Object obj : Item.itemRegistry) {
 
