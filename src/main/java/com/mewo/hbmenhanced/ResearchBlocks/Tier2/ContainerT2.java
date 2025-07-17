@@ -1,8 +1,6 @@
 package com.mewo.hbmenhanced.ResearchBlocks.Tier2;
 
-import com.hbm.inventory.fluid.Fluids;
 import com.hbm.inventory.fluid.trait.FT_Flammable;
-import com.hbm.inventory.fluid.trait.FluidTrait;
 import com.hbm.items.machine.ItemFluidIdentifier;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
