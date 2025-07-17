@@ -1,5 +1,8 @@
 package com.mewo.hbmenhanced.ResearchBlocks.Tier2;
 
+import com.hbm.inventory.fluid.FluidType;
+import com.hbm.inventory.fluid.Fluids;
+import com.hbm.inventory.fluid.tank.FluidTank;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
@@ -18,6 +21,42 @@ public class GuiT2 extends GuiContainer {
         this.ySize = 166;
     }
 
+    public void drawFluidBar() {
+        FluidTank tank = tileEntity.tank;
+        int fill = tank.getFill();
+        int maxFill = tank.getMaxFill();
+        if (maxFill == 0 || fill == 0) return;
+
+        FluidType fluid = tank.getTankType();
+        if (fluid == null) return;
+
+        int barHeight = 50;
+        int filledHeight = (int) ((fill / (float) maxFill) * barHeight);
+
+        int barX = guiLeft + 103;
+        int barY = guiTop + 5 + (barHeight - filledHeight);
+
+        // Bind texture
+        mc.getTextureManager().bindTexture(fluid.getTexture());
+        // Set tint color
+        int color = fluid.getTint();
+        float r = ((color >> 16) & 0xFF) / 255.0F;
+        float g = ((color >> 8) & 0xFF) / 255.0F;
+        float b = (color & 0xFF) / 255.0F;
+        GL11.glColor3f(r, g, b);
+
+        int texSize = 16; // or 32 if your texture is 32x32
+        func_146110_a(
+                barX, barY,       // draw position on screen
+                0, 0,             // start at top-left of texture
+                16, filledHeight, // draw 16px wide, variable height
+                texSize, texSize  // texture resolution
+        );
+
+        GL11.glColor4f(1F, 1F, 1F, 1F);
+    }
+
+
     @Override
     protected void drawGuiContainerBackgroundLayer(float p_146976_1_, int p_146976_2_, int p_146976_3_) {
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
@@ -25,5 +64,6 @@ public class GuiT2 extends GuiContainer {
         int guiLeft = (this.width - this.xSize) / 2;
         int guiTop = (this.height - this.ySize) / 2;
         this.drawTexturedModalRect(guiLeft, guiTop, 0, 0, this.xSize, this.ySize);
+        drawFluidBar();
     }
 }

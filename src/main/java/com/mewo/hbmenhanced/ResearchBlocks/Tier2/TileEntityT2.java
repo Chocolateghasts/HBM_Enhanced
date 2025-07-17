@@ -19,10 +19,11 @@ import net.minecraftforge.common.util.ForgeDirection;
 public class TileEntityT2 extends TileEntity implements IInventory, IFluidStandardReceiver {
 
     // Constants
-    public final int INV_SIZE = 3;
+    public final int INV_SIZE = 4;
     public final int MAIN_SLOT = 0;
     public final int SECOND_SLOT = 1;
     public final int OUTPUT_SLOT = 2;
+    public final int FLUID_SLOT = 3;
 
     // Properties ?
     public Research research;
@@ -35,6 +36,7 @@ public class TileEntityT2 extends TileEntity implements IInventory, IFluidStanda
     public boolean isResearching;
     public FluidTank tank;
     private int tickCounter;
+    private int tickCounterClient;
 
     public TileEntityT2() {
         inventory = new ItemStack[INV_SIZE];
@@ -44,14 +46,26 @@ public class TileEntityT2 extends TileEntity implements IInventory, IFluidStanda
 
     @Override
     public void updateEntity() {
-        if (worldObj.isRemote) return;
-        tickCounter++;
-        if (tickCounter >= 20) {
-            tickCounter = 0;
-            System.out.println(tank.getFill());
-            subscribeToAllAround(Fluids.WATER, this);
+        if (worldObj.isRemote) {
+            tickCounterClient++;
+            if (tickCounterClient >= 20) {
+                tickCounterClient = 0;
+                System.out.println("[Client] Fluid Stored: " + tank.getFill());
+            }
         }
+        if (!worldObj.isRemote) {
+            tickCounter++;
 
+            if (tickCounter % 5 == 0) {
+                markDirty();
+                worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+            }
+            if (tickCounter >= 20) {
+                tickCounter = 0;
+                System.out.println("[SERVER] Fluid Stored: " + tank.getFill());
+                subscribeToAllAround(tank.getTankType(), this);
+            }
+        }
     }
 
     @Override
@@ -187,7 +201,6 @@ public class TileEntityT2 extends TileEntity implements IInventory, IFluidStanda
 
     @Override
     public FluidTank[] getReceivingTanks() {
-        System.out.println("[HBM] getReceivingTanks() called");
         return new FluidTank[] { tank };
     }
 
@@ -208,12 +221,12 @@ public class TileEntityT2 extends TileEntity implements IInventory, IFluidStanda
             if(tank.getTankType() == type && tank.getPressure() == pressure) tanks++;
         }
         if(tanks > 1) {
-            System.out.println("Attempting transfer");
+            //System.out.println("Attempting transfer");
             int firstRound = (int) Math.floor((double) amount / (double) tanks);
             for(FluidTank tank : getReceivingTanks()) {
-                System.out.println("Checking for tank " + tank.getTankType());
+                //System.out.println("Checking for tank " + tank.getTankType());
                 if(tank.getTankType() == type && tank.getPressure() == pressure) {
-                    System.out.println("Pressure is correct!");
+                    //System.out.println("Pressure is correct!");
                     int toAdd = Math.min(firstRound, tank.getMaxFill() - tank.getFill());
                     tank.setFill(tank.getFill() + toAdd);
                     amount -= toAdd;
@@ -221,15 +234,15 @@ public class TileEntityT2 extends TileEntity implements IInventory, IFluidStanda
             }
         }
         if(amount > 0) for(FluidTank tank : getReceivingTanks()) {
-            System.out.println("[Bottom method]: Checking for tank " + tank.getTankType());
+            //System.out.println("[Bottom method]: Checking for tank " + tank.getTankType());
             if(tank.getTankType() == type && tank.getPressure() == pressure) {
-                System.out.println("[Bottom method]: Pressure and type is correct!");
+                //System.out.println("[Bottom method]: Pressure and type is correct!");
                 int toAdd = (int) Math.min(amount, tank.getMaxFill() - tank.getFill());
                 tank.setFill(tank.getFill() + toAdd);
                 amount -= toAdd;
             }
         }
-        System.out.println("Amount: " + amount);
+        //System.out.println("Amount: " + amount);
         return amount;
     }
 

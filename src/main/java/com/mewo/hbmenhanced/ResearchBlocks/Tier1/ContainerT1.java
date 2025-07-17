@@ -17,8 +17,8 @@ public class ContainerT1 extends Container {
 
     public ContainerT1(InventoryPlayer inventory, TileEntityT1 te) {
         this.tileEntity = te;
-        addSlotToContainer(new Slot(te, 0, 9, 28));
-        addSlotToContainer(new Slot(te, 1, 9, 62){
+        addSlotToContainer(new Slot(te, 0, 10, 29));
+        addSlotToContainer(new Slot(te, 1, 10, 63){
             @Override
             public boolean isItemValid(ItemStack itemStack) {
                 return TileEntityFurnace.getItemBurnTime(itemStack) > 0;
@@ -27,7 +27,7 @@ public class ContainerT1 extends Container {
 //                    }
             }
         });
-        addSlotToContainer(new Slot(te, 2, 55, 28));
+        addSlotToContainer(new Slot(te, 2, 56, 29));
 
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 9; j++) {
