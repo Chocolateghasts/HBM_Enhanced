@@ -1,6 +1,7 @@
 package com.mewo.hbmenhanced.ResearchBlock;
 
 import com.mewo.hbmenhanced.ResearchBlocks.Tier1.TileEntityT1;
+import com.mewo.hbmenhanced.ResearchBlocks.Tier2.TileEntityT2;
 import com.mewo.hbmenhanced.ResearchManager.PointManager;
 import com.mewo.hbmenhanced.Util.ResearchValue;
 import com.mewo.hbmenhanced.Util.Result;
@@ -64,6 +65,55 @@ public class Research {
                 }
             }
         }
+    }
+
+    public void Tier2(TileEntityT2 te) {
+        int mainSlot = te.MAIN_SLOT;
+        int outputSlot = te.OUTPUT_SLOT;
+        ItemStack[] inventory = te.inventory;
+
+        ItemStack input = inventory[mainSlot];
+        ItemStack output = inventory[outputSlot];
+        if (output != null) {
+            System.out.println("Early Return");
+            return;
+        }
+
+
+        if (input == null) {
+            System.out.println("Early Return");
+            return;
+        }
+
+
+        if (!te.isResearching) {
+
+            if (te.tank.getFill() >= 100) {
+                System.out.println("Starting Research");
+                te.tank.setFill(te.tank.getFill() - 100);
+                te.isResearching = true;
+                te.maxResearchProgress = getItemValues.getResearchTime(2);
+            }
+        }
+        if (te.isResearching && te.tank.getFill() >= 100) {
+            te.researchProgress++;
+            te.tank.setFill(te.tank.getFill() - 100);
+            if (te.researchProgress >= te.maxResearchProgress) {
+                System.out.println("Research Finished");
+                //Award Points
+                ResearchValue val = getItemValues.getItemValue(input.getItem());
+                ItemStack point = new ItemStack(hbmenhanced.researchPoint);
+                getItemValues.setValues(val, point);
+                te.inventory[outputSlot] = point;
+                te.researchProgress = 0;
+                te.isResearching = false;
+                te.inventory[mainSlot].stackSize--;
+                if (te.inventory[mainSlot].stackSize <= 0) {
+                    te.inventory[mainSlot] = null;
+                }
+            }
+        }
+
     }
 }
 

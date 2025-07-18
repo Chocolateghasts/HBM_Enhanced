@@ -34,6 +34,9 @@ public class TileEntityT2 extends TileEntity implements IInventory, IFluidStanda
     public int researchProgress;
     public int maxResearchProgress;
     public boolean isResearching;
+    public int currentBurnTime;
+    public int totalBurnTime;
+    public boolean isBurning;
     public FluidTank tank;
     private int tickCounter;
     private int tickCounterClient;
@@ -50,10 +53,11 @@ public class TileEntityT2 extends TileEntity implements IInventory, IFluidStanda
             tickCounterClient++;
             if (tickCounterClient >= 20) {
                 tickCounterClient = 0;
-                System.out.println("[Client] Fluid Stored: " + tank.getFill());
+//                System.out.println("[Client] Fluid Stored: " + tank.getFill());
             }
         }
         if (!worldObj.isRemote) {
+            research.Tier2(this);
             tickCounter++;
 
             if (tickCounter % 5 == 0) {
@@ -62,7 +66,7 @@ public class TileEntityT2 extends TileEntity implements IInventory, IFluidStanda
             }
             if (tickCounter >= 20) {
                 tickCounter = 0;
-                System.out.println("[SERVER] Fluid Stored: " + tank.getFill());
+//                System.out.println("[SERVER] Fluid Stored: " + tank.getFill());
                 subscribeToAllAround(tank.getTankType(), this);
             }
         }
@@ -177,6 +181,13 @@ public class TileEntityT2 extends TileEntity implements IInventory, IFluidStanda
             }
         }
         compound.setTag("Items", items);
+        compound.setInteger("ResearchProgress", researchProgress);
+        compound.setInteger("MaxResearchProgress", maxResearchProgress);
+        compound.setBoolean("IsResearching", isResearching);
+        compound.setInteger("CurrentBurnTime", currentBurnTime);
+        compound.setInteger("TotalBurnTime", totalBurnTime);
+        compound.setBoolean("IsBurning", isBurning);
+        compound.setString("Team", team);
     }
 
     @Override
@@ -193,6 +204,13 @@ public class TileEntityT2 extends TileEntity implements IInventory, IFluidStanda
                 inventory[i] = null;
             }
         }
+        researchProgress = compound.getInteger("ResearchProgress");
+        maxResearchProgress = compound.getInteger("MaxResearchProgress");
+        isResearching = compound.getBoolean("IsResearching");
+        currentBurnTime = compound.getInteger("CurrentBurnTime");
+        totalBurnTime = compound.getInteger("TotalBurnTime");
+        isBurning = compound.getBoolean("IsBurning");
+        team = compound.getString("Team");
     }
     @Override
     public FluidTank[] getAllTanks() {

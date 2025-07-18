@@ -50,12 +50,14 @@ public class getItemValues {
     }
 
     public static int getResearchTime(int tier) {
+        return 120;
+        /*
         switch (tier) {
             case 1: return 1200;
             case 2: return 800;
             case 3: return 600;
             default: return 1200;
-        }
+        }*/
     }
 
     public static void init() {
