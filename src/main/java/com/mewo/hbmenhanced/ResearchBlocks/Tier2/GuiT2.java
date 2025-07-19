@@ -72,7 +72,7 @@ public class GuiT2 extends GuiContainer {
             int progressWidth = (tileEntity.researchProgress * 25) / tileEntity.maxResearchProgress;
             this.drawTexturedModalRect(
                     guiLeft + 69,
-                    guiTop + 29,
+                    guiTop + 28,
                     177,
                     17,
                     progressWidth,

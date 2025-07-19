@@ -9,6 +9,9 @@ import com.mewo.hbmenhanced.ResearchBlocks.Tier1.TileEntityT1;
 import com.mewo.hbmenhanced.ResearchBlocks.Tier2.ContainerT2;
 import com.mewo.hbmenhanced.ResearchBlocks.Tier2.GuiT2;
 import com.mewo.hbmenhanced.ResearchBlocks.Tier2.TileEntityT2;
+import com.mewo.hbmenhanced.ResearchBlocks.Tier3.ContainerT3;
+import com.mewo.hbmenhanced.ResearchBlocks.Tier3.GuiT3;
+import com.mewo.hbmenhanced.ResearchBlocks.Tier3.TileEntityT3;
 import com.mewo.hbmenhanced.containers.labBlockContainer;
 import com.mewo.hbmenhanced.containers.labBlockTileEntity;
 import cpw.mods.fml.common.network.IGuiHandler;
@@ -41,6 +44,13 @@ public class GuiHandler implements IGuiHandler {
                     return new ContainerT2(player.inventory, (TileEntityT2) tileEntity);
                 }
                 break;
+            case 4:
+                System.out.println("uhuhuhu " + tileEntity.getClass());
+                if (tileEntity instanceof TileEntityT3) {
+                    System.out.println("Creating Container");
+                    return new ContainerT3(player.inventory, (TileEntityT3) tileEntity);
+                }
+                break;
         }
         return null;
     }
@@ -68,6 +78,13 @@ public class GuiHandler implements IGuiHandler {
             case 3:
                 if (tileEntity instanceof TileEntityT2) {
                     return new GuiT2(player.inventory, (TileEntityT2) tileEntity);
+                }
+                break;
+            case 4:
+                System.out.println("uhuhuhu " + tileEntity.getClass());
+                if (tileEntity instanceof TileEntityT3) {
+                    System.out.println("Opening GUI");
+                    return new GuiT3(player.inventory, (TileEntityT3) tileEntity);
                 }
                 break;
         }
