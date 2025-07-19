@@ -76,14 +76,16 @@ public class Research {
         ItemStack output = inventory[outputSlot];
         if (output != null) {
             System.out.println("Early Return");
+            te.isBurning = false;
             return;
         }
 
 
         if (input == null) {
             System.out.println("Early Return");
+            te.isBurning = false;
             return;
-        }
+        } 
 
 
         if (!te.isResearching) {
@@ -93,11 +95,15 @@ public class Research {
                 te.tank.setFill(te.tank.getFill() - 100);
                 te.isResearching = true;
                 te.maxResearchProgress = getItemValues.getResearchTime(2);
+                te.isBurning = true;
+            } else {
+                te.isBurning = false;
             }
         }
         if (te.isResearching && te.tank.getFill() >= 100) {
             te.researchProgress++;
             te.tank.setFill(te.tank.getFill() - 100);
+            te.isBurning = true;
             if (te.researchProgress >= te.maxResearchProgress) {
                 System.out.println("Research Finished");
                 //Award Points
@@ -112,6 +118,8 @@ public class Research {
                     te.inventory[mainSlot] = null;
                 }
             }
+        } else {
+            te.isBurning = false;
         }
 
     }

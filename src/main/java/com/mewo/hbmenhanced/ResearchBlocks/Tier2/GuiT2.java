@@ -1,7 +1,6 @@
 package com.mewo.hbmenhanced.ResearchBlocks.Tier2;
 
 import com.hbm.inventory.fluid.FluidType;
-import com.hbm.inventory.fluid.Fluids;
 import com.hbm.inventory.fluid.tank.FluidTank;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -33,8 +32,8 @@ public class GuiT2 extends GuiContainer {
         int barHeight = 50;
         int filledHeight = (int) ((fill / (float) maxFill) * barHeight);
 
-        int barX = guiLeft + 103;
-        int barY = guiTop + 5 + (barHeight - filledHeight);
+        int barX = guiLeft + 5;
+        int barY = guiTop + 29 + (barHeight - filledHeight);
 
         // Bind texture
         mc.getTextureManager().bindTexture(fluid.getTexture());
@@ -65,5 +64,20 @@ public class GuiT2 extends GuiContainer {
         int guiTop = (this.height - this.ySize) / 2;
         this.drawTexturedModalRect(guiLeft, guiTop, 0, 0, this.xSize, this.ySize);
         drawFluidBar();
+        this.mc.getTextureManager().bindTexture(texture);
+        if (tileEntity.isBurning) {
+            drawTexturedModalRect(guiLeft + 53, guiTop + 47, 177, 0, 11, 13);
+        }
+        if (tileEntity.isResearching && tileEntity.maxResearchProgress > 0) {
+            int progressWidth = (tileEntity.researchProgress * 25) / tileEntity.maxResearchProgress;
+            this.drawTexturedModalRect(
+                    guiLeft + 69,
+                    guiTop + 29,
+                    177,
+                    17,
+                    progressWidth,
+                    17
+            );
+        }
     }
 }
