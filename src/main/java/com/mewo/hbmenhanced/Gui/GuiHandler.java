@@ -45,9 +45,7 @@ public class GuiHandler implements IGuiHandler {
                 }
                 break;
             case 4:
-                System.out.println("uhuhuhu " + tileEntity.getClass());
                 if (tileEntity instanceof TileEntityT3) {
-                    System.out.println("Creating Container");
                     return new ContainerT3(player.inventory, (TileEntityT3) tileEntity);
                 }
                 break;
@@ -81,9 +79,7 @@ public class GuiHandler implements IGuiHandler {
                 }
                 break;
             case 4:
-                System.out.println("uhuhuhu " + tileEntity.getClass());
                 if (tileEntity instanceof TileEntityT3) {
-                    System.out.println("Opening GUI");
                     return new GuiT3(player.inventory, (TileEntityT3) tileEntity);
                 }
                 break;

@@ -1,6 +1,13 @@
 package com.mewo.hbmenhanced.ResearchBlocks.Tier3;
 
+import api.hbm.energymk2.IEnergyConductorMK2;
+import api.hbm.energymk2.IEnergyReceiverMK2;
+import api.hbm.energymk2.Nodespace;
+import com.hbm.handler.threading.PacketThreading;
+import com.hbm.packet.toclient.AuxParticlePacketNT;
+import com.hbm.util.Compat;
 import com.mewo.hbmenhanced.ResearchBlock.Research;
+import cpw.mods.fml.common.network.NetworkRegistry;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -9,11 +16,21 @@ import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 
-public class TileEntityT3 extends TileEntity implements IInventory {
+import java.util.Arrays;
+
+public class TileEntityT3 extends TileEntity implements IInventory, IEnergyReceiverMK2, IEnergyConductorMK2 {
     public String team;
     public ItemStack[] inventory;
     private Research research;
+
+    public long currentEnergy;
+    public long maxEnergy = 50000;
+    private boolean isSubscribed;
+
+    private int subscribeTickCounter;
 
     private final int INV_SIZE = 3;
 
@@ -21,6 +38,32 @@ public class TileEntityT3 extends TileEntity implements IInventory {
         inventory = new ItemStack[INV_SIZE];
     }
 
+    public void tryAllSubscriptions() {
+        for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+            int nx = xCoord + dir.offsetX;
+            int ny = yCoord + dir.offsetY;
+            int nz = zCoord + dir.offsetZ;
+
+            System.out.println("Trying to subscribe on side: " + dir);
+            trySubscribe(worldObj, nx, ny, nz, dir);
+        }
+    }
+
+
+    @Override
+    public void updateEntity() {
+        if (!worldObj.isRemote) {
+            subscribeTickCounter++;
+            setPower(currentEnergy-10);
+            if (!isSubscribed) {
+                tryAllSubscriptions();
+            }
+            if (subscribeTickCounter >= 10) {
+                subscribeTickCounter = 0;
+                tryAllSubscriptions();
+            }
+        }
+    }
 
     @Override
     public int getSizeInventory() {
@@ -130,6 +173,7 @@ public class TileEntityT3 extends TileEntity implements IInventory {
             }
         }
         compound.setTag("Items", items);
+        compound.setLong("EnergyStored", currentEnergy);
     }
 
     @Override
@@ -144,6 +188,59 @@ public class TileEntityT3 extends TileEntity implements IInventory {
             } else {
                 inventory[i] = null;
             }
+        }
+        currentEnergy = compound.getLong("EnergyStored");
+    }
+
+    @Override
+    public long getPower() {
+        return currentEnergy;
+    }
+
+    @Override
+    public void setPower(long power) {
+        currentEnergy = power;
+        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+    }
+
+    @Override
+    public long getMaxPower() {
+        return maxEnergy;
+    }
+
+    @Override
+    public boolean isLoaded() {
+        return true;
+    }
+    @Override
+    public void trySubscribe(World world, int x, int y, int z, ForgeDirection dir) {
+        TileEntity te = Compat.getTileStandard(world, x, y, z);
+        boolean red = false;
+
+        if(te instanceof IEnergyConductorMK2) {
+            IEnergyConductorMK2 con = (IEnergyConductorMK2) te;
+            if(!con.canConnect(dir.getOpposite())) return;
+
+            Nodespace.PowerNode node = Nodespace.getNode(world, x, y, z);
+            System.out.println(node);
+            if(node != null && node.net != null) {
+                node.net.addReceiver(this);
+                isSubscribed = true;
+                red = true;
+            }
+        }
+
+        if(particleDebug) {
+            NBTTagCompound data = new NBTTagCompound();
+            data.setString("type", "network");
+            data.setString("mode", "power");
+            double posX = x + 0.5 + dir.offsetX * 0.5 + world.rand.nextDouble() * 0.5 - 0.25;
+            double posY = y + 0.5 + dir.offsetY * 0.5 + world.rand.nextDouble() * 0.5 - 0.25;
+            double posZ = z + 0.5 + dir.offsetZ * 0.5 + world.rand.nextDouble() * 0.5 - 0.25;
+            data.setDouble("mX", -dir.offsetX * (red ? 0.025 : 0.1));
+            data.setDouble("mY", -dir.offsetY * (red ? 0.025 : 0.1));
+            data.setDouble("mZ", -dir.offsetZ * (red ? 0.025 : 0.1));
+            PacketThreading.createAllAroundThreadedPacket(new AuxParticlePacketNT(data, posX, posY, posZ), new NetworkRegistry.TargetPoint(world.provider.dimensionId, posX, posY, posZ, 25));
         }
     }
 }

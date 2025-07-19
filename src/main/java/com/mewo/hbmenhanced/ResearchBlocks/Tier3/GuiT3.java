@@ -23,4 +23,9 @@ public class GuiT3 extends GuiContainer {
         int guiTop = (this.height - this.ySize) / 2;
         this.drawTexturedModalRect(guiLeft, guiTop, 0, 0, this.xSize, this.ySize);
     }
+
+    @Override
+    protected void drawGuiContainerForegroundLayer(int p_146979_1_, int p_146979_2_) {
+        this.fontRendererObj.drawString("Energy: " + tileEntity.getPower() + "/" + tileEntity.getMaxPower(), 1, 1, 1);
+    }
 }
