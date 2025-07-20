@@ -30,12 +30,21 @@ public class TileEntityT3 extends TileEntity implements IInventory, IEnergyRecei
     public long maxEnergy = 50000;
     private boolean isSubscribed;
 
+    public boolean isResearching;
+    public int researchProgress;
+    public int maxResearchProgress;
+
+    public int MAIN_SLOT = 0;
+    public int OUTPUT_SLOT = 2;
+    public int BATTERY_SLOT = 1;
+
     private int subscribeTickCounter;
 
     private final int INV_SIZE = 3;
 
     public TileEntityT3() {
         inventory = new ItemStack[INV_SIZE];
+        research = new Research();
     }
 
     public void tryAllSubscriptions() {
@@ -44,7 +53,7 @@ public class TileEntityT3 extends TileEntity implements IInventory, IEnergyRecei
             int ny = yCoord + dir.offsetY;
             int nz = zCoord + dir.offsetZ;
 
-            System.out.println("Trying to subscribe on side: " + dir);
+            //System.out.println("Trying to subscribe on side: " + dir);
             trySubscribe(worldObj, nx, ny, nz, dir);
         }
     }
@@ -53,8 +62,11 @@ public class TileEntityT3 extends TileEntity implements IInventory, IEnergyRecei
     @Override
     public void updateEntity() {
         if (!worldObj.isRemote) {
+            research.Tier3(this);
+            worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+            markDirty();
             subscribeTickCounter++;
-            setPower(currentEnergy-10);
+//            setPower(currentEnergy-10);
             if (!isSubscribed) {
                 tryAllSubscriptions();
             }
@@ -174,6 +186,11 @@ public class TileEntityT3 extends TileEntity implements IInventory, IEnergyRecei
         }
         compound.setTag("Items", items);
         compound.setLong("EnergyStored", currentEnergy);
+        NBTTagCompound researchData = new NBTTagCompound();
+        researchData.setBoolean("isResearching", isResearching);
+        researchData.setInteger("researchProgress", researchProgress);
+        researchData.setInteger("maxResearchProgress", maxResearchProgress);
+        compound.setTag("researchData", researchData);
     }
 
     @Override
@@ -190,6 +207,12 @@ public class TileEntityT3 extends TileEntity implements IInventory, IEnergyRecei
             }
         }
         currentEnergy = compound.getLong("EnergyStored");
+        compound.setTag("Items", items);
+        compound.setLong("EnergyStored", currentEnergy);
+        NBTTagCompound researchData = compound.getCompoundTag("researchData");
+        isResearching =  researchData.getBoolean("isResearching");
+        researchProgress = researchData.getInteger("researchProgress");
+        maxResearchProgress = researchData.getInteger("maxResearchProgress");
     }
 
     @Override
@@ -222,7 +245,6 @@ public class TileEntityT3 extends TileEntity implements IInventory, IEnergyRecei
             if(!con.canConnect(dir.getOpposite())) return;
 
             Nodespace.PowerNode node = Nodespace.getNode(world, x, y, z);
-            System.out.println(node);
             if(node != null && node.net != null) {
                 node.net.addReceiver(this);
                 isSubscribed = true;

@@ -2,6 +2,7 @@ package com.mewo.hbmenhanced.ResearchBlock;
 
 import com.mewo.hbmenhanced.ResearchBlocks.Tier1.TileEntityT1;
 import com.mewo.hbmenhanced.ResearchBlocks.Tier2.TileEntityT2;
+import com.mewo.hbmenhanced.ResearchBlocks.Tier3.TileEntityT3;
 import com.mewo.hbmenhanced.ResearchManager.PointManager;
 import com.mewo.hbmenhanced.Util.ResearchValue;
 import com.mewo.hbmenhanced.Util.Result;
@@ -122,6 +123,49 @@ public class Research {
             te.isBurning = false;
         }
 
+    }
+
+    public void Tier3(TileEntityT3 te) {
+        int main_slot = te.MAIN_SLOT;
+        int output_slot = te.OUTPUT_SLOT;
+
+        ItemStack[] inventory = te.inventory;
+
+        ItemStack input = te.inventory[main_slot];
+        ItemStack output = te.inventory[output_slot];
+
+        if (output != null) return;
+        if (input == null) return;
+
+        if (!te.isResearching) {
+            if (te.currentEnergy >= 50) {
+                te.currentEnergy -= 50;
+                te.isResearching = true;
+                te.maxResearchProgress = getItemValues.getResearchTime(3);
+            }
+        }
+
+        if (te.isResearching) {
+            if (te.currentEnergy >= 50) {
+                te.currentEnergy -= 50;
+                te.researchProgress++;
+                if (te.researchProgress >= te.maxResearchProgress) {
+                    te.isResearching = false;
+                    te.researchProgress = 0;
+                    te.maxResearchProgress = 0;
+
+                    ResearchValue val = getItemValues.getItemValue(input.getItem());
+                    ItemStack point = new ItemStack(hbmenhanced.researchPoint);
+                    getItemValues.setValues(val, point);
+                    output = point;
+                    te.inventory[output_slot] = output;
+                    te.inventory[main_slot].stackSize--;
+                    if (te.inventory[main_slot].stackSize <= 0) {
+                        te.inventory[main_slot] = null;
+                    }
+                }
+            }
+        }
     }
 }
 

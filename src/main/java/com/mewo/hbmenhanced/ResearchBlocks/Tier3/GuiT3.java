@@ -22,6 +22,17 @@ public class GuiT3 extends GuiContainer {
         int guiLeft = (this.width - this.xSize) / 2;
         int guiTop = (this.height - this.ySize) / 2;
         this.drawTexturedModalRect(guiLeft, guiTop, 0, 0, this.xSize, this.ySize);
+        if (tileEntity.isResearching && tileEntity.maxResearchProgress > 0) {
+            int progressWidth = (tileEntity.researchProgress * 25) / tileEntity.maxResearchProgress;
+            this.drawTexturedModalRect(
+                    guiLeft + 69,
+                    guiTop + 28,
+                    177,
+                    17,
+                    progressWidth,
+                    17
+            );
+        }
     }
 
     @Override
