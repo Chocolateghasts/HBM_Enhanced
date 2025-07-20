@@ -31,7 +31,6 @@ public class ContainerT2 extends Container {
                 super.onSlotChanged();
                 this.inventory.markDirty();
                 if (tileEntity.inventory[3] != null && tileEntity.inventory[3].getItem() instanceof ItemFluidIdentifier) {
-                    System.out.println("FounD FLuiD iDtentifieR");
                     if (ItemFluidIdentifier.getType(tileEntity.inventory[3]).hasTrait(FT_Flammable.class)) {
                         tileEntity.tank.setTankType(ItemFluidIdentifier.getType(tileEntity.inventory[3]));
                     }

@@ -4,6 +4,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.mewo.hbmenhanced.Util.Result;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.World;
 
 import java.io.*;
@@ -73,7 +75,7 @@ public class PointManager {
         return new Result(true, "Removed " + team);
     }
 
-    public static Result addPoints(String team, ResearchType type, int points) {
+    public static Result addPoints(String team, ResearchType type, int points, World world) {
         if (dataFile == null || !dataFile.exists()) return new Result(false, "Data file not initialized");
         if (team == null || type == null || points == 0) {
             return new Result(false, "Values are null or zero");
@@ -83,7 +85,12 @@ public class PointManager {
         teamMap.putIfAbsent(team, new EnumMap<>(ResearchType.class));
         EnumMap<ResearchType, Integer> map = teamMap.get(team);
         map.put(type, map.getOrDefault(type, 0) + points);
-
+        for (Object obj : world.playerEntities) {
+            if (obj instanceof EntityPlayer) {
+                EntityPlayer player = (EntityPlayer) obj;
+                player.addChatMessage(new ChatComponentText("Added " + points + " of type " + type.toString() + " to team " + team));
+            }
+        }
         return saveData();
     }
 

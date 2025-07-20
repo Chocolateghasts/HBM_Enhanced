@@ -6,13 +6,28 @@ import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
 public class GuiT3 extends GuiContainer {
-    private static final ResourceLocation texture = new ResourceLocation("hbmenhanced", "textures/gui/ResearchBlockGuiT2.png");
+    private static final ResourceLocation texture = new ResourceLocation("hbmenhanced", "textures/gui/ResearchBlockGuiT3.png");
     public TileEntityT3 tileEntity;
     public GuiT3(InventoryPlayer player, TileEntityT3 te) {
         super(new ContainerT3(player, te));
         this.tileEntity = te;
         this.xSize = 176;
         this.ySize = 166;
+    }
+
+    private void drawEnergyBar() {
+        int goalBarX = 178;
+        int goalBarY = 38;
+        int barX = 5;
+        int barY = 29;
+        int maxBarHeight = 50;
+        float percent = (float) tileEntity.currentEnergy / (float) tileEntity.maxEnergy;
+        int barHeight = (int) (percent * maxBarHeight);
+        System.out.println("Percent: " + percent);
+        System.out.println("Height: " + barHeight);
+        drawTexturedModalRect(guiLeft + barX, guiTop + barY + (maxBarHeight - barHeight),
+                goalBarX, goalBarY + (maxBarHeight - barHeight),
+                16, barHeight);
     }
 
     @Override
@@ -33,6 +48,7 @@ public class GuiT3 extends GuiContainer {
                     17
             );
         }
+        drawEnergyBar();
     }
 
     @Override

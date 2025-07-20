@@ -65,6 +65,7 @@ public class GuiT2 extends GuiContainer {
         this.drawTexturedModalRect(guiLeft, guiTop, 0, 0, this.xSize, this.ySize);
         drawFluidBar();
         this.mc.getTextureManager().bindTexture(texture);
+//        this.fontRendererObj.drawString(tileEntity.currentEnergy + " / " + tileEntity.maxEnergy, 0, 0, 0);
         if (tileEntity.isBurning) {
             drawTexturedModalRect(guiLeft + 53, guiTop + 47, 177, 0, 11, 13);
         }
@@ -79,5 +80,10 @@ public class GuiT2 extends GuiContainer {
                     17
             );
         }
+    }
+
+    @Override
+    protected void drawGuiContainerForegroundLayer(int p_146979_1_, int p_146979_2_) {
+        this.fontRendererObj.drawString("Energy: " + tileEntity.getPower() + "/" + tileEntity.getMaxPower(), 1, 1, 1);
     }
 }

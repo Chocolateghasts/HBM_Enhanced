@@ -58,7 +58,7 @@ public class ItemResearchPoint extends Item {
             }
             for (PointManager.ResearchType type : PointManager.ResearchType.values()) {
                 if (nbt.getInteger(type.toString()) > 0) {
-                    Result res =  PointManager.addPoints(team, type, nbt.getByte(type.toString()));
+                    Result res =  PointManager.addPoints(team, type, nbt.getByte(type.toString()), world);
                     System.out.println(res.isSuccess() + res.getMessage());
                 }
             }

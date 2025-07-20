@@ -76,34 +76,40 @@ public class Research {
         ItemStack input = inventory[mainSlot];
         ItemStack output = inventory[outputSlot];
         if (output != null) {
-            System.out.println("Early Return");
             te.isBurning = false;
             return;
         }
 
 
         if (input == null) {
-            System.out.println("Early Return");
             te.isBurning = false;
             return;
-        } 
+        }
 
 
         if (!te.isResearching) {
-
-            if (te.tank.getFill() >= 100) {
-                System.out.println("Starting Research");
-                te.tank.setFill(te.tank.getFill() - 100);
-                te.isResearching = true;
+            if (te.currentEnergy >= 100 && te.tank.getFill() >= 1000) {
+                te.tank.setFill(te.tank.getFill() - 1000);
+                te.currentEnergy -= 100;
                 te.maxResearchProgress = getItemValues.getResearchTime(2);
+                te.isResearching = true;
                 te.isBurning = true;
             } else {
                 te.isBurning = false;
             }
+//            if (te.tank.getFill() >= 100) {
+//                System.out.println("Starting Research");
+//                te.tank.setFill(te.tank.getFill() - 100);
+//                te.isResearching = true;
+//                te.maxResearchProgress = getItemValues.getResearchTime(2);
+//                te.isBurning = true;
+//            } else {
+//                te.isBurning = false;
+//            }
         }
-        if (te.isResearching && te.tank.getFill() >= 100) {
+        if (te.isResearching && te.currentEnergy >= 100) {
             te.researchProgress++;
-            te.tank.setFill(te.tank.getFill() - 100);
+            te.currentEnergy -= 100;
             te.isBurning = true;
             if (te.researchProgress >= te.maxResearchProgress) {
                 System.out.println("Research Finished");
@@ -122,7 +128,6 @@ public class Research {
         } else {
             te.isBurning = false;
         }
-
     }
 
     public void Tier3(TileEntityT3 te) {
@@ -168,6 +173,3 @@ public class Research {
         }
     }
 }
-
-
-

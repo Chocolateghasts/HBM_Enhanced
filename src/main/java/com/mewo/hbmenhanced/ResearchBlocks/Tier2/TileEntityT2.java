@@ -1,10 +1,14 @@
 package com.mewo.hbmenhanced.ResearchBlocks.Tier2;
 
+import api.hbm.energymk2.IEnergyConductorMK2;
+import api.hbm.energymk2.IEnergyReceiverMK2;
+import api.hbm.energymk2.Nodespace;
 import api.hbm.fluid.IFluidStandardReceiver;
 import com.hbm.inventory.fluid.FluidType;
 import com.hbm.inventory.fluid.Fluids;
 import com.hbm.inventory.fluid.tank.FluidTank;
 import com.hbm.tileentity.IFluidCopiable;
+import com.hbm.util.Compat;
 import com.mewo.hbmenhanced.ResearchBlock.Research;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -14,9 +18,10 @@ import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
-public class TileEntityT2 extends TileEntity implements IInventory, IFluidStandardReceiver {
+public class TileEntityT2 extends TileEntity implements IInventory, IFluidStandardReceiver, IEnergyReceiverMK2 {
 
     // Constants
     public final int INV_SIZE = 4;
@@ -40,6 +45,11 @@ public class TileEntityT2 extends TileEntity implements IInventory, IFluidStanda
     public FluidTank tank;
     private int tickCounter;
     private int tickCounterClient;
+    private boolean isSubscribed;
+    private int subscribeTickCounter;
+
+    public long currentEnergy;
+    public long maxEnergy = 50000;
 
     public TileEntityT2() {
         inventory = new ItemStack[INV_SIZE];
@@ -51,23 +61,44 @@ public class TileEntityT2 extends TileEntity implements IInventory, IFluidStanda
     public void updateEntity() {
         if (worldObj.isRemote) {
             tickCounterClient++;
-            if (tickCounterClient >= 20) {
-                tickCounterClient = 0;
-//                System.out.println("[Client] Fluid Stored: " + tank.getFill());
-            }
-        }
-        if (!worldObj.isRemote) {
+            if (tickCounterClient >= 20) tickCounterClient = 0;
+        } else {
+            markDirty();
+            worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
             research.Tier2(this);
             tickCounter++;
 
-            if (tickCounter % 5 == 0) {
-                markDirty();
-                worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+            if (!isSubscribed || subscribeTickCounter++ >= 10) {
+                subscribeTickCounter = 0;
+                tryAllSubscriptions();
             }
             if (tickCounter >= 20) {
                 tickCounter = 0;
-//                System.out.println("[SERVER] Fluid Stored: " + tank.getFill());
                 subscribeToAllAround(tank.getTankType(), this);
+            }
+        }
+    }
+
+    public void tryAllSubscriptions() {
+        for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+            int nx = xCoord + dir.offsetX;
+            int ny = yCoord + dir.offsetY;
+            int nz = zCoord + dir.offsetZ;
+            trySubscribe(worldObj, nx, ny, nz, dir);
+        }
+    }
+
+    @Override
+    public void trySubscribe(World world, int x, int y, int z, ForgeDirection dir) {
+        TileEntity te = Compat.getTileStandard(world, x, y, z);
+        if (te instanceof IEnergyConductorMK2) {
+            IEnergyConductorMK2 con = (IEnergyConductorMK2) te;
+            if (!con.canConnect(dir.getOpposite())) return;
+
+            Nodespace.PowerNode node = Nodespace.getNode(world, x, y, z);
+            if (node != null && node.net != null) {
+                node.net.addReceiver(this);
+                isSubscribed = true;
             }
         }
     }
@@ -188,6 +219,7 @@ public class TileEntityT2 extends TileEntity implements IInventory, IFluidStanda
         compound.setInteger("TotalBurnTime", totalBurnTime);
         compound.setBoolean("IsBurning", isBurning);
         compound.setString("Team", team);
+        compound.setLong("currentEnergy", currentEnergy);
     }
 
     @Override
@@ -211,6 +243,7 @@ public class TileEntityT2 extends TileEntity implements IInventory, IFluidStanda
         totalBurnTime = compound.getInteger("TotalBurnTime");
         isBurning = compound.getBoolean("IsBurning");
         team = compound.getString("Team");
+        currentEnergy = compound.getLong("currentEnergy");
     }
     @Override
     public FluidTank[] getAllTanks() {
@@ -264,4 +297,25 @@ public class TileEntityT2 extends TileEntity implements IInventory, IFluidStanda
         return amount;
     }
 
+
+
+    @Override
+    public long getPower() {
+        return currentEnergy;
+    }
+
+    @Override
+    public void setPower(long l) {
+        currentEnergy = l;
+    }
+
+    @Override
+    public long getMaxPower() {
+        return maxEnergy;
+    }
+
+    @Override
+    public boolean canConnect(ForgeDirection dir) {
+        return true;
+    }
 }
