@@ -1,6 +1,7 @@
 package com.mewo.hbmenhanced.ResearchBlocks.ResearchController;
 
 import api.hbm.energymk2.IEnergyReceiverMK2;
+import com.hbm.util.fauxpointtwelve.BlockPos;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -11,7 +12,12 @@ import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import java.util.Map;
+
 public class TileEntityResearchController extends TileEntity implements IInventory, IEnergyReceiverMK2 {
+
+    // MultiBlock stuff
+    Map<TileEntity, BlockPos> connectedBlocks;
 
     //Constants
     private final int INV_SIZE = 3;
