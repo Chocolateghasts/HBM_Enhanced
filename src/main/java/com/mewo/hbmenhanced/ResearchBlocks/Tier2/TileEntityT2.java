@@ -9,6 +9,7 @@ import com.hbm.inventory.fluid.Fluids;
 import com.hbm.inventory.fluid.tank.FluidTank;
 import com.hbm.util.Compat;
 import com.mewo.hbmenhanced.ResearchBlock.Research;
+import com.mewo.hbmenhanced.ResearchBlocks.ResearchController.TileEntityResearchController;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -49,6 +50,8 @@ public class TileEntityT2 extends TileEntity implements IInventory, IFluidStanda
 
     public long currentEnergy;
     public long maxEnergy = 50000;
+
+    public TileEntityResearchController core;
 
     public TileEntityT2() {
         inventory = new ItemStack[INV_SIZE];

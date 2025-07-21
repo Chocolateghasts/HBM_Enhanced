@@ -19,6 +19,8 @@ import java.util.Map;
 
 public class Research {
     public void Tier1(TileEntityT1 te) {
+        if (te.core == null) return;
+        if (!te.core.canResearch(te)) return;
         int mainSlot = te.MAIN_SLOT;
         int outputSlot = te.OUTPUT_SLOT;
         int fuelSlot = te.FUEL_SLOT;
@@ -69,6 +71,8 @@ public class Research {
     }
 
     public void Tier2(TileEntityT2 te) {
+        if (te.core == null) return;
+        if (!te.core.canResearch(te)) return;
         int mainSlot = te.MAIN_SLOT;
         int outputSlot = te.OUTPUT_SLOT;
         ItemStack[] inventory = te.inventory;
@@ -131,6 +135,8 @@ public class Research {
     }
 
     public void Tier3(TileEntityT3 te) {
+        if (te.core == null) return;
+        if (!te.core.canResearch(te)) return;
         int main_slot = te.MAIN_SLOT;
         int output_slot = te.OUTPUT_SLOT;
 

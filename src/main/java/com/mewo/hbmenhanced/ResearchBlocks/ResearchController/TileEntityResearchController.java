@@ -2,6 +2,9 @@ package com.mewo.hbmenhanced.ResearchBlocks.ResearchController;
 
 import api.hbm.energymk2.IEnergyReceiverMK2;
 import com.hbm.util.fauxpointtwelve.BlockPos;
+import com.mewo.hbmenhanced.ResearchBlocks.Tier1.TileEntityT1;
+import com.mewo.hbmenhanced.ResearchBlocks.Tier2.TileEntityT2;
+import com.mewo.hbmenhanced.ResearchBlocks.Tier3.TileEntityT3;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -12,12 +15,14 @@ import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class TileEntityResearchController extends TileEntity implements IInventory, IEnergyReceiverMK2 {
 
     // MultiBlock stuff
-    Map<TileEntity, BlockPos> connectedBlocks;
+    Map<Integer, TileEntity> connectedTiers;
+    Map<TileEntity, BlockPos> connectedPos;
 
     //Constants
     private final int INV_SIZE = 3;
@@ -27,6 +32,8 @@ public class TileEntityResearchController extends TileEntity implements IInvento
 
     public TileEntityResearchController() {
         inventory = new ItemStack[INV_SIZE];
+        connectedTiers = new HashMap<>();
+        connectedPos = new HashMap<>();
     }
 
     // Custom Methods
@@ -40,6 +47,97 @@ public class TileEntityResearchController extends TileEntity implements IInvento
             trySubscribe(worldObj, nx, ny, nz, dir);
         }
     }
+
+    // MultiBlock Methods
+
+    private void setCore(TileEntity te, TileEntityResearchController controller) {
+        if (te instanceof TileEntityT1) {
+            ((TileEntityT1) te).core = controller;
+            System.out.println("Set core for T1 block at " + te.xCoord + ", " + te.yCoord + ", " + te.zCoord);
+        } else if (te instanceof TileEntityT2) {
+            ((TileEntityT2) te).core = controller;
+            System.out.println("Set core for T2 block at " + te.xCoord + ", " + te.yCoord + ", " + te.zCoord);
+        } else if (te instanceof TileEntityT3) {
+            ((TileEntityT3) te).core = controller;
+            System.out.println("Set core for T3 block at " + te.xCoord + ", " + te.yCoord + ", " + te.zCoord);
+        }
+    }
+
+    public void addConnection(TileEntity te) {
+        if (!isResearchBlock(te)) {
+            System.out.println("Attempted to add non-research block at " + te.xCoord + ", " + te.yCoord + ", " + te.zCoord);
+            return;
+        }
+        int blockTier = getTierOfBlock(te);
+        if (connectedTiers.containsKey(blockTier)) {
+            System.out.println("Tier " + blockTier + " already connected, skipping.");
+            return;
+        }
+        connectedTiers.put(blockTier, te);
+        connectedPos.put(te, new BlockPos(te));
+        setCore(te, this);
+        System.out.println("Connected tier " + blockTier + " at " + te.xCoord + ", " + te.yCoord + ", " + te.zCoord);
+    }
+
+    public void removeConnection(TileEntity te) {
+        if (!isResearchBlock(te)) {
+            System.out.println("Attempted to remove non-research block.");
+            return;
+        }
+        int blockTier = getTierOfBlock(te);
+        if (!connectedTiers.containsKey(blockTier)) return;
+        if (!connectedTiers.containsValue(te)) return;
+
+        connectedTiers.remove(blockTier);
+        connectedPos.remove(te);
+        System.out.println("Removed tier " + blockTier + " connection.");
+    }
+
+    public boolean isResearchBlock(TileEntity te) {
+        return te instanceof TileEntityT1 || te instanceof TileEntityT2 || te instanceof TileEntityT3;
+    }
+
+    public int getTierOfBlock(TileEntity tileEntity) {
+        if (tileEntity instanceof TileEntityT1) {
+            return 1;
+        } else if (tileEntity instanceof TileEntityT2) {
+            return 2;
+        } else if (tileEntity instanceof TileEntityT3) {
+            return 3;
+        } else {
+            return 0;
+        }
+    }
+
+    public boolean canResearch(TileEntity tileEntity) {
+        if (!isResearchBlock(tileEntity)) {
+            System.out.println("Block is not a valid research block.");
+            return false;
+        }
+
+        int tier = getTierOfBlock(tileEntity);
+
+        if (connectedTiers.get(tier) != tileEntity) {
+            System.out.println("Block at tier " + tier + " is not connected.");
+            return false;
+        }
+
+        if (tier == 1) {
+            System.out.println("Tier 1 block can research (no prerequisites).");
+            return true;
+        }
+
+        for (int i = 1; i < tier; i++) {
+            if (!connectedTiers.containsKey(i) || connectedTiers.get(i) == null) {
+                System.out.println("Missing required tier " + i + " connection.");
+                return false;
+            }
+        }
+
+        System.out.println("All required tiers connected. Tier " + tier + " can research.");
+        return true;
+    }
+
 
     // Important Methods
     @Override

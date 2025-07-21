@@ -7,6 +7,7 @@ import com.hbm.handler.threading.PacketThreading;
 import com.hbm.packet.toclient.AuxParticlePacketNT;
 import com.hbm.util.Compat;
 import com.mewo.hbmenhanced.ResearchBlock.Research;
+import com.mewo.hbmenhanced.ResearchBlocks.ResearchController.TileEntityResearchController;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -41,6 +42,8 @@ public class TileEntityT3 extends TileEntity implements IInventory, IEnergyRecei
     private int subscribeTickCounter;
 
     private final int INV_SIZE = 3;
+
+    public TileEntityResearchController core;
 
     public TileEntityT3() {
         inventory = new ItemStack[INV_SIZE];

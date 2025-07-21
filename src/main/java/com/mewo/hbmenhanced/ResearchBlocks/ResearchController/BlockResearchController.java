@@ -42,26 +42,77 @@ public class BlockResearchController extends BlockContainer {
     }
 
     @Override
-    public void onNeighborChange(IBlockAccess world, int x, int y, int z, int tileX, int tileY, int tileZ) {
-        if (!(world instanceof World)) {
-            System.out.println("not world :("); return;
+    public void onBlockAdded(World world, int x, int y, int z) {
+        TileEntity tileEntity = world.getTileEntity(x, y, z);
+        if (!(tileEntity instanceof TileEntityResearchController)) return;
+        TileEntityResearchController controller = (TileEntityResearchController) tileEntity;
+        for (int dx = -1; dx <= 1; dx++) {
+            for (int dy = -1; dy <= 1; dy++) {
+                for (int dz = -1; dz <= 1; dz++) {
+                    if (dx == 0 && dy == 0 && dz == 0) continue;
+                    TileEntity neighborTE = world.getTileEntity(x + dx, y + dy, z + dz);
+                    if (neighborTE != null && controller.isResearchBlock(neighborTE)) {
+                        controller.addConnection(neighborTE);
+                    }
+                }
+            }
         }
-        TileEntity tileEntity = world.getTileEntity(tileX, tileY, tileZ);
-        TileEntity te = world.getTileEntity(x, y, z);
-        TileEntityResearchController controller;
+    }
 
-        if (te instanceof TileEntityResearchController) {
-            controller = (TileEntityResearchController) te;
+    @Override
+    public void onNeighborChange(IBlockAccess worldAccess, int x, int y, int z, int neighborX, int neighborY, int neighborZ) {
+        if (!(worldAccess instanceof World)) {
+            System.out.println("Not a World instance :(");
+            return;
         }
 
-        if (tileEntity == null) return;
-        if (tileEntity instanceof TileEntityT1) {
+        World world = (World) worldAccess;
+        TileEntity tileEntity = world.getTileEntity(x, y, z);
 
-        }
-        if (tileEntity instanceof TileEntityT2) {
-        }
-        if (tileEntity instanceof TileEntityT3) {
+        if (!(tileEntity instanceof TileEntityResearchController)) {
+            return; // Not your controller tile entity
         }
 
+        TileEntityResearchController controller = (TileEntityResearchController) tileEntity;
+
+        // Neighbor changed, so update connections
+
+        // Remove connection if neighbor removed
+        TileEntity neighborTE = world.getTileEntity(neighborX, neighborY, neighborZ);
+
+        // If neighbor tile entity is a research block, add it; else, remove it
+        if (neighborTE != null && controller.isResearchBlock(neighborTE)) {
+            controller.addConnection(neighborTE);
+        } else {
+            // Possibly the neighbor was removed or is no longer a research block
+            // So remove any connection matching the neighbor position
+            // We must find which connected TileEntity is at neighbor pos and remove it
+            for (TileEntity connectedTE : controller.connectedPos.keySet()) {
+                BlockPos pos = controller.connectedPos.get(connectedTE);
+                if (pos.getX() == neighborX && pos.getY() == neighborY && pos.getZ() == neighborZ) {
+                    controller.removeConnection(connectedTE);
+                    break;
+                }
+            }
+        }
+
+        // You can also re-check if this controller can research now, or update GUI, etc.
+    }
+
+    @Override
+    public void breakBlock(World world, int x, int y, int z, Block block, int meta) {
+        TileEntity tileEntity = world.getTileEntity(x, y, z);
+        if (!(tileEntity instanceof TileEntityResearchController)) {
+            super.breakBlock(world, x, y, z, block, meta);
+            return;
+        }
+
+        TileEntityResearchController controller = (TileEntityResearchController) tileEntity;
+
+        for (TileEntity connectedTE : controller.connectedPos.keySet()) {
+            controller.removeConnection(connectedTE);
+        }
+
+        super.breakBlock(world, x, y, z, block, meta);
     }
 }

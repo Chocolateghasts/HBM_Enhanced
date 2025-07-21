@@ -1,6 +1,7 @@
 package com.mewo.hbmenhanced.ResearchBlocks.Tier1;
 
 import com.mewo.hbmenhanced.ResearchBlock.Research;
+import com.mewo.hbmenhanced.ResearchBlocks.ResearchController.TileEntityResearchController;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -33,6 +34,8 @@ public class TileEntityT1 extends TileEntity implements IInventory {
     public boolean isBurning;
 
     private int tickCounter = 0;
+
+    public TileEntityResearchController core;
 
     public TileEntityT1() {
         inventory = new ItemStack[INV_SIZE];
