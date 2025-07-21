@@ -13,7 +13,12 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class BlockResearchController extends BlockContainer {
+
+    // TODO: Add actual usefullness to this block
 
     public BlockResearchController() {
         super(Material.anvil);
@@ -109,7 +114,9 @@ public class BlockResearchController extends BlockContainer {
 
         TileEntityResearchController controller = (TileEntityResearchController) tileEntity;
 
-        for (TileEntity connectedTE : controller.connectedPos.keySet()) {
+        // ✅ Copy to avoid ConcurrentModificationException
+        List<TileEntity> toRemove = new ArrayList<>(controller.connectedPos.keySet());
+        for (TileEntity connectedTE : toRemove) {
             controller.removeConnection(connectedTE);
         }
 
