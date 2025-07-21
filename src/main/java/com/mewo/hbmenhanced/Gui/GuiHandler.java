@@ -3,6 +3,9 @@ package com.mewo.hbmenhanced.Gui;
 import com.mewo.hbmenhanced.ReactorResearch.ContainerResearchCore;
 import com.mewo.hbmenhanced.ReactorResearch.GuiResearchCore;
 import com.mewo.hbmenhanced.ReactorResearch.TileEntityResearchCore;
+import com.mewo.hbmenhanced.ResearchBlocks.ResearchController.ContainerResearchController;
+import com.mewo.hbmenhanced.ResearchBlocks.ResearchController.GuiResearchController;
+import com.mewo.hbmenhanced.ResearchBlocks.ResearchController.TileEntityResearchController;
 import com.mewo.hbmenhanced.ResearchBlocks.Tier1.ContainerT1;
 import com.mewo.hbmenhanced.ResearchBlocks.Tier1.GuiT1;
 import com.mewo.hbmenhanced.ResearchBlocks.Tier1.TileEntityT1;
@@ -49,6 +52,11 @@ public class GuiHandler implements IGuiHandler {
                     return new ContainerT3(player.inventory, (TileEntityT3) tileEntity);
                 }
                 break;
+            case 5:
+                if (tileEntity instanceof TileEntityResearchController) {
+                    return new ContainerResearchController(player.inventory, (TileEntityResearchController) tileEntity);
+                }
+                break;
         }
         return null;
     }
@@ -81,6 +89,11 @@ public class GuiHandler implements IGuiHandler {
             case 4:
                 if (tileEntity instanceof TileEntityT3) {
                     return new GuiT3(player.inventory, (TileEntityT3) tileEntity);
+                }
+                break;
+            case 5:
+                if (tileEntity instanceof TileEntityResearchController) {
+                    return new GuiResearchController(player.inventory, (TileEntityResearchController) tileEntity);
                 }
                 break;
         }

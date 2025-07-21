@@ -207,8 +207,8 @@ public class TileEntityT3 extends TileEntity implements IInventory, IEnergyRecei
             }
         }
         currentEnergy = compound.getLong("EnergyStored");
-        compound.setTag("Items", items);
-        compound.setLong("EnergyStored", currentEnergy);
+//        compound.setTag("Items", items);
+//        compound.setLong("EnergyStored", currentEnergy);
         NBTTagCompound researchData = compound.getCompoundTag("researchData");
         isResearching =  researchData.getBoolean("isResearching");
         researchProgress = researchData.getInteger("researchProgress");

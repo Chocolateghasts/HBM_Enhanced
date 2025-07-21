@@ -7,7 +7,6 @@ import api.hbm.fluid.IFluidStandardReceiver;
 import com.hbm.inventory.fluid.FluidType;
 import com.hbm.inventory.fluid.Fluids;
 import com.hbm.inventory.fluid.tank.FluidTank;
-import com.hbm.tileentity.IFluidCopiable;
 import com.hbm.util.Compat;
 import com.mewo.hbmenhanced.ResearchBlock.Research;
 import net.minecraft.entity.player.EntityPlayer;

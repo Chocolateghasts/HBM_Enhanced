@@ -4,6 +4,8 @@ import com.mewo.hbmenhanced.Gui.GuiHandler;
 import com.mewo.hbmenhanced.OpenComputers.*;
 import com.mewo.hbmenhanced.Packets.EnergyPacket;
 import com.mewo.hbmenhanced.ReactorResearch.TileEntityResearchCore;
+import com.mewo.hbmenhanced.ResearchBlocks.ResearchController.BlockResearchController;
+import com.mewo.hbmenhanced.ResearchBlocks.ResearchController.TileEntityResearchController;
 import com.mewo.hbmenhanced.ResearchBlocks.Tier1.T1Block;
 import com.mewo.hbmenhanced.ResearchBlocks.Tier1.TileEntityT1;
 import com.mewo.hbmenhanced.ResearchBlocks.Tier2.T2Block;
@@ -49,16 +51,18 @@ public class hbmenhanced
     public static final int guiResearchBlockID = 2;
     public static final int guiResearchBlockT2ID = 3;
     public static final int guiResearchBlockT3ID = 4;
+    public static final int guiResearchControllerID = 5;
 
     public static Item researchPoint;
     public static Item researchItem;
     public static Item linker;
+
     public static Block labBlock;
     public static Block researchBlock;
     public static Block researchCore;
     public static Block researchBlockT2;
     public static Block researchBlockT3;
-
+    public static Block researchController;
 
 
     @Mod.Instance
@@ -111,6 +115,9 @@ public class hbmenhanced
         researchBlockT3 = new T3Block().setBlockName("researchBlockT3");
         GameRegistry.registerBlock(researchBlockT3, "researchBlockT3");
         GameRegistry.registerTileEntity(TileEntityT3.class, "tileEntityT3");
+        researchController = new BlockResearchController().setBlockName("blockResearchController");
+        GameRegistry.registerBlock(researchController, "blockResearchController");
+        GameRegistry.registerTileEntity(TileEntityResearchController.class, "tileEntityResearchController");
 
 //        researchBlock = new ResearchBlock(1, "researchBlock").setBlockName("researchBlock");
 //        GameRegistry.registerBlock(researchBlock, "researchBlock");
