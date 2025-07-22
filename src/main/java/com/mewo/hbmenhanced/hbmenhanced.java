@@ -100,6 +100,8 @@ public class hbmenhanced
 
     @EventHandler
     public void preInit(FMLPreInitializationEvent event) {
+        ModItems.init();
+        ModItems.register();
         getRpValue rpCalculator = new getRpValue();
         rpCalculator.loadHashMap();
         saveRPData.loadRPData();

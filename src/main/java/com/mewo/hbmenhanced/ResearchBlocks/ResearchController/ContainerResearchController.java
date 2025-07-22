@@ -13,6 +13,55 @@ public class ContainerResearchController extends Container {
     public ContainerResearchController(InventoryPlayer inventory, TileEntityResearchController te) {
         this.tileEntity = te;
 
+        addSlotToContainer(new Slot(te, 0, 10, 10) {
+            @Override
+            public void onSlotChanged() {
+                super.onSlotChanged();
+                ItemStack stack = getStack();
+                System.out.println("Stack is " + stack);
+                if (stack != null) {
+                    te.onUpgradeChanged(stack);
+                }
+            }
+
+            @Override
+            public boolean isItemValid(ItemStack stack) {
+                return true;
+            }
+        });
+        addSlotToContainer(new Slot(te, 1, 10, 30) {
+            @Override
+            public void onSlotChanged() {
+                super.onSlotChanged();
+                ItemStack stack = getStack();
+                System.out.println("Stack is " + stack);
+                if (stack != null) {
+                    te.onUpgradeChanged(stack);
+                }
+            }
+
+            @Override
+            public boolean isItemValid(ItemStack stack) {
+                return true;
+            }
+        });
+        addSlotToContainer(new Slot(te, 2, 10, 50) {
+            @Override
+            public void onSlotChanged() {
+                super.onSlotChanged();
+                ItemStack stack = getStack();
+                System.out.println("Stack is " + stack);
+                if (stack != null) {
+                    te.onUpgradeChanged(stack);
+                }
+            }
+
+            @Override
+            public boolean isItemValid(ItemStack stack) {
+                return true;
+            }
+        });
+
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 9; j++) {
                 addSlotToContainer(new Slot(inventory, j + i * 9 + 9,

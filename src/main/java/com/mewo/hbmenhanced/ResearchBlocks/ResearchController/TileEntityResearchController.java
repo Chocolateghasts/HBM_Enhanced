@@ -8,6 +8,8 @@ import com.hbm.util.fauxpointtwelve.BlockPos;
 import com.mewo.hbmenhanced.ResearchBlocks.Tier1.TileEntityT1;
 import com.mewo.hbmenhanced.ResearchBlocks.Tier2.TileEntityT2;
 import com.mewo.hbmenhanced.ResearchBlocks.Tier3.TileEntityT3;
+import com.mewo.hbmenhanced.items.ItemResearchUpgrade;
+import com.mewo.hbmenhanced.items.ItemResearchUpgrade.UpgradeType;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -32,7 +34,7 @@ public class TileEntityResearchController extends TileEntity implements IInvento
     //Constants
     private final int INV_SIZE = 3;
 
-    public float researchTimeMultiplier = 2;
+    public float researchTimeMultiplier = 1;
     public float energyMultiplier = 1;
 
     // Properties
@@ -62,6 +64,22 @@ public class TileEntityResearchController extends TileEntity implements IInvento
         float base = (float) baseUsage;
         float adjusted = base / energyMultiplier;
         return (int) adjusted;
+    }
+
+    public void onUpgradeChanged( ItemStack itemStack) {
+        System.out.println("slot changed");
+        if (itemStack.getItem() instanceof ItemResearchUpgrade) {
+            UpgradeType type = ((ItemResearchUpgrade) itemStack.getItem()).type;
+            int tier = ((ItemResearchUpgrade) itemStack.getItem()).tier;
+            switch (type) {
+                case POWER:
+                    energyMultiplier = ((ItemResearchUpgrade) itemStack.getItem()).applyPower(1, tier);
+                    break;
+                case SPEED:
+                    researchTimeMultiplier = ((ItemResearchUpgrade) itemStack.getItem()).applySpeed(1, tier);
+                    break;
+            }
+        }
     }
 
     // MultiBlock Methods
@@ -238,12 +256,11 @@ public class TileEntityResearchController extends TileEntity implements IInvento
         return maxEnergy;
     }
 
+    // Constant Methods
     @Override
     public boolean isLoaded() {
         return true;
     }
-
-    // Constant Methods
 
     public boolean shouldCreateNode() {
         return true;
@@ -339,6 +356,4 @@ public class TileEntityResearchController extends TileEntity implements IInvento
     public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
         this.readFromNBT(pkt.func_148857_g());
     }
-
-
 }
