@@ -67,6 +67,7 @@ public class TileEntityResearchController extends TileEntity implements IInvento
     }
 
     public void onUpgradeChanged( ItemStack itemStack) {
+        // TODO: Make it stackable and work better
         System.out.println("slot changed");
         if (itemStack.getItem() instanceof ItemResearchUpgrade) {
             UpgradeType type = ((ItemResearchUpgrade) itemStack.getItem()).type;
