@@ -18,7 +18,7 @@ import java.util.List;
 
 public class BlockResearchController extends BlockContainer {
 
-    // TODO: Add actual usefullness to this block
+    // TODO: Add actual usefulness to this block
 
     public BlockResearchController() {
         super(Material.anvil);
@@ -75,23 +75,15 @@ public class BlockResearchController extends BlockContainer {
         TileEntity tileEntity = world.getTileEntity(x, y, z);
 
         if (!(tileEntity instanceof TileEntityResearchController)) {
-            return; // Not your controller tile entity
+            return;
         }
 
         TileEntityResearchController controller = (TileEntityResearchController) tileEntity;
-
-        // Neighbor changed, so update connections
-
-        // Remove connection if neighbor removed
         TileEntity neighborTE = world.getTileEntity(neighborX, neighborY, neighborZ);
 
-        // If neighbor tile entity is a research block, add it; else, remove it
         if (neighborTE != null && controller.isResearchBlock(neighborTE)) {
             controller.addConnection(neighborTE);
         } else {
-            // Possibly the neighbor was removed or is no longer a research block
-            // So remove any connection matching the neighbor position
-            // We must find which connected TileEntity is at neighbor pos and remove it
             for (TileEntity connectedTE : controller.connectedPos.keySet()) {
                 BlockPos pos = controller.connectedPos.get(connectedTE);
                 if (pos.getX() == neighborX && pos.getY() == neighborY && pos.getZ() == neighborZ) {
@@ -100,8 +92,6 @@ public class BlockResearchController extends BlockContainer {
                 }
             }
         }
-
-        // You can also re-check if this controller can research now, or update GUI, etc.
     }
 
     @Override
@@ -114,7 +104,6 @@ public class BlockResearchController extends BlockContainer {
 
         TileEntityResearchController controller = (TileEntityResearchController) tileEntity;
 
-        // ✅ Copy to avoid ConcurrentModificationException
         List<TileEntity> toRemove = new ArrayList<>(controller.connectedPos.keySet());
         for (TileEntity connectedTE : toRemove) {
             controller.removeConnection(connectedTE);

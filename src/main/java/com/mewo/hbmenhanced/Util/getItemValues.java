@@ -1,11 +1,16 @@
 package com.mewo.hbmenhanced.Util;
 
 import com.hbm.items.ModItems;
+import com.mewo.hbmenhanced.ResearchBlocks.ResearchController.TileEntityResearchController;
+import com.mewo.hbmenhanced.ResearchBlocks.Tier1.TileEntityT1;
+import com.mewo.hbmenhanced.ResearchBlocks.Tier2.TileEntityT2;
+import com.mewo.hbmenhanced.ResearchBlocks.Tier3.TileEntityT3;
 import com.mewo.hbmenhanced.ResearchManager.PointManager;
 import com.mewo.hbmenhanced.items.ItemResearchPoint;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 
 import java.util.*;
 public class getItemValues {
@@ -49,14 +54,45 @@ public class getItemValues {
         return Values.getOrDefault(item.getUnlocalizedName().toLowerCase(), new ResearchValue());
     }
 
-    public static int getResearchTime(int tier) {
+    public static int getResearchTime(TileEntity te) {
+        int tier = TileEntityResearchController.getTierOfBlockStatic(te);
+        TileEntityResearchController core = getCore(te);
+        if (core == null) return 240;
+
+        float multiplier = core.researchTimeMultiplier;
+        float total = 240;
 
         switch (tier) {
-            case 1: return 120;
-            case 2: return 80;
-            case 3: return 30;
-            default: return 1200;
+            case 1:
+                total = 240 / multiplier;
+                break;
+            case 2:
+                total = 120 / multiplier;
+                break;
+            case 3:
+                total = 60 / multiplier;
+                break;
         }
+
+        return (int) total;
+    }
+
+    private static TileEntityResearchController getCore(TileEntity te) {
+        TileEntityResearchController core = null;
+        if (te instanceof TileEntityT1) {
+            if (((TileEntityT1) te).core != null) {
+                core = ((TileEntityT1) te).core;
+            }
+        } else if (te instanceof TileEntityT2) {
+            if (((TileEntityT2) te).core != null) {
+                core = ((TileEntityT2) te).core;
+            }
+        } else if (te instanceof TileEntityT3) {
+            if (((TileEntityT3) te).core != null) {
+                core = ((TileEntityT3) te).core;
+            }
+        }
+        return core;
     }
 
     public static void init() {

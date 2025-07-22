@@ -39,7 +39,7 @@ public class Research {
         } else {
             te.isResearching = true;
             if (te.researchProgress == 0) {
-                te.maxResearchProgress = 60;
+                te.maxResearchProgress = getItemValues.getResearchTime(te);
             }
         }
 
@@ -92,10 +92,10 @@ public class Research {
 
 
         if (!te.isResearching) {
-            if (te.currentEnergy >= 100 && te.tank.getFill() >= 1000) {
+            if (te.currentEnergy >= te.core.getPowerUsage(100) && te.tank.getFill() >= 1000) {
                 te.tank.setFill(te.tank.getFill() - 1000);
-                te.currentEnergy -= 100;
-                te.maxResearchProgress = getItemValues.getResearchTime(2);
+                te.currentEnergy -= te.core.getPowerUsage(100);
+                te.maxResearchProgress = getItemValues.getResearchTime(te);
                 te.isResearching = true;
                 te.isBurning = true;
             } else {
@@ -111,9 +111,9 @@ public class Research {
 //                te.isBurning = false;
 //            }
         }
-        if (te.isResearching && te.currentEnergy >= 100) {
+        if (te.isResearching && te.currentEnergy >= te.core.getPowerUsage(100)) {
             te.researchProgress++;
-            te.currentEnergy -= 100;
+            te.currentEnergy -= te.core.getPowerUsage(100);
             te.isBurning = true;
             if (te.researchProgress >= te.maxResearchProgress) {
                 System.out.println("Research Finished");
@@ -149,16 +149,16 @@ public class Research {
         if (input == null) return;
 
         if (!te.isResearching) {
-            if (te.currentEnergy >= 50) {
-                te.currentEnergy -= 50;
+            if (te.currentEnergy >= te.core.getPowerUsage(250)) {
+                te.currentEnergy -= te.core.getPowerUsage(250);
                 te.isResearching = true;
-                te.maxResearchProgress = getItemValues.getResearchTime(3);
+                te.maxResearchProgress = getItemValues.getResearchTime(te);
             }
         }
 
         if (te.isResearching) {
-            if (te.currentEnergy >= 50) {
-                te.currentEnergy -= 50;
+            if (te.currentEnergy >= te.core.getPowerUsage(250)) {
+                te.currentEnergy -= te.core.getPowerUsage(250);
                 te.researchProgress++;
                 if (te.researchProgress >= te.maxResearchProgress) {
                     te.isResearching = false;

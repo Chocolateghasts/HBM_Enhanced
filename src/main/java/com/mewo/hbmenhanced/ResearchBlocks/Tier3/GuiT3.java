@@ -23,8 +23,8 @@ public class GuiT3 extends GuiContainer {
         int maxBarHeight = 50;
         float percent = (float) tileEntity.currentEnergy / (float) tileEntity.maxEnergy;
         int barHeight = (int) (percent * maxBarHeight);
-        System.out.println("Percent: " + percent);
-        System.out.println("Height: " + barHeight);
+        //System.out.println("Percent: " + percent);
+        //System.out.println("Height: " + barHeight);
         drawTexturedModalRect(guiLeft + barX, guiTop + barY + (maxBarHeight - barHeight),
                 goalBarX, goalBarY + (maxBarHeight - barHeight),
                 16, barHeight);
