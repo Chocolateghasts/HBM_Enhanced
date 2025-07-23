@@ -1,58 +1,52 @@
 package com.mewo.hbmenhanced.OpenComputers;
 
+import com.mewo.hbmenhanced.ResearchManager.PointManager;
+import com.mewo.hbmenhanced.ResearchManager.PointManager.ResearchType;
+import com.mewo.hbmenhanced.Util.ResearchTemplate;
+import com.mewo.hbmenhanced.Util.Result;
+import net.minecraft.world.World;
 
-import com.mewo.hbmenhanced.getRpValue;
-
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class ResearchNode {
-    protected String name;
-    protected String id;
-    protected String category;
-    protected String description;
-    protected int level;
-    protected Boolean unlocked;
-    protected List<String> dependencies;
-    protected List<Map<String, Object>> templates;
-    protected HashMap<getRpValue.researchType, Integer> requirements;
-//    protected int templateId;
-//    protected String templateType;
-    protected Map<String, Boolean> teamUnlocked;
-    protected float xPos;
-    protected float yPos;
-    protected getRpValue.researchType type;
+    public String id;
+    public String name;
+    public String category;
+    public String description;
+    public int level;
+    public boolean isUnlocked;
+    public String[] dependencies;
+    public List<ResearchTemplate> templates;
+    public Map<String, Integer> requirements;
 
-    public ResearchNode() {
-        this.dependencies = new ArrayList<>();
-        this.requirements = new HashMap<>();
-        this.unlocked = false;
-        this.level = 0;
-        this.teamUnlocked = new HashMap<>();
-        this.templates = new ArrayList<>();
+    public ResearchNode() {}
+
+    public ResearchNode(String id) {
+        this.id = id;
     }
-
-
-    public void changeDependency(String id, boolean add) {
-        if (add) {
-            dependencies.add(id);
-        } else if (!add) {
-            dependencies.remove(id);
+// TODO: Add dependency check
+    public Result unlock(String team, World world) {
+        if (this.isUnlocked) {
+            return new Result(false, "Node is already unlocked");
         }
-    }
-
-    public void changeRequirement(getRpValue.researchType type, int points, boolean add) {
-        if (add) {
-            requirements.put(type, points);
-        } else if (!add) {
-            requirements.remove(type);
+        if (world == null) {
+            return new Result(false, "World is null");
         }
-    }
-    public Boolean getUnlocked(String ownerId) {
-        return teamUnlocked.getOrDefault(ownerId, false);  // Default to false if the owner is not in the map
-    }
-    public void unlock(String ownerId) {
-        if (!teamUnlocked.containsKey(ownerId)) {
-            teamUnlocked.put(ownerId, true);
+        for (Map.Entry<String, Integer> entry : this.requirements.entrySet()) {
+            ResearchType type = ResearchType.valueOf(entry.getKey());
+            int points = PointManager.getPoints(team, type);
+            System.out.println("Type: " + type + "- Points: " + points);
+            if (points < entry.getValue()) {
+                return new Result(false, "Not enough " + type.name().toLowerCase() + " points");
+            }
         }
+        for (Map.Entry<String, Integer> entry : this.requirements.entrySet()) {
+            ResearchType type = ResearchType.valueOf(entry.getKey());
+            PointManager.addPoints(team, type, -entry.getValue(), world);
+        }
+        this.isUnlocked = true;
+        return new Result(true, "Successfully unlocked node!");
     }
 }

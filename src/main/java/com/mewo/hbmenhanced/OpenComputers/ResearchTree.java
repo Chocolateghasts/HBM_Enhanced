@@ -1,149 +1,117 @@
 package com.mewo.hbmenhanced.OpenComputers;
 
-import com.google.common.reflect.TypeToken;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.mewo.hbmenhanced.getRpValue;
-import li.cil.oc.api.machine.Arguments;
-import li.cil.oc.api.machine.Callback;
-import li.cil.oc.api.machine.Context;
+import com.google.gson.reflect.TypeToken;
+import com.mewo.hbmenhanced.Util.JsonUtil;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.world.storage.ISaveHandler;
 
+import java.io.File;
 import java.lang.reflect.Type;
-import java.util.*;
-import java.io.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class ResearchTree {
-    public MinecraftServer server;// = getRpValue.getServer();
-    public File worldDir;// = server.getEntityWorld().getSaveHandler().getWorldDirectory();
-    public File treeSaveFile;// = new File(worldDir + "/hbmenhanced/tree/nodes/", "Nodes.json");
-    private List<ResearchNode> nodeList = new ArrayList<>();
-    private List<String> idList = new ArrayList<>();
+    public static File folder;
+    public static Map<String, ResearchTree> trees = new HashMap<>();
+    protected File teamFile;
+    protected String team;
+    public static File worldDir;
+    public static MinecraftServer mcServer;
 
-    public ResearchTree(MinecraftServer server) {
-        this.server = server;
-        this.worldDir = server.getEntityWorld().getSaveHandler().getWorldDirectory();
-        this.treeSaveFile = new File(worldDir, "hbmenhanced/tree/nodes/Nodes.json");
+    public static final String DEFAULT_TREE_PATH = "config/hbmenhanced/ResearchTree/tree.json";
 
-        getNodes(); // optional preload
+    public Map<String, ResearchNode> nodes;
+
+    public static void init(MinecraftServer server) {
+        mcServer = server;
+        ISaveHandler saveHandler = server.getEntityWorld().getSaveHandler();
+        File worldDirectory = saveHandler.getWorldDirectory();
+        worldDir = worldDirectory;
+        File parent = new File(worldDirectory.getPath() + "/hbmenhanced/tree");
+        folder = new File(parent, "Research_Trees");
+        if (!folder.exists()) {
+            if (folder.mkdirs()) {
+                System.out.println("[HBM-Enhanced] Created Research_Trees folder at " + folder.getAbsolutePath());
+            } else {
+                System.err.println("[HBM-Enhanced] Failed to create Research_Trees folder at " + folder.getAbsolutePath());
+            }
+        }
+        for (Map.Entry<String, ResearchTree> entry : trees.entrySet()) {
+            ResearchTree tree = entry.getValue();
+            if (tree.nodes.isEmpty()) {
+                tree.load();
+                if (tree.nodes.isEmpty()) {
+                    tree.manualInit(server);
+                    tree.save();
+                }
+            }
+        }
     }
 
+    public ResearchTree() {
+        nodes = new HashMap<>();
+    }
 
+    public ResearchTree(String team) {
+        this();
+        teamFile = new File(folder, team + ".json");
+        this.team = team;
+        System.out.println(teamFile.getPath());
+    }
+
+    public void manualInit(MinecraftServer server) {
+        File file = new File(DEFAULT_TREE_PATH);
+
+        if (!file.exists()) {
+            System.err.println("[HBM-Enhanced] Default tree file does not exist: " + file.getAbsolutePath());
+            return;
+        }
+
+        Type type = new TypeToken<Map<String, ResearchNode>>() {}.getType();
+        Map<String, ResearchNode> defaultTree = JsonUtil.read(file, type);
+
+        if (defaultTree != null) {
+            this.nodes = defaultTree;
+            this.save();
+            System.out.println("[HBM-Enhanced] Loaded default tree from: " + file.getAbsolutePath());
+        } else {
+            System.err.println("[HBM-Enhanced] Failed to load default tree from: " + file.getAbsolutePath());
+        }
+    }
+
+    public static ResearchTree getOrCreate(String team) {
+        return trees.computeIfAbsent(team, t -> {
+            ResearchTree tree = new ResearchTree(t);
+            tree.load();
+            if (tree.nodes.isEmpty()) {
+                tree.manualInit(mcServer);
+            }
+            return tree;
+        });
+    }
+
+    public static ResearchTree getTree(String team) {
+        return trees.get(team);
+    }
 
     public ResearchNode getNode(String id) {
-        for (ResearchNode node : getNodes()) {
-            if (node.id.equalsIgnoreCase(id)) {
-                return node;
-            }
-        }
-        return new ResearchNode();
+        return nodes.get(id);
     }
 
-    public List<ResearchNode> getNodes() {
-        try {
-            treeSaveFile.getParentFile().mkdirs();
-            treeSaveFile.createNewFile();
-            Gson gson = new Gson();
+    public void addNode(ResearchNode node) {nodes.put(node.id, node);}
 
-            FileReader reader = new FileReader(treeSaveFile);
-            Type listType = new TypeToken<ArrayList<ResearchNode>>() {}.getType();
-            nodeList = gson.fromJson(reader, listType);
+    public void removeNode(String id) {nodes.remove(id);}
 
-            reader.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-//        System.out.println("Loaded nodes: " + nodeList);
-        return nodeList;
+    public void save() {
+        JsonUtil.write(teamFile, nodes);
     }
 
-    public void saveNodes(List<ResearchNode> nodes) {
-        try (FileWriter writer = new FileWriter(treeSaveFile)) {
-            Gson gson = new GsonBuilder().setPrettyPrinting().create();
-
-            gson.toJson(nodes, writer);
-            writer.flush();
-        } catch (IOException e) {
-            e.printStackTrace();
+    public void load() {
+        Type listType = new TypeToken<Map<String, ResearchNode>>() {}.getType();
+        Map<String, ResearchNode> loadedNodes = JsonUtil.read(teamFile, listType);
+        if (loadedNodes != null) {
+            this.nodes = loadedNodes;
         }
-    }
-
-    public void createNodes(int id, int amount) {
-        List<ResearchNode> nodes = new ArrayList<>();
-        for (int i = 0; i < amount; i++) {
-            String nodeId = "node_" + (id + i);
-
-            if (!idList.contains(nodeId)) {
-                ResearchNode newNode = new ResearchNode();
-                newNode.id = nodeId;
-                newNode.name = "Node " + (id + i);
-                newNode.description = "Auto-generated node";
-                newNode.level = 1;
-
-                nodes.add(newNode);
-            }
-        }
-
-        saveNodes(nodes);
-    }
-
-    public void editNode(
-            String nodeId,
-            String name,
-            String description,
-            Integer level,
-            Boolean unlocked,
-            String category,
-            List<Map<String, Object>> templates,
-            List<String> dependencies,
-            Map<getRpValue.researchType, Integer> requirements,
-            Map<String, Boolean> teamUnlocked,
-            Float xPos, Float yPos,
-            getRpValue.researchType type
-    ) {
-        getNodes();
-
-        for (ResearchNode node : nodeList) {
-            if (node.id.equalsIgnoreCase(nodeId)) {
-                if (name != null) node.name = name;
-                if (description != null) node.description = description;
-                if (level != null) node.level = level;
-                if (unlocked != null) node.unlocked = unlocked;
-                if (category != null) node.category = category;
-                if (templates != null) {
-                    node.templates.clear();
-                    node.templates.addAll(templates);
-                }
-                if (dependencies != null) {
-                    node.dependencies.clear();
-                    node.dependencies.addAll(dependencies);
-                }
-                if (requirements != null) {
-                    node.requirements.clear();
-                    node.requirements.putAll(requirements);
-                }
-                if (teamUnlocked != null) {  // Add this block
-                    node.teamUnlocked.clear();
-                    node.teamUnlocked.putAll(teamUnlocked);
-                }
-                if (xPos != null) node.xPos = xPos;
-                if (yPos != null) node.yPos = yPos;
-                if (type != null) node.type = type;
-                System.out.println("Edited node");
-                saveNodes(nodeList);
-                break;
-            }
-        }
-    }
-
-    public List<Map<String, Object>> createTemplates(Object... templateData) {
-        List<Map<String, Object>> templates = new ArrayList<>();
-        for (int i = 0; i < templateData.length; i += 2) {
-            Map<String, Object> template = new HashMap<>();
-            template.put("type", templateData[i]);
-            template.put("id", templateData[i + 1]);
-            templates.add(template);
-        }
-        return templates;
     }
 }

@@ -1,4 +1,4 @@
-package com.mewo.hbmenhanced.OpenComputers;
+package com.mewo.hbmenhanced.OpenComputers.old;
 
 import com.mewo.hbmenhanced.hbmenhanced;
 import li.cil.oc.api.driver.Item;
@@ -6,9 +6,6 @@ import li.cil.oc.api.network.EnvironmentHost;
 import li.cil.oc.api.network.ManagedEnvironment;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-
-import com.mewo.hbmenhanced.OpenComputers.EnvoirementRPComponent;
-
 
 
 public class RPComponent implements Item {

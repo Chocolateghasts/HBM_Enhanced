@@ -1,13 +1,8 @@
-package com.mewo.hbmenhanced.OpenComputers;
+package com.mewo.hbmenhanced.OpenComputers.old;
 
-import com.hbm.blocks.generic.BlockDirt;
 import com.hbm.inventory.RecipesCommon.ComparableStack;
-import com.hbm.inventory.recipes.ChemplantRecipes;
-import com.hbm.inventory.recipes.CrucibleRecipes;
 import com.hbm.items.ModItems;
 import com.hbm.items.machine.ItemAssemblyTemplate;
-import com.hbm.items.machine.ItemChemistryTemplate;
-import com.hbm.items.machine.ItemCrucibleTemplate;
 import com.mewo.hbmenhanced.getRpValue;
 import li.cil.oc.api.machine.Arguments;
 import li.cil.oc.api.machine.Callback;
@@ -17,31 +12,17 @@ import li.cil.oc.api.network.Message;
 import li.cil.oc.api.network.Node;
 import li.cil.oc.api.network.Visibility;
 import li.cil.oc.server.component.Drive;
-import li.cil.oc.server.component.FileSystem;
-import net.minecraft.client.Minecraft;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.item.Item;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.item.ItemStack;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.management.ServerConfigurationManager;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.World;
-import net.minecraft.world.storage.ISaveHandler;
-import net.minecraft.world.storage.SaveHandler;
-import scala.util.control.TailCalls;
 import com.hbm.inventory.recipes.AssemblerRecipes;
-import java.io.*;
-import java.lang.reflect.InvocationTargetException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+
 import java.util.*;
 
-import static com.mewo.hbmenhanced.getRpValue.getRpMap;
 import static com.mewo.hbmenhanced.getRpValue.getServer;
-import static java.lang.Math.round;
 
 public class EnvoirementRPComponent implements ManagedEnvironment {
     private static final Map<Drive, ItemStack> driveItemMap = new HashMap<>();
@@ -135,8 +116,8 @@ public class EnvoirementRPComponent implements ManagedEnvironment {
 
             System.out.println("[DEBUG] id = " + id + ", playerName = " + playerName);
 
-            ResearchTree tree = new ResearchTree(getRpValue.getServer());
-            ResearchNode nodeToGive = tree.getNode(id);
+            ResearchTreeold tree = new ResearchTreeold(getRpValue.getServer());
+            ResearchNodeold nodeToGive = tree.getNode(id);
 
             if (nodeToGive == null) {
                 System.out.println("[DEBUG] Node not found");
@@ -373,12 +354,12 @@ public class EnvoirementRPComponent implements ManagedEnvironment {
 
     @Callback(doc = "function():table -- Returns all research nodes")
     public Object[] getNodes(Context c, Arguments a) {
-        ResearchTree tree = new ResearchTree(getServer());
-        List<ResearchNode> nodes = tree.getNodes();
+        ResearchTreeold tree = new ResearchTreeold(getServer());
+        List<ResearchNodeold> nodes = tree.getNodes();
 
         List<Map<String, Object>> luaNodes = new ArrayList<>();
 
-        for (ResearchNode node : nodes) {
+        for (ResearchNodeold node : nodes) {
             Map<String, Object> luaNode = new HashMap<>();
             luaNode.put("name", node.name);
             luaNode.put("id", node.id);
@@ -406,13 +387,13 @@ public class EnvoirementRPComponent implements ManagedEnvironment {
     public Object[] saveNodes(Context c, Arguments a) {
         try {
             Map<String, Object> nodes = a.checkTable(0);
-            ResearchTree tree = new ResearchTree(getRpValue.getServer());
+            ResearchTreeold tree = new ResearchTreeold(getRpValue.getServer());
             int savedCount = 0;
 
             for (Map.Entry<String, Object> entry : nodes.entrySet()) {
                 if (!(entry.getValue() instanceof Map)) continue;
 
-                ResearchNode node = tree.getNode(entry.getKey());
+                ResearchNodeold node = tree.getNode(entry.getKey());
                 if (node == null) continue;
 
                 Map<String, Object> data = (Map<String, Object>) entry.getValue();
@@ -442,7 +423,7 @@ public class EnvoirementRPComponent implements ManagedEnvironment {
         }
     }
 
-    private void updateNodeFromData(ResearchNode node, Map<String, Object> data) {
+    private void updateNodeFromData(ResearchNodeold node, Map<String, Object> data) {
         if (data.containsKey("name")) node.name = String.valueOf(data.get("name"));
         if (data.containsKey("category")) node.category = String.valueOf(data.get("category"));
         if (data.containsKey("description")) node.description = String.valueOf(data.get("description"));
@@ -493,8 +474,8 @@ public class EnvoirementRPComponent implements ManagedEnvironment {
     @Callback
     public Object[] getNode(Context c, Arguments a) {
         String id = a.checkString(0);
-        ResearchTree tree = new ResearchTree(getServer());
-        ResearchNode researchNode = tree.getNode(id);
+        ResearchTreeold tree = new ResearchTreeold(getServer());
+        ResearchNodeold researchNode = tree.getNode(id);
         Map<String, Object> luaNode = new HashMap<>();
         luaNode.put("name", researchNode.name);
         luaNode.put("id", researchNode.id);

@@ -5,7 +5,7 @@ import net.minecraft.item.Item;
 
 public class ItemResearchComponent extends Item {
     public ItemResearchComponent() {
-        setUnlocalizedName("rp_tracker");
+        setUnlocalizedName("research_component");
         setMaxStackSize(1);
     }
 }

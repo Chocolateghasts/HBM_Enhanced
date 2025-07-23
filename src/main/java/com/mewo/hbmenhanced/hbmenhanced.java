@@ -1,7 +1,10 @@
 package com.mewo.hbmenhanced;
 
 import com.mewo.hbmenhanced.Gui.GuiHandler;
-import com.mewo.hbmenhanced.OpenComputers.*;
+import com.mewo.hbmenhanced.OpenComputers.ResearchTree;
+import com.mewo.hbmenhanced.OpenComputers.RpComponentDriver;
+import com.mewo.hbmenhanced.OpenComputers.old.RPComponent;
+import com.mewo.hbmenhanced.OpenComputers.old.ResearchTreeold;
 import com.mewo.hbmenhanced.Packets.EnergyPacket;
 import com.mewo.hbmenhanced.ReactorResearch.TileEntityResearchCore;
 import com.mewo.hbmenhanced.ResearchBlocks.ResearchController.BlockResearchController;
@@ -35,6 +38,7 @@ import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import net.minecraft.item.*;
+import net.minecraft.server.MinecraftServer;
 
 
 import java.util.*;
@@ -95,7 +99,7 @@ public class hbmenhanced
     {
         network = NetworkRegistry.INSTANCE.newSimpleChannel("hbmenhanced");
         network.registerMessage(EnergyPacket.Handler.class, EnergyPacket.class, 0, Side.CLIENT);
-        Driver.add(new com.mewo.hbmenhanced.OpenComputers.RPComponent());
+        Driver.add(new RpComponentDriver());
     }
 
     @EventHandler
@@ -131,17 +135,22 @@ public class hbmenhanced
 
     @EventHandler
     public void serverStarting(FMLServerStartingEvent event) {
+        MinecraftServer server = event.getServer();
+        ResearchTree.init(server);
+        ResearchTree adminTree = new ResearchTree("test");
+        adminTree.manualInit(server);
+        adminTree.save();
 
-        ResearchTree tree = new ResearchTree(event.getServer());
-        tree.getNodes();
-        Map<String, Boolean> testmap = new HashMap<>();
-        testmap.put("test", true);
-        List<Map<String, Object>> templates = tree.createTemplates(
-                "A", 1,
-                "B", 2,
-                "C", 5,
-                "A", 9
-        );
+//        ResearchTreeold tree = new ResearchTreeold(event.getServer());
+//        tree.getNodes();
+//        Map<String, Boolean> testmap = new HashMap<>();
+//        testmap.put("test", true);
+//        List<Map<String, Object>> templates = tree.createTemplates(
+//                "A", 1,
+//                "B", 2,
+//                "C", 5,
+//                "A", 9
+//        );
 
         //tree.editNode("node_1", null, null, null, null, null, templates, null, null, testmap, 30.0f, 30.0f, getRpValue.researchType.STRUCTURAL);
         //tree.editNode("node_0", null, null, null, null, null, templates, null, null, testmap, 10.0f, 10.0f, getRpValue.researchType.NUCLEAR);
