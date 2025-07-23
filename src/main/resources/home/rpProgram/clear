@@ -1,0 +1,2 @@
+local t = require("term")
+t.clear()

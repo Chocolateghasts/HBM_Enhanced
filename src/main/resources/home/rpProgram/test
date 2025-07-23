@@ -1,0 +1,15 @@
+local comp = require("component").research_component
+local ok, msg = comp.init("test")
+print(ok, msg)
+
+local ok2, data = comp.getAllNodesForTree()
+if ok2 == false then
+    print(data)
+else
+    for k, v in pairs(data) do
+      print(k, v.name, v.unlocked)
+    end
+end
+
+local ok3, unlockMsg = comp.unlock("basic_power")
+print(ok3, unlockMsg)

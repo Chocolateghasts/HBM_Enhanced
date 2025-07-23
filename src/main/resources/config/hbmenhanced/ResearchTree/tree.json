@@ -1,0 +1,17 @@
+{
+  "basic_power": {
+    "id": "basic_power",
+    "name": "Basic Power",
+    "description": "Unlocks basic power transmission and generators.",
+    "category": "Power",
+    "level": 1,
+    "dependencies": [],
+    "requirements": {
+      "STRUCTURAL": 25
+    },
+    "templates": [
+      { "type": "a", "id": "1" },
+      { "type": "a", "id": "2" }
+    ]
+  }
+}
