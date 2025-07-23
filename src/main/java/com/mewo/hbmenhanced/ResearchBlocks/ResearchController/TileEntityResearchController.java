@@ -62,14 +62,14 @@ public class TileEntityResearchController extends TileEntity implements IInvento
 
     public int getPowerUsage(int baseUsage) {
         float base = (float) baseUsage;
-        float adjusted = base / energyMultiplier;
+        float adjusted = base * energyMultiplier;
         return (int) adjusted;
     }
 
     public void updateUpgrades() {
-        float powerMultiplier = 1.0f;
-        float penaltyMultiplier = 1.0f;
-        researchTimeMultiplier = 1.0f;
+        float powerBonus = 0.0f;
+        float speedBonus = 0.0f;
+        float speedPenalty = 0.0f;
 
         for (int i = 0; i < this.getSizeInventory(); i++) {
             ItemStack stack = this.getStackInSlot(i);
@@ -79,11 +79,13 @@ public class TileEntityResearchController extends TileEntity implements IInvento
 
                 switch (upgrade.type) {
                     case POWER:
-                        powerMultiplier = upgrade.applyPower(powerMultiplier, tier);
+                        powerBonus += tier * 0.25f;
+                        System.out.println("POWER upgrade (Tier " + tier + "): +" + (tier * 0.25f) + " power bonus");
                         break;
                     case SPEED:
-                        researchTimeMultiplier = upgrade.applySpeed(researchTimeMultiplier, tier);
-                        penaltyMultiplier = upgrade.getSpeedPenalty(penaltyMultiplier, tier);
+                        speedBonus += tier * 0.5f;
+                        speedPenalty += tier * 0.3f;
+                        System.out.println("SPEED upgrade (Tier " + tier + "): +" + (tier * 0.5f) + " speed bonus, +" + (tier * 0.3f) + " energy penalty");
                         break;
                     default:
                         break;
@@ -91,10 +93,14 @@ public class TileEntityResearchController extends TileEntity implements IInvento
             }
         }
 
-        energyMultiplier = Math.min(powerMultiplier * penaltyMultiplier, 2.0f);
+        researchTimeMultiplier = 1.0f + speedBonus;
+        energyMultiplier = 1.0f + speedPenalty - powerBonus;
         researchTimeMultiplier = Math.min(researchTimeMultiplier, 3.0f);
+        energyMultiplier = Math.max(0.5f, Math.min(energyMultiplier, 2.0f));
 
-        System.out.println("Updated multipliers: Energy = " + energyMultiplier + ", Speed = " + researchTimeMultiplier);
+        System.out.println("Updated multipliers:");
+        System.out.println(" - Research Speed Multiplier: " + researchTimeMultiplier);
+        System.out.println(" - Energy Usage Multiplier:   " + energyMultiplier);
     }
 
 
@@ -239,6 +245,8 @@ public class TileEntityResearchController extends TileEntity implements IInvento
             }
         }
         compound.setTag("Items", items);
+        compound.setFloat("speedMult", researchTimeMultiplier);
+        compound.setFloat("powerMult", energyMultiplier);
     }
 
     @Override
@@ -254,6 +262,8 @@ public class TileEntityResearchController extends TileEntity implements IInvento
                 inventory[i] = null;
             }
         }
+        researchTimeMultiplier = compound.getFloat("speedMult");
+        energyMultiplier = compound.getFloat("powerMult");
     }
 
     // Getter/Setters

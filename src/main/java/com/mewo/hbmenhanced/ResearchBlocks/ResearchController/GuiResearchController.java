@@ -26,4 +26,10 @@ public class GuiResearchController extends GuiContainer {
         int guiTop = (this.height - this.ySize) / 2;
         this.drawTexturedModalRect(guiLeft, guiTop, 0, 0, this.xSize, this.ySize);
     }
+
+    @Override
+    protected void drawGuiContainerForegroundLayer(int p_146979_1_, int p_146979_2_) {
+        this.fontRendererObj.drawString("Speed Multiplier: " + tileEntity.researchTimeMultiplier, 35, 9, 1);
+        this.fontRendererObj.drawString("Power Usage Multiplier: " + tileEntity.energyMultiplier, 35, 19, 1);
+    }
 }
