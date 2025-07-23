@@ -17,11 +17,7 @@ public class ContainerResearchController extends Container {
             @Override
             public void onSlotChanged() {
                 super.onSlotChanged();
-                ItemStack stack = getStack();
-                System.out.println("Stack is " + stack);
-                if (stack != null) {
-                    te.onUpgradeChanged(stack);
-                }
+                te.updateUpgrades();
             }
 
             @Override
@@ -33,11 +29,7 @@ public class ContainerResearchController extends Container {
             @Override
             public void onSlotChanged() {
                 super.onSlotChanged();
-                ItemStack stack = getStack();
-                System.out.println("Stack is " + stack);
-                if (stack != null) {
-                    te.onUpgradeChanged(stack);
-                }
+                te.updateUpgrades();
             }
 
             @Override
@@ -49,11 +41,7 @@ public class ContainerResearchController extends Container {
             @Override
             public void onSlotChanged() {
                 super.onSlotChanged();
-                ItemStack stack = getStack();
-                System.out.println("Stack is " + stack);
-                if (stack != null) {
-                    te.onUpgradeChanged(stack);
-                }
+                te.updateUpgrades();
             }
 
             @Override

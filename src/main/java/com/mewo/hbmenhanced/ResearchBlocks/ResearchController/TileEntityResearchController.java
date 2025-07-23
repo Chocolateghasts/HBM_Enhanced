@@ -66,22 +66,37 @@ public class TileEntityResearchController extends TileEntity implements IInvento
         return (int) adjusted;
     }
 
-    public void onUpgradeChanged( ItemStack itemStack) {
-        // TODO: Make it stackable and work better
-        System.out.println("slot changed");
-        if (itemStack.getItem() instanceof ItemResearchUpgrade) {
-            UpgradeType type = ((ItemResearchUpgrade) itemStack.getItem()).type;
-            int tier = ((ItemResearchUpgrade) itemStack.getItem()).tier;
-            switch (type) {
-                case POWER:
-                    energyMultiplier = ((ItemResearchUpgrade) itemStack.getItem()).applyPower(1, tier);
-                    break;
-                case SPEED:
-                    researchTimeMultiplier = ((ItemResearchUpgrade) itemStack.getItem()).applySpeed(1, tier);
-                    break;
+    public void updateUpgrades() {
+        float powerMultiplier = 1.0f;
+        float penaltyMultiplier = 1.0f;
+        researchTimeMultiplier = 1.0f;
+
+        for (int i = 0; i < this.getSizeInventory(); i++) {
+            ItemStack stack = this.getStackInSlot(i);
+            if (stack != null && stack.getItem() instanceof ItemResearchUpgrade) {
+                ItemResearchUpgrade upgrade = (ItemResearchUpgrade) stack.getItem();
+                int tier = upgrade.tier;
+
+                switch (upgrade.type) {
+                    case POWER:
+                        powerMultiplier = upgrade.applyPower(powerMultiplier, tier);
+                        break;
+                    case SPEED:
+                        researchTimeMultiplier = upgrade.applySpeed(researchTimeMultiplier, tier);
+                        penaltyMultiplier = upgrade.getSpeedPenalty(penaltyMultiplier, tier);
+                        break;
+                    default:
+                        break;
+                }
             }
         }
+
+        energyMultiplier = Math.min(powerMultiplier * penaltyMultiplier, 2.0f);
+        researchTimeMultiplier = Math.min(researchTimeMultiplier, 3.0f);
+
+        System.out.println("Updated multipliers: Energy = " + energyMultiplier + ", Speed = " + researchTimeMultiplier);
     }
+
 
     // MultiBlock Methods
 

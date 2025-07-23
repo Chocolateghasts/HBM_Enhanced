@@ -44,4 +44,13 @@ public class ItemResearchUpgrade extends Item {
             default: return current;
         }
     }
+
+    public float getSpeedPenalty(float current, int tier) {
+        switch (tier) {
+            case 1: return current * 0.85F;
+            case 2: return current * 0.75F;
+            case 3: return current * 0.65F;
+            default: return current;
+        }
+    }
 }
