@@ -28,11 +28,21 @@ public class ResearchNode {
     }
 // TODO: Add dependency check
     public Result unlock(String team, World world) {
+        ResearchTree thisTree = ResearchTree.getTree(team);
         if (this.isUnlocked) {
             return new Result(false, "Node is already unlocked");
         }
         if (world == null) {
             return new Result(false, "World is null");
+        }
+        for (String dep : dependencies) {
+            ResearchNode node = thisTree.getNode(dep);
+            if (node == null) {
+                return new Result(false, "you wrote a non existent dependency or the tree is half initialized");
+            }
+            if (!node.isUnlocked) {
+                return new Result(false, "Dependency " + node.name + " is not unlocked!");
+            }
         }
         for (Map.Entry<String, Integer> entry : this.requirements.entrySet()) {
             ResearchType type = ResearchType.valueOf(entry.getKey());

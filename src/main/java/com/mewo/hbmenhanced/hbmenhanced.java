@@ -137,9 +137,8 @@ public class hbmenhanced
     public void serverStarting(FMLServerStartingEvent event) {
         MinecraftServer server = event.getServer();
         ResearchTree.init(server);
-        ResearchTree adminTree = new ResearchTree("test");
-        adminTree.manualInit(server);
-        adminTree.save();
+        //ResearchTree adminTree = new ResearchTree("test");
+//        adminTree.save();
 
 //        ResearchTreeold tree = new ResearchTreeold(event.getServer());
 //        tree.getNodes();

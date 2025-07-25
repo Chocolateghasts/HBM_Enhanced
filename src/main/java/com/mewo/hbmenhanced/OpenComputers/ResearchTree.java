@@ -7,6 +7,7 @@ import net.minecraft.world.storage.ISaveHandler;
 
 import java.io.File;
 import java.lang.reflect.Type;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -37,11 +38,24 @@ public class ResearchTree {
                 System.err.println("[HBM-Enhanced] Failed to create Research_Trees folder at " + folder.getAbsolutePath());
             }
         }
+
+        File[] files = folder.listFiles((dir, name) -> name.endsWith(".json"));
+        System.out.println("[INIT] Found files: " + Arrays.toString(files));
+        if (files!=null) {
+            for (File file : files) {
+                String teamName = file.getName().replace(".json", "");
+                ResearchTree loadedTree = getOrCreate(teamName);
+                System.out.println("[INIT]: Nodes are: " + loadedTree.nodes);
+            }
+        }
+
         for (Map.Entry<String, ResearchTree> entry : trees.entrySet()) {
             ResearchTree tree = entry.getValue();
             if (tree.nodes.isEmpty()) {
+                System.out.println("[INIT] Loaded tree is empty");
                 tree.load();
                 if (tree.nodes.isEmpty()) {
+                    System.out.println("[INIT] Loaded tree is still empty. Using default");
                     tree.manualInit(server);
                     tree.save();
                 }
@@ -103,7 +117,14 @@ public class ResearchTree {
 
     public void removeNode(String id) {nodes.remove(id);}
 
+    private void checkNodeUnlocks() {
+        for (Map.Entry<String, ResearchNode> entry : nodes.entrySet()) {
+            System.out.println(entry.getKey() + " is unlocked: " + entry.getValue().isUnlocked);
+        }
+    }
+
     public void save() {
+        checkNodeUnlocks();
         JsonUtil.write(teamFile, nodes);
     }
 

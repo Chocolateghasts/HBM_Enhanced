@@ -7,6 +7,7 @@ import java.io.*;
 import java.lang.reflect.Type;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 
 public class JsonUtil {
@@ -23,12 +24,19 @@ public class JsonUtil {
         }
     }
 
-    public static <T> T read(File file, Type type) {
-        if (!file.exists()) return null;
+    public static <T> T read(File file, Type typeOfT) {
+        if (!file.exists()) {
+            System.err.println("[JsonUtil] File does not exist: " + file.getAbsolutePath());
+            return null;
+        }
         try (Reader reader = new InputStreamReader(new FileInputStream(file), StandardCharsets.UTF_8)) {
-            return gson.fromJson(reader, type);
-        } catch (IOException e) {
-            System.err.println("[HBM-Enhanced] Failed to read JSON (generic type): " + file.getAbsolutePath());
+            T data = gson.fromJson(reader, typeOfT);
+            if (data == null) {
+                System.err.println("[JsonUtil] Parsed JSON is null for file: " + file.getAbsolutePath());
+            }
+            return data;
+        } catch (Exception e) {
+            System.err.println("[JsonUtil] Failed to read JSON from: " + file.getAbsolutePath());
             e.printStackTrace();
             return null;
         }
@@ -70,8 +78,14 @@ public class JsonUtil {
             return;
         }
 
-        if (!tempFile.renameTo(targetFile)) {
+        try {
+            Path tempPath = tempFile.toPath();
+            Path targetPath = targetFile.toPath();
+
+            Files.move(tempPath, targetPath, StandardCopyOption.REPLACE_EXISTING, StandardCopyOption.ATOMIC_MOVE);
+        } catch (IOException e) {
             System.err.println("[HBM-Enhanced] Failed to replace original file with temp file: " + targetFile.getAbsolutePath());
+            e.printStackTrace();
         }
     }
 }

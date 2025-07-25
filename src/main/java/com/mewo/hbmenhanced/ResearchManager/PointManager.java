@@ -75,6 +75,11 @@ public class PointManager {
         return new Result(true, "Removed " + team);
     }
 
+    public static EnumMap<ResearchType, Integer> getAllPoints(String team) {
+        EnumMap<ResearchType, Integer> original = teamMap.get(team);
+        return original != null ? new EnumMap<>(original) : new EnumMap<>(ResearchType.class);
+    }
+
     public static Result addPoints(String team, ResearchType type, int points, World world) {
         if (dataFile == null || !dataFile.exists()) return new Result(false, "Data file not initialized");
         if (team == null || type == null || points == 0) {
@@ -88,7 +93,12 @@ public class PointManager {
         for (Object obj : world.playerEntities) {
             if (obj instanceof EntityPlayer) {
                 EntityPlayer player = (EntityPlayer) obj;
-                player.addChatMessage(new ChatComponentText("Added " + points + " of type " + type.toString() + " to team " + team));
+                if (points > 0) {
+                    player.addChatMessage(new ChatComponentText("Added " + points + " of type " + type.toString() + " to team " + team));
+                } else {
+                    player.addChatMessage(new ChatComponentText("Removed " + -points + " of type " + type.toString() + " from team " + team));
+                }
+
             }
         }
         return saveData();
