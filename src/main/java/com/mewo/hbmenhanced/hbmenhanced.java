@@ -56,6 +56,7 @@ public class hbmenhanced
     public static final int guiResearchBlockT2ID = 3;
     public static final int guiResearchBlockT3ID = 4;
     public static final int guiResearchControllerID = 5;
+    public static final int guiResearchTerminalID = 6;
 
     public static Item researchPoint;
     public static Item researchItem;

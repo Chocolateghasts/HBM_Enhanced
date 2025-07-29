@@ -1,24 +1,33 @@
 package com.mewo.hbmenhanced.ResearchBlocks.ResearchController;
 
 import com.hbm.util.fauxpointtwelve.BlockPos;
-import com.mewo.hbmenhanced.ResearchBlocks.Tier1.TileEntityT1;
-import com.mewo.hbmenhanced.ResearchBlocks.Tier2.TileEntityT2;
-import com.mewo.hbmenhanced.ResearchBlocks.Tier3.TileEntityT3;
 import com.mewo.hbmenhanced.hbmenhanced;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static codechicken.lib.render.CCRenderState.side;
+
 public class BlockResearchController extends BlockContainer {
 
     // TODO: Add actual usefulness to this block
+
+    // Icons
+    @SideOnly(Side.CLIENT)
+    private IIcon sides;
+    @SideOnly(Side.CLIENT)
+    private IIcon top;
 
     public BlockResearchController() {
         super(Material.anvil);
@@ -110,5 +119,33 @@ public class BlockResearchController extends BlockContainer {
         }
 
         super.breakBlock(world, x, y, z, block, meta);
+    }
+
+    @SideOnly(Side.CLIENT)
+    public void registerBlockIcons(IIconRegister register) {
+        super.registerBlockIcons(register);
+        this.blockIcon = register.registerIcon(hbmenhanced.MODID + ":" + "research_controller");
+        this.top = register.registerIcon(hbmenhanced.MODID + ":" + "research_top");
+        this.sides = register.registerIcon(hbmenhanced.MODID + ":" + "research_controller");
+    }
+
+    @SideOnly(Side.CLIENT)
+    public IIcon getIcon(int side, int p_149691_2_) {
+        switch (side) {
+            case 0: // Bottom
+                return this.sides;
+            case 1: // Top
+                return this.sides;
+            case 2: // North
+                return this.sides;
+            case 3: // South
+                return this.sides;
+            case 4: // West
+                return this.sides;
+            case 5: // East
+                return this.sides;
+            default:
+                return this.blockIcon;
+        }
     }
 }
