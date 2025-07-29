@@ -4,97 +4,146 @@ import com.hbm.util.fauxpointtwelve.BlockPos;
 import com.mewo.hbmenhanced.Connections.ResearchNetwork.Util.PathUtil;
 import com.mewo.hbmenhanced.Connections.ResearchNetwork.Util.ResearchNetworkPath;
 import com.hbm.util.fauxpointtwelve.DirPos;
-import javafx.util.Pair;
 import net.minecraftforge.common.util.ForgeDirection;
+import org.apache.commons.lang3.tuple.Pair;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.*;
 
 public class ResearchNetwork {
     public static final int MAX_DEPTH = 500;
+    private static final Logger LOGGER = LogManager.getLogger(ResearchNetwork.class);
+
+    private int tickCounter;
 
     public Map<BlockPos, IConnectableNode> nodes = new HashMap<>();
     public Map<BlockPos, IResearchReceiver> endPoints = new HashMap<>();
     public Map<BlockPos, IResearchProvider> sourcePoints = new HashMap<>();
 
-    Map<Pair<BlockPos, BlockPos>, ResearchNetworkPath> pathCache;
+    public Queue<IConnectableNode> changedNodes = new LinkedList<>();
+    private Set<BlockPos> changedPositions = new HashSet<>();
+
+    public Map<Pair<BlockPos, BlockPos>, ResearchNetworkPath> pathCache = new HashMap<>();
+
+    private <L, R> Pair<L, R> pair(L left, R right) {
+        return Pair.of(left, right);
+    }
+
+    public void harshUpdate() {
+        long startTime = System.nanoTime();
+
+        int changedNodeCount = changedNodes.size();
+        int pathsRebuilt = 0;
+
+        while (!changedNodes.isEmpty()) {
+            IConnectableNode node = changedNodes.poll();
+
+            List<Pair<BlockPos, BlockPos>> keysToUpdate = new ArrayList<>();
+            for (Map.Entry<Pair<BlockPos, BlockPos>, ResearchNetworkPath> entry : pathCache.entrySet()) {
+                if (entry.getValue().contains(nodes.get(node.getPos()))) {
+                    keysToUpdate.add(entry.getKey());
+                }
+            }
+
+            for (Pair<BlockPos, BlockPos> key : keysToUpdate) {
+                IConnectableNode providerNode = nodes.get(key.getLeft());
+                IConnectableNode receiverNode = nodes.get(key.getRight());
+                if (!(providerNode instanceof IResearchProvider) || !(receiverNode instanceof IResearchReceiver)) {
+                    continue;
+                }
+                ResearchNetworkPath path = PathUtil.createPath(nodes, (IResearchProvider) providerNode, (IResearchReceiver) receiverNode);
+                if (path != null) {
+                    pathCache.put(key, path);
+                } else {
+                    pathCache.remove(key);
+                }
+                pathsRebuilt++;
+            }
+        }
+
+        long durationMs = (System.nanoTime() - startTime) / 1_000_000;
+        if (changedNodeCount > 0) {
+            LOGGER.info("harshUpdate processed {} changed nodes, rebuilt {} paths in {} ms", changedNodeCount, pathsRebuilt, durationMs);
+            if (durationMs > 50) {
+                LOGGER.warn("harshUpdate took longer than expected: {} ms", durationMs);
+            }
+        }
+    }
 
     public void update() {
-
+        tickCounter++;
+        if (tickCounter >= 1_000_000) {
+            tickCounter = 0;
+        }
+        if (tickCounter % 4 == 0) {
+            harshUpdate();
+        }
+        transmit();
     }
 
     public boolean isConnected(IResearchProvider provider, IResearchReceiver receiver) {
-        Set<BlockPos> marked = new HashSet<>();
-        Queue<BlockPos> queue = new LinkedList<>();
-        Map<BlockPos, BlockPos> path = new HashMap<>();
-
-        int checkedNodes = 0;
-        BlockPos startPos = provider.getPos();
-        BlockPos endPos = receiver.getPos();
-        if (startPos.equals(endPos)) {
-            return true;
-        }
-        if (!nodes.containsKey(startPos) || !nodes.containsKey(endPos)) return false;
-
-        queue.add(startPos);
-        marked.add(startPos);
-        while (!queue.isEmpty()) {
-            if (marked.size() >= MAX_DEPTH) return false;
-            BlockPos current = queue.poll();
-            IConnectableNode node = nodes.get(current);
-            if (node == null) {
-                continue;
-            }
-
-            for (BlockPos neighbor : node.getNeighbors()) {
-                if (nodes.get(neighbor) == null) {
-                    continue;
-                }
-                if (!marked.contains(neighbor)) {
-                    marked.add(neighbor);
-                    path.put(neighbor, current);
-                    if (neighbor.equals(endPos)) {
-                        ResearchNetworkPath pathResult = PathUtil.buildNetworkPath(path, startPos, endPos);
-                        pathCache.put(new Pair<>(startPos, endPos), pathResult);
-                        return true;
-                    }
-                    queue.add(neighbor);
-                }
-            }
-        }
-        return false;
+        return pathCache.containsKey(pair(provider.getPos(), receiver.getPos()));
     }
 
-    public void validate() {
+    public void reset() {
+        long startTime = System.nanoTime();
 
+        pathCache.clear();
+
+        int pathsBuilt = 0;
+        for (IResearchProvider provider : sourcePoints.values()) {
+            for (IResearchReceiver receiver : endPoints.values()) {
+                ResearchNetworkPath path = PathUtil.createPath(nodes, provider, receiver);
+                if (path != null) {
+                    pathCache.put(pair(provider.getPos(), receiver.getPos()), path);
+                    pathsBuilt++;
+                }
+            }
+        }
+
+        long durationMs = (System.nanoTime() - startTime) / 1_000_000;
+        LOGGER.info("reset rebuilt {} paths in {} ms", pathsBuilt, durationMs);
     }
 
     public void transmit() {
 
     }
 
+    private void queueNode(IConnectableNode node) {
+        if (node == null) return;
+        if (!changedPositions.add(node.getPos())) return;
+        changedNodes.add(node);
+    }
+
     public void add(IConnectableNode node) {
-        nodes.putIfAbsent(node.getPos(), node);
+        LOGGER.debug("Adding node at position {}", node.getPos());
+        IConnectableNode oldNode = nodes.get(node.getPos());
+        if (oldNode != null) queueNode(oldNode);
+
+        nodes.put(node.getPos(), node);
+        queueNode(node);
+
         if (node instanceof IResearchProvider) {
-            IResearchProvider provider = (IResearchProvider) node;
-            sourcePoints.putIfAbsent(provider.getPos(), provider);
+            IResearchProvider provider = ((IResearchProvider) node);
+            sourcePoints.put(provider.getPos(), provider);
         }
         if (node instanceof IResearchReceiver) {
-            IResearchReceiver receiver = (IResearchReceiver) node;
-            endPoints.putIfAbsent(receiver.getPos(), receiver);
+            IResearchReceiver receiver = ((IResearchReceiver) node);
+            endPoints.put(receiver.getPos(), receiver);
         }
     }
 
     public void remove(IConnectableNode node) {
+        LOGGER.debug("Removing node at position {}", node.getPos());
+        IConnectableNode oldNode = nodes.get(node.getPos());
+        queueNode(oldNode);
+
         nodes.remove(node.getPos());
-        if (node instanceof IResearchProvider) {
-            IResearchProvider provider = (IResearchProvider) node;
-            sourcePoints.remove(provider.getPos());
-        }
-        if (node instanceof IResearchReceiver) {
-            IResearchReceiver receiver = (IResearchReceiver) node;
-            endPoints.remove(receiver.getPos());
-        }
+        sourcePoints.remove(node.getPos());
+        endPoints.remove(node.getPos());
     }
+
 
     public Map<BlockPos, IConnectableNode> getNodes() {
         return nodes;

@@ -2,13 +2,21 @@ package com.mewo.hbmenhanced.Connections.ResearchNetwork.Util;
 
 import com.hbm.util.fauxpointtwelve.BlockPos;
 import com.hbm.util.fauxpointtwelve.DirPos;
+import com.mewo.hbmenhanced.Connections.ResearchNetwork.IConnectableNode;
+import com.mewo.hbmenhanced.Connections.ResearchNetwork.IResearchProvider;
+import com.mewo.hbmenhanced.Connections.ResearchNetwork.IResearchReceiver;
 import net.minecraftforge.common.util.ForgeDirection;
+import org.apache.commons.lang3.tuple.Pair;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+
+import static com.mewo.hbmenhanced.Connections.ResearchNetwork.ResearchNetwork.MAX_DEPTH;
 
 public class PathUtil {
+    private static final Logger LOGGER = LogManager.getLogger(PathUtil.class);
+
     public static ForgeDirection getDirectionBetween(BlockPos from, BlockPos to) {
         int dx = to.getX() - from.getX();
         int dy = to.getY() - from.getY();
@@ -40,5 +48,56 @@ public class PathUtil {
         return new ResearchNetworkPath(result);
     }
 
+    public static ResearchNetworkPath createPath(Map<BlockPos, IConnectableNode> nodes, IResearchProvider provider, IResearchReceiver receiver) {
+        LOGGER.debug("Starting pathfinding from {} to {}", provider.getPos(), receiver.getPos());
 
+        Set<BlockPos> marked = new HashSet<>();
+        Queue<BlockPos> queue = new LinkedList<>();
+        Map<BlockPos, BlockPos> path = new HashMap<>();
+
+        int checkedNodes = 0;
+        BlockPos startPos = provider.getPos();
+        BlockPos endPos = receiver.getPos();
+        if (!nodes.containsKey(startPos) || !nodes.containsKey(endPos)) {
+            LOGGER.debug("Start or end node missing in nodes map");
+            return null;
+        }
+        if (startPos.equals(endPos)) {
+            LOGGER.debug("Start and end positions are the same");
+            return null;
+        }
+
+        queue.add(startPos);
+        marked.add(startPos);
+        while (!queue.isEmpty()) {
+            if (marked.size() >= MAX_DEPTH) {
+                LOGGER.debug("Max pathfinding depth exceeded");
+                return null;
+            }
+            BlockPos current = queue.poll();
+            IConnectableNode node = nodes.get(current);
+            if (node == null) {
+                continue;
+            }
+
+            for (BlockPos neighbor : node.getNeighbors()) {
+                if (nodes.get(neighbor) == null) {
+                    continue;
+                }
+                if (!marked.contains(neighbor)) {
+                    marked.add(neighbor);
+                    path.put(neighbor, current);
+                    if (neighbor.equals(endPos)) {
+                        ResearchNetworkPath pathResult = PathUtil.buildNetworkPath(path, startPos, endPos);
+                        LOGGER.debug("Path found with length {}", pathResult.length());
+                        return pathResult;
+                    }
+                    queue.add(neighbor);
+                }
+            }
+        }
+
+        LOGGER.debug("No path found from {} to {}", startPos, endPos);
+        return null;
+    }
 }
