@@ -52,12 +52,9 @@ repositories {
 dependencies {
     // you may put jars on which you depend on in ./libs
     // or you may define them like so..
-    //compile "some.group:artifact:version:classifier"
-    //compile "some.group:artifact:version"
 
     // real examples
-    compile 'com.google.code.gson:gson:2.3.1'
-    //compileOnly 'li.cil.oc:OpenComputers:MC1.7.10-1.7.0.1084-dev'
+    implementation 'com.google.code.gson:gson:2.3.1'
     //implementation 'li.cil.oc:OpenComputers:MC1.7.10-1.7.5.1356:universal'
     implementation "curse.maven:worldedit-225608:2309699"
     implementation "curse.maven:lunatriuscore-225605:2225146"
@@ -68,8 +65,6 @@ dependencies {
     implementation 'codechicken:NotEnoughItems:1.7.10-1.0.5.120:dev'
     implementation 'com.github.JameH2:Hbm-s-Nuclear-Tech-GIT:xspace39b'
     //implementation 'com.github.AppliedEnergistics:Applied-Energistics-2:Tag'
-    //compile 'com.mod-buildcraft:buildcraft:6.0.8:dev'  // adds buildcraft to the dev env
-    //compile 'com.googlecode.efficient-java-matrix-library:ejml:0.24' // adds ejml to the dev env
     //
 
 
