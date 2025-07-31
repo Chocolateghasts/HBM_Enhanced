@@ -77,24 +77,26 @@ dependencies {
 }
 
 test {
-    useJUnitPlatform()  // Ensure this is set to use JUnit 5
+    //useJUnitPlatform()  // Ensure this is set to use JUnit 5
 }
 
-processResources
-{
+processResources {
     // this will ensure that this task is redone when the versions change.
     inputs.property "version", project.version
     inputs.property "mcversion", project.minecraft.version
+
+    // exclude duplicates quietly
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 
     // replace stuff in mcmod.info, nothing else
     from(sourceSets.main.resources.srcDirs) {
         include 'mcmod.info'
 
         // replace version and mcversion
-        expand 'version':project.version, 'mcversion':project.minecraft.version
+        expand 'version': project.version, 'mcversion': project.minecraft.version
     }
 
-    // copy everything else, thats not the mcmod.info
+    // copy everything else, that's not the mcmod.info
     from(sourceSets.main.resources.srcDirs) {
         exclude 'mcmod.info'
     }
