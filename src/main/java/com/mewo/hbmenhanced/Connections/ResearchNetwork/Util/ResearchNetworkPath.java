@@ -36,6 +36,9 @@ public class ResearchNetworkPath {
     }
 
     public boolean contains(IConnectableNode node) {
+        if (node == null) {
+            return false;
+        }
         BlockPos nodePos = node.getPos();
         return steps.stream().anyMatch(step ->
                 step.getX() == nodePos.getX() &&

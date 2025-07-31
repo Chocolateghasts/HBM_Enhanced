@@ -1,10 +1,12 @@
 package com.mewo.hbmenhanced;
 
+import com.mewo.hbmenhanced.Connections.ResearchNetwork.ResearchNetwork;
 import com.mewo.hbmenhanced.Gui.GuiHandler;
 import com.mewo.hbmenhanced.OpenComputers.ResearchTree;
 import com.mewo.hbmenhanced.OpenComputers.RpComponentDriver;
 import com.mewo.hbmenhanced.OpenComputers.old.RPComponent;
 import com.mewo.hbmenhanced.OpenComputers.old.ResearchTreeold;
+import com.mewo.hbmenhanced.Packets.ConnectionsPacket;
 import com.mewo.hbmenhanced.Packets.EnergyPacket;
 import com.mewo.hbmenhanced.ReactorResearch.TileEntityResearchCore;
 import com.mewo.hbmenhanced.ResearchBlocks.ResearchController.BlockResearchController;
@@ -20,12 +22,18 @@ import com.mewo.hbmenhanced.Util.Result;
 import com.mewo.hbmenhanced.Util.getItemValues;
 import com.mewo.hbmenhanced.blocks.BlockResearchCore;
 import com.mewo.hbmenhanced.blocks.LabBlock;
+import com.mewo.hbmenhanced.blocks.ModBlocks;
 import com.mewo.hbmenhanced.commands.*;
 import com.mewo.hbmenhanced.containers.labBlockTileEntity;
 import com.mewo.hbmenhanced.items.*;
+import com.mewo.hbmenhanced.proxy.CommonProxy;
+import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -39,7 +47,9 @@ import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import net.minecraft.item.*;
 import net.minecraft.server.MinecraftServer;
-
+import net.minecraftforge.common.MinecraftForge;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.*;
 
@@ -49,6 +59,8 @@ public class hbmenhanced
     public static final String MODID = "hbmenhanced";
     public static final String VERSION = "1.0.0";
     public static SimpleNetworkWrapper network;
+
+    public static final Logger LOGGER = LogManager.getLogger(hbmenhanced.class);
 
     public static final int guiLabBlockID = 0;
     public static final int guiResearchCoreID = 1;
@@ -69,6 +81,12 @@ public class hbmenhanced
     public static Block researchBlockT3;
     public static Block researchController;
 
+    public static final ResearchNetwork RESEARCH_NETWORK = new ResearchNetwork();
+    @SidedProxy(
+            clientSide = "com.mewo.hbmenhanced.proxy.ClientProxy",
+            serverSide = "com.mewo.hbmenhanced.proxy.CommonProxy"
+    )
+    public static CommonProxy proxy;
 
     @Mod.Instance
     public static hbmenhanced instance;
@@ -93,13 +111,25 @@ public class hbmenhanced
         GameRegistry.registerTileEntity(TileEntityT2.class, "tileEntityT2");
     }
 
-
-
     @EventHandler
     public void init(FMLInitializationEvent event)
     {
+        proxy.registerRenderers();
+        System.out.println("[HBMENHANCED LOGGING] Logger is: " + LOGGER.getClass());
+        System.out.println("[HBMENHANCED LOGGING] Logger is: " + LOGGER.getName());
+        System.out.println("[HBMENHANCED LOGGING] Logger is: " + LOGGER.getMessageFactory());
+        LOGGER.debug("DEBUG IS WORKING ONG");
+        LOGGER.info("Is debug enabled? ? ???????? {}", LOGGER.isDebugEnabled());
+        FMLCommonHandler.instance().bus().register(new TickHandler());
         network = NetworkRegistry.INSTANCE.newSimpleChannel("hbmenhanced");
-        network.registerMessage(EnergyPacket.Handler.class, EnergyPacket.class, 0, Side.CLIENT);
+        int packetId = 0;
+        network.registerMessage(EnergyPacket.Handler.class, EnergyPacket.class, packetId++, Side.CLIENT);
+        network.registerMessage(
+                ConnectionsPacket.Handler.class,
+                ConnectionsPacket.class,
+                packetId++,
+                Side.CLIENT
+        );
         Driver.add(new RpComponentDriver());
     }
 
@@ -110,6 +140,7 @@ public class hbmenhanced
         getRpValue rpCalculator = new getRpValue();
         rpCalculator.loadHashMap();
         saveRPData.loadRPData();
+        ModBlocks.register();
         linker = new ItemLink().setUnlocalizedName("linker");
         researchPoint = new ItemResearchPoint().setUnlocalizedName("researchPoint");
         GameRegistry.registerItem(linker, "Linker");
@@ -136,6 +167,7 @@ public class hbmenhanced
 
     @EventHandler
     public void serverStarting(FMLServerStartingEvent event) {
+        RESEARCH_NETWORK.reset();
         MinecraftServer server = event.getServer();
         ResearchTree.init(server);
         //ResearchTree adminTree = new ResearchTree("test");

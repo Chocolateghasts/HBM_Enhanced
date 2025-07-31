@@ -23,7 +23,7 @@ public class BlockResearchTerminal extends BlockContainer {
     @SideOnly(Side.CLIENT)
     private IIcon iconWest;
 
-    protected BlockResearchTerminal() {
+    public BlockResearchTerminal() {
         super(Material.anvil);
         setCreativeTab(hbmenhanced.tabhbmenhanced);
         setHardness(4);

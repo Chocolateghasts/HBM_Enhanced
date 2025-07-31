@@ -16,7 +16,6 @@ import static com.mewo.hbmenhanced.Connections.ResearchNetwork.ResearchNetwork.M
 
 public class PathUtil {
     private static final Logger LOGGER = LogManager.getLogger(PathUtil.class);
-
     public static ForgeDirection getDirectionBetween(BlockPos from, BlockPos to) {
         int dx = to.getX() - from.getX();
         int dy = to.getY() - from.getY();
@@ -49,7 +48,7 @@ public class PathUtil {
     }
 
     public static ResearchNetworkPath createPath(Map<BlockPos, IConnectableNode> nodes, IResearchProvider provider, IResearchReceiver receiver) {
-        LOGGER.debug("Starting pathfinding from {} to {}", provider.getPos(), receiver.getPos());
+        LOGGER.info("Starting pathfinding from {} to {}", provider.getPos(), receiver.getPos());
 
         Set<BlockPos> marked = new HashSet<>();
         Queue<BlockPos> queue = new LinkedList<>();
@@ -59,11 +58,11 @@ public class PathUtil {
         BlockPos startPos = provider.getPos();
         BlockPos endPos = receiver.getPos();
         if (!nodes.containsKey(startPos) || !nodes.containsKey(endPos)) {
-            LOGGER.debug("Start or end node missing in nodes map");
+            LOGGER.info("Start or end node missing in nodes map");
             return null;
         }
         if (startPos.equals(endPos)) {
-            LOGGER.debug("Start and end positions are the same");
+            LOGGER.info("Start and end positions are the same");
             return null;
         }
 
@@ -71,7 +70,7 @@ public class PathUtil {
         marked.add(startPos);
         while (!queue.isEmpty()) {
             if (marked.size() >= MAX_DEPTH) {
-                LOGGER.debug("Max pathfinding depth exceeded");
+                LOGGER.info("Max pathfinding depth exceeded");
                 return null;
             }
             BlockPos current = queue.poll();
@@ -89,7 +88,7 @@ public class PathUtil {
                     path.put(neighbor, current);
                     if (neighbor.equals(endPos)) {
                         ResearchNetworkPath pathResult = PathUtil.buildNetworkPath(path, startPos, endPos);
-                        LOGGER.debug("Path found with length {}", pathResult.length());
+                        LOGGER.info("Path found with length {}", pathResult.length());
                         return pathResult;
                     }
                     queue.add(neighbor);
@@ -97,7 +96,7 @@ public class PathUtil {
             }
         }
 
-        LOGGER.debug("No path found from {} to {}", startPos, endPos);
+        LOGGER.info("No path found from {} to {}", startPos, endPos);
         return null;
     }
 }

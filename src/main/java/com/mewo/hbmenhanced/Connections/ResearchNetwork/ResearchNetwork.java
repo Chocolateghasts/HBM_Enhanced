@@ -25,12 +25,15 @@ public class ResearchNetwork {
     private Set<BlockPos> changedPositions = new HashSet<>();
 
     public Map<Pair<BlockPos, BlockPos>, ResearchNetworkPath> pathCache = new HashMap<>();
+    private boolean needsReset = false;
 
     private <L, R> Pair<L, R> pair(L left, R right) {
         return Pair.of(left, right);
     }
 
     public void harshUpdate() {
+        LOGGER.info("Path cache size: {}", pathCache.size());
+
         long startTime = System.nanoTime();
 
         int changedNodeCount = changedNodes.size();
@@ -76,7 +79,10 @@ public class ResearchNetwork {
         if (tickCounter >= 1_000_000) {
             tickCounter = 0;
         }
-        if (tickCounter % 4 == 0) {
+        if (needsReset) {
+            reset();
+            needsReset = false;
+        } else if (tickCounter % 60 == 0) {
             harshUpdate();
         }
         transmit();
@@ -88,13 +94,15 @@ public class ResearchNetwork {
 
     public void reset() {
         long startTime = System.nanoTime();
-
+        LOGGER.info("Source points: {}", sourcePoints);
+        LOGGER.info("Endpoints: {}", endPoints);
         pathCache.clear();
 
         int pathsBuilt = 0;
         for (IResearchProvider provider : sourcePoints.values()) {
             for (IResearchReceiver receiver : endPoints.values()) {
                 ResearchNetworkPath path = PathUtil.createPath(nodes, provider, receiver);
+                LOGGER.info("Path is: {}", path);
                 if (path != null) {
                     pathCache.put(pair(provider.getPos(), receiver.getPos()), path);
                     pathsBuilt++;
@@ -113,11 +121,13 @@ public class ResearchNetwork {
     private void queueNode(IConnectableNode node) {
         if (node == null) return;
         if (!changedPositions.add(node.getPos())) return;
+        LOGGER.info("Queing node: {}", node);
+        LOGGER.info("Queing node: {}", node);
         changedNodes.add(node);
     }
 
     public void add(IConnectableNode node) {
-        LOGGER.debug("Adding node at position {}", node.getPos());
+        LOGGER.info("Adding node at position {}", node.getPos());
         IConnectableNode oldNode = nodes.get(node.getPos());
         if (oldNode != null) queueNode(oldNode);
 
@@ -132,16 +142,18 @@ public class ResearchNetwork {
             IResearchReceiver receiver = ((IResearchReceiver) node);
             endPoints.put(receiver.getPos(), receiver);
         }
+        needsReset = true;
     }
 
     public void remove(IConnectableNode node) {
-        LOGGER.debug("Removing node at position {}", node.getPos());
+        LOGGER.info("Removing node at position {}", node.getPos());
         IConnectableNode oldNode = nodes.get(node.getPos());
         queueNode(oldNode);
 
         nodes.remove(node.getPos());
         sourcePoints.remove(node.getPos());
         endPoints.remove(node.getPos());
+        needsReset = true;
     }
 
 

@@ -1,9 +1,9 @@
-package com.mewo.hbmenhanced.ResearchBlocks.ResearchTerminal;
+package com.mewo.hbmenhanced.ResearchBlocks.ResearchSource;
 
 import com.hbm.util.fauxpointtwelve.BlockPos;
 import com.hbm.util.fauxpointtwelve.DirPos;
 import com.mewo.hbmenhanced.Connections.ResearchNetwork.IConnectableNode;
-import com.mewo.hbmenhanced.Connections.ResearchNetwork.IResearchReceiver;
+import com.mewo.hbmenhanced.Connections.ResearchNetwork.IResearchProvider;
 import com.mewo.hbmenhanced.Connections.ResearchNetwork.ResearchNetwork;
 import com.mewo.hbmenhanced.hbmenhanced;
 import net.minecraft.tileentity.TileEntity;
@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class TileEntityResearchTerminal extends TileEntity implements IResearchReceiver {
+public class TileEntityResearchSource extends TileEntity implements IResearchProvider {
     private DirPos dirPos;
     public ResearchNetwork network;
 
