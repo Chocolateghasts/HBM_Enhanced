@@ -5,6 +5,7 @@ import com.hbm.util.fauxpointtwelve.DirPos;
 import com.mewo.hbmenhanced.Connections.ResearchNetwork.IConnectableNode;
 import com.mewo.hbmenhanced.Connections.ResearchNetwork.IResearchReceiver;
 import com.mewo.hbmenhanced.Connections.ResearchNetwork.ResearchNetwork;
+import com.mewo.hbmenhanced.Connections.ResearchNetwork.ResearchNetworkManager;
 import com.mewo.hbmenhanced.hbmenhanced;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -15,7 +16,7 @@ import java.util.List;
 
 public class TileEntityResearchTerminal extends TileEntity implements IResearchReceiver {
     private DirPos dirPos;
-    public ResearchNetwork network;
+    private ResearchNetwork network;
 
     @Override
     public BlockPos getPos() {
@@ -32,6 +33,9 @@ public class TileEntityResearchTerminal extends TileEntity implements IResearchR
 
     @Override
     public ResearchNetwork getNetwork() {
+        if (network == null && worldObj != null) {
+            network = ResearchNetworkManager.get(worldObj);
+        }
         return network;
     }
 
@@ -64,16 +68,17 @@ public class TileEntityResearchTerminal extends TileEntity implements IResearchR
     public void validate() {
         super.validate();
         if (!worldObj.isRemote) {
-            hbmenhanced.RESEARCH_NETWORK.add(this);
-            setNetwork(hbmenhanced.RESEARCH_NETWORK);
+            ResearchNetwork net = ResearchNetworkManager.get(worldObj);
+            setNetwork(net);
+            net.add(this);
         }
     }
 
     @Override
     public void invalidate() {
         super.invalidate();
-        if (!worldObj.isRemote) {
-            hbmenhanced.RESEARCH_NETWORK.remove(this);
+        if (!worldObj.isRemote && getNetwork() != null) {
+            getNetwork().remove(this);
         }
     }
 }

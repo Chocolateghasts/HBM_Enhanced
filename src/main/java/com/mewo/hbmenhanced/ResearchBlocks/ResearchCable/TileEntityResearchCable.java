@@ -4,6 +4,7 @@ import com.hbm.util.fauxpointtwelve.BlockPos;
 import com.hbm.util.fauxpointtwelve.DirPos;
 import com.mewo.hbmenhanced.Connections.ResearchNetwork.IConnectableNode;
 import com.mewo.hbmenhanced.Connections.ResearchNetwork.ResearchNetwork;
+import com.mewo.hbmenhanced.Connections.ResearchNetwork.ResearchNetworkManager;
 import com.mewo.hbmenhanced.Packets.ConnectionsPacket;
 import com.mewo.hbmenhanced.hbmenhanced;
 import cpw.mods.fml.common.network.NetworkRegistry;
@@ -18,8 +19,9 @@ import java.util.*;
 
 public class TileEntityResearchCable extends TileEntity implements IConnectableNode {
     private DirPos dirPos;
-    public ResearchNetwork network;
     public EnumMap<ForgeDirection, Boolean> connections = new EnumMap<>(ForgeDirection.class);
+    private ResearchNetwork network;
+
 
     public TileEntityResearchCable() {
         for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
@@ -76,6 +78,9 @@ public class TileEntityResearchCable extends TileEntity implements IConnectableN
 
     @Override
     public ResearchNetwork getNetwork() {
+        if (network == null && worldObj != null) {
+            network = ResearchNetworkManager.get(worldObj);
+        }
         return network;
     }
 
@@ -108,16 +113,17 @@ public class TileEntityResearchCable extends TileEntity implements IConnectableN
     public void validate() {
         super.validate();
         if (!worldObj.isRemote) {
-            hbmenhanced.RESEARCH_NETWORK.add(this);
-            setNetwork(hbmenhanced.RESEARCH_NETWORK);
+            ResearchNetwork net = ResearchNetworkManager.get(worldObj);
+            setNetwork(net);
+            net.add(this);
         }
     }
 
     @Override
     public void invalidate() {
         super.invalidate();
-        if (!worldObj.isRemote) {
-            hbmenhanced.RESEARCH_NETWORK.remove(this);
+        if (!worldObj.isRemote && getNetwork() != null) {
+            getNetwork().remove(this);
         }
     }
 

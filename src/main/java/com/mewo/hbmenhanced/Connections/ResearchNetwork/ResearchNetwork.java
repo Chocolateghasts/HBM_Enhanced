@@ -44,7 +44,9 @@ public class ResearchNetwork {
 
             List<Pair<BlockPos, BlockPos>> keysToUpdate = new ArrayList<>();
             for (Map.Entry<Pair<BlockPos, BlockPos>, ResearchNetworkPath> entry : pathCache.entrySet()) {
-                if (entry.getValue().contains(nodes.get(node.getPos()))) {
+                IConnectableNode n = nodes.get(node.getPos());
+                if (n == null) continue;
+                if (entry.getValue().contains(n)) {
                     keysToUpdate.add(entry.getKey());
                 }
             }

@@ -1,6 +1,7 @@
 package com.mewo.hbmenhanced;
 
 import com.mewo.hbmenhanced.Connections.ResearchNetwork.ResearchNetwork;
+import com.mewo.hbmenhanced.Connections.ResearchNetwork.ResearchNetworkManager;
 import com.mewo.hbmenhanced.Gui.GuiHandler;
 import com.mewo.hbmenhanced.OpenComputers.ResearchTree;
 import com.mewo.hbmenhanced.OpenComputers.RpComponentDriver;
@@ -81,7 +82,6 @@ public class hbmenhanced
     public static Block researchBlockT3;
     public static Block researchController;
 
-    public static final ResearchNetwork RESEARCH_NETWORK = new ResearchNetwork();
     @SidedProxy(
             clientSide = "com.mewo.hbmenhanced.proxy.ClientProxy",
             serverSide = "com.mewo.hbmenhanced.proxy.CommonProxy"
@@ -167,7 +167,7 @@ public class hbmenhanced
 
     @EventHandler
     public void serverStarting(FMLServerStartingEvent event) {
-        RESEARCH_NETWORK.reset();
+        ResearchNetworkManager.reset();
         MinecraftServer server = event.getServer();
         ResearchTree.init(server);
         //ResearchTree adminTree = new ResearchTree("test");
