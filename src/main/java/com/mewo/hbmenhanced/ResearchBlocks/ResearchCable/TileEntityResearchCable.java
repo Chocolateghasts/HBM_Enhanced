@@ -3,7 +3,9 @@ package com.mewo.hbmenhanced.ResearchBlocks.ResearchCable;
 import com.hbm.util.fauxpointtwelve.BlockPos;
 import com.hbm.util.fauxpointtwelve.DirPos;
 import com.mewo.hbmenhanced.Connections.ResearchNetwork.IConnectableNode;
-import com.mewo.hbmenhanced.Connections.ResearchNetwork.ResearchNetwork;
+import com.mewo.hbmenhanced.Connections.ResearchNetwork.NetworkNodeType;
+import com.mewo.hbmenhanced.Connections.ResearchNetwork.AbstractNetwork;
+import com.mewo.hbmenhanced.Connections.ResearchNetwork.NetworkTypes.ResearchNetwork;
 import com.mewo.hbmenhanced.Connections.ResearchNetwork.ResearchNetworkManager;
 import com.mewo.hbmenhanced.Packets.ConnectionsPacket;
 import com.mewo.hbmenhanced.hbmenhanced;
@@ -20,10 +22,15 @@ import java.util.*;
 public class TileEntityResearchCable extends TileEntity implements IConnectableNode {
     private DirPos dirPos;
     public EnumMap<ForgeDirection, Boolean> connections = new EnumMap<>(ForgeDirection.class);
-    private ResearchNetwork network;
-
+    private AbstractNetwork<?> network;
+    private NetworkNodeType type;
 
     public TileEntityResearchCable() {
+        this(NetworkNodeType.RESEARCH);
+    }
+
+    public TileEntityResearchCable(NetworkNodeType type) {
+        this.type = type;
         for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
             connections.put(dir, false);
         }
@@ -76,12 +83,28 @@ public class TileEntityResearchCable extends TileEntity implements IConnectableN
         return dirPos;
     }
 
-    @Override
-    public ResearchNetwork getNetwork() {
+    public AbstractNetwork<?> getNetwork() {
         if (network == null && worldObj != null) {
-            network = ResearchNetworkManager.get(worldObj);
+            network = (AbstractNetwork<?>) ResearchNetworkManager.getNetwork(worldObj, getType());
         }
         return network;
+    }
+
+    @Override
+    public NetworkNodeType getType() {
+        if (this.type == null) {
+            this.type = NetworkNodeType.RESEARCH;
+        }
+        return this.type;
+    }
+
+    @Override
+    public void setType(NetworkNodeType type) {
+        this.type = type;
+        System.out.println("Changed type");
+        setNetwork(ResearchNetworkManager.getNetwork(worldObj, this.type));
+        markDirty();
+        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
     }
 
     @Override
@@ -92,7 +115,7 @@ public class TileEntityResearchCable extends TileEntity implements IConnectableN
                     xCoord + dir.offsetX,
                     yCoord + dir.offsetY,
                     zCoord + dir.offsetZ);
-            if (te instanceof IConnectableNode) {
+            if (te instanceof IConnectableNode && ((IConnectableNode) te).getType() == this.type) {
                 pos.add(new BlockPos(te));
             }
         }
@@ -100,7 +123,7 @@ public class TileEntityResearchCable extends TileEntity implements IConnectableN
     }
 
     @Override
-    public void setNetwork(ResearchNetwork network) {
+    public void setNetwork(AbstractNetwork<?> network) {
         this.network = network;
     }
 
@@ -109,38 +132,60 @@ public class TileEntityResearchCable extends TileEntity implements IConnectableN
         this.dirPos = dirPos;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public void validate() {
         super.validate();
         if (!worldObj.isRemote) {
-            ResearchNetwork net = ResearchNetworkManager.get(worldObj);
+            AbstractNetwork<IConnectableNode> net = (AbstractNetwork<IConnectableNode>) ResearchNetworkManager.getNetwork(worldObj, getType());
             setNetwork(net);
             net.add(this);
         }
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public void invalidate() {
         super.invalidate();
         if (!worldObj.isRemote && getNetwork() != null) {
-            getNetwork().remove(this);
+            AbstractNetwork<IConnectableNode> net = (AbstractNetwork<IConnectableNode>) ResearchNetworkManager.getNetwork(worldObj, getType());
+            net.remove(this);
         }
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound tag) {
-        super.writeToNBT(tag);
+    public void writeToNBT(NBTTagCompound compound) {
+        super.writeToNBT(compound);
+        if (this.type == null) {
+            this.type = NetworkNodeType.RESEARCH;
+        }
+        compound.setString("nodeType", this.type.name());
         NBTTagCompound connTag = new NBTTagCompound();
         for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
             connTag.setBoolean(dir.name(), connections.get(dir));
         }
-        tag.setTag("connections", connTag);
+        compound.setTag("connections", connTag);
     }
 
     @Override
-    public void readFromNBT(NBTTagCompound tag) {
-        super.readFromNBT(tag);
-        NBTTagCompound connTag = tag.getCompoundTag("connections");
+    public void readFromNBT(NBTTagCompound compound) {
+        super.readFromNBT(compound);
+        String nodeTypeString = compound.getString("nodeType");
+
+        if (nodeTypeString == null || nodeTypeString.isEmpty()) {
+            // fallback to a default type if missing
+            this.type = NetworkNodeType.RESEARCH;
+        } else {
+            try {
+                this.type = NetworkNodeType.valueOf(nodeTypeString);
+            } catch (IllegalArgumentException e) {
+                // log error, fallback to default to avoid crash
+                this.type = NetworkNodeType.RESEARCH;
+                // Optionally log the error:
+                System.err.println("Invalid nodeType in NBT: " + nodeTypeString);
+            }
+        }
+        NBTTagCompound connTag = compound.getCompoundTag("connections");
         for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
             connections.put(dir, connTag.getBoolean(dir.name()));
         }

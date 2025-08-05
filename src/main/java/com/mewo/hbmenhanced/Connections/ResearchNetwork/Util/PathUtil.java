@@ -6,13 +6,12 @@ import com.mewo.hbmenhanced.Connections.ResearchNetwork.IConnectableNode;
 import com.mewo.hbmenhanced.Connections.ResearchNetwork.IResearchProvider;
 import com.mewo.hbmenhanced.Connections.ResearchNetwork.IResearchReceiver;
 import net.minecraftforge.common.util.ForgeDirection;
-import org.apache.commons.lang3.tuple.Pair;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.*;
 
-import static com.mewo.hbmenhanced.Connections.ResearchNetwork.ResearchNetwork.MAX_DEPTH;
+import static com.mewo.hbmenhanced.Connections.ResearchNetwork.NetworkTypes.ResearchNetwork.MAX_DEPTH;
 
 public class PathUtil {
     private static final Logger LOGGER = LogManager.getLogger(PathUtil.class);

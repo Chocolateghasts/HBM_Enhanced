@@ -1,14 +1,19 @@
 package com.mewo.hbmenhanced.ResearchBlocks.ResearchCable;
 
+import com.hbm.items.ModItems;
+import com.mewo.hbmenhanced.Connections.ResearchNetwork.NetworkNodeType;
 import com.mewo.hbmenhanced.hbmenhanced;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import li.cil.oc.common.item.Wrench;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.IIcon;
@@ -55,7 +60,7 @@ public class BlockResearchCable extends BlockContainer {
 
     @Override
     public TileEntity createNewTileEntity(World p_149915_1_, int p_149915_2_) {
-        return new TileEntityResearchCable();
+        return new TileEntityResearchCable(NetworkNodeType.RESEARCH);
     }
 
     @Override
@@ -114,6 +119,14 @@ public class BlockResearchCable extends BlockContainer {
     }
 
     @Override
+    public void onPostBlockPlaced(World world, int x, int y, int z, int meta) {
+        TileEntity te = world.getTileEntity(x, y, z);
+        if (te instanceof TileEntityResearchCable) {
+            ((TileEntityResearchCable) te).setTypeFromNeighbors(world, x, y, z);
+        }
+    }
+
+    @Override
     public void updateTick(World world, int x, int y, int z, Random random) {
         world.markBlockForUpdate(x, y, z);
     }
@@ -147,4 +160,27 @@ public class BlockResearchCable extends BlockContainer {
 
         return new float[] {minX, minY, minZ, maxX, maxY, maxZ};
     }
+
+    @Override
+    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ) {
+        if (world.isRemote) {
+            return false;
+        }
+        ItemStack heldItem = player.getCurrentEquippedItem();
+        Item wrench = ModItems.steel_hoe;
+
+        if (heldItem != null && heldItem.getItem() == wrench) {
+            TileEntity te = world.getTileEntity(x, y, z);
+            if (te instanceof TileEntityResearchCable) {
+                TileEntityResearchCable cable = (TileEntityResearchCable) te;
+                NetworkNodeType current = cable.getType();
+                cable.setType(NetworkNodeType.next(current));
+                cable.markDirty();
+                world.markBlockForUpdate(x, y, z);
+                return true;
+            }
+        }
+        return false;
+    }
+
 }

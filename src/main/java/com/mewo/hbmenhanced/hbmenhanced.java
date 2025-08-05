@@ -1,12 +1,8 @@
 package com.mewo.hbmenhanced;
 
-import com.mewo.hbmenhanced.Connections.ResearchNetwork.ResearchNetwork;
-import com.mewo.hbmenhanced.Connections.ResearchNetwork.ResearchNetworkManager;
 import com.mewo.hbmenhanced.Gui.GuiHandler;
 import com.mewo.hbmenhanced.OpenComputers.ResearchTree;
 import com.mewo.hbmenhanced.OpenComputers.RpComponentDriver;
-import com.mewo.hbmenhanced.OpenComputers.old.RPComponent;
-import com.mewo.hbmenhanced.OpenComputers.old.ResearchTreeold;
 import com.mewo.hbmenhanced.Packets.ConnectionsPacket;
 import com.mewo.hbmenhanced.Packets.EnergyPacket;
 import com.mewo.hbmenhanced.ReactorResearch.TileEntityResearchCore;
@@ -33,8 +29,6 @@ import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -48,7 +42,6 @@ import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import net.minecraft.item.*;
 import net.minecraft.server.MinecraftServer;
-import net.minecraftforge.common.MinecraftForge;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -156,10 +149,6 @@ public class hbmenhanced
         researchController = new BlockResearchController().setBlockName("blockResearchController");
         GameRegistry.registerBlock(researchController, "blockResearchController");
         GameRegistry.registerTileEntity(TileEntityResearchController.class, "tileEntityResearchController");
-
-//        researchBlock = new ResearchBlock(1, "researchBlock").setBlockName("researchBlock");
-//        GameRegistry.registerBlock(researchBlock, "researchBlock");
-//        GameRegistry.registerTileEntity(TileEntityResearchBlock.class, "TileEntityResearchBlock");
     }
 
 
@@ -167,7 +156,7 @@ public class hbmenhanced
 
     @EventHandler
     public void serverStarting(FMLServerStartingEvent event) {
-        ResearchNetworkManager.reset();
+        //ResearchNetworkManager.reset();
         MinecraftServer server = event.getServer();
         ResearchTree.init(server);
         //ResearchTree adminTree = new ResearchTree("test");
