@@ -7,6 +7,7 @@ import com.mewo.hbmenhanced.Connections.ResearchNetwork.IResearchProvider;
 import com.mewo.hbmenhanced.Connections.ResearchNetwork.IResearchReceiver;
 import com.mewo.hbmenhanced.Connections.ResearchNetwork.Util.PathUtil;
 import com.mewo.hbmenhanced.Connections.ResearchNetwork.Util.ResearchNetworkPath;
+import net.minecraft.client.gui.achievement.GuiAchievement;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

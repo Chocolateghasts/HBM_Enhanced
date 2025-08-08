@@ -70,14 +70,14 @@ public class TileEntityResearchCore extends TileEntity implements IInventory, IE
     }
 
     private void sendEnergyPacket() {
-        hbmenhanced.network.sendToAllAround(
-                new EnergyPacket(this),
-                new NetworkRegistry.TargetPoint(
-                        worldObj.provider.dimensionId,
-                        xCoord, yCoord, zCoord,
-                        64.0D
-                )
-        );
+//        hbmenhanced.network.sendToAllAround(
+//                new EnergyPacket(this),
+//                new NetworkRegistry.TargetPoint(
+//                        worldObj.provider.dimensionId,
+//                        xCoord, yCoord, zCoord,
+//                        64.0D
+//                )
+//        );
     }
 
     private int getCharge(ItemStack battery) {

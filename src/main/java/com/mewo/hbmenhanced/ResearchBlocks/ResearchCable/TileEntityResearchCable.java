@@ -98,11 +98,21 @@ public class TileEntityResearchCable extends TileEntity implements IConnectableN
         return this.type;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public void setType(NetworkNodeType type) {
+        if (worldObj == null || worldObj.isRemote) return;
+
+        AbstractNetwork<IConnectableNode> oldNetwork = (AbstractNetwork<IConnectableNode>) ResearchNetworkManager.getNetwork(worldObj, this.type);
+        oldNetwork.remove(this);
+
         this.type = type;
-        System.out.println("Changed type");
-        setNetwork(ResearchNetworkManager.getNetwork(worldObj, this.type));
+        System.out.println("Changed type to: " + type.name());
+
+        AbstractNetwork<IConnectableNode> newNetwork = (AbstractNetwork<IConnectableNode>) ResearchNetworkManager.getNetwork(worldObj, this.type);
+        setNetwork(newNetwork);
+        newNetwork.add(this);
+
         markDirty();
         worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
     }

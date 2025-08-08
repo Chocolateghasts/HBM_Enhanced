@@ -3,15 +3,188 @@
     "id": "basic_power",
     "name": "Basic Power",
     "description": "Unlocks basic power transmission and generators.",
-    "category": "Power",
+    "category": "basic",
+    "iconId": "minecraft:stone",
+    "backgroundId": "default",
     "level": 1,
+    "x": 0,
+    "y": 0,
     "dependencies": [],
     "requirements": {
       "STRUCTURAL": 25
     },
     "templates": [
-      { "type": "a", "id": "1" },
+      { "type": "a", "id": "1" }
+    ]
+  },
+  "power_storage": {
+    "id": "power_storage",
+    "name": "Power Storage",
+    "description": "Enables basic batteries and capacitors.",
+    "category": "basic",
+    "iconId": "minecraft:redstone_block",
+    "backgroundId": "default",
+    "level": 1,
+    "x": 30,
+    "y": 0,
+    "dependencies": ["basic_power"],
+    "requirements": {
+      "STRUCTURAL": 15,
+      "ELECTRONICS": 20
+    },
+    "templates": [
       { "type": "a", "id": "2" }
+    ]
+  },
+  "industrial_machinery": {
+    "id": "industrial_machinery",
+    "name": "Industrial Machinery",
+    "description": "Unlocks advanced machines for automation.",
+    "category": "industrial",
+    "iconId": "minecraft:piston",
+    "backgroundId": "default",
+    "level": 2,
+    "x": 60,
+    "y": 0,
+    "dependencies": ["power_storage"],
+    "requirements": {
+      "MACHINERY": 30,
+      "STRUCTURAL": 20
+    },
+    "templates": [
+      { "type": "b", "id": "3" }
+    ]
+  },
+  "chemical_processing": {
+    "id": "chemical_processing",
+    "name": "Chemical Processing",
+    "description": "Unlocks fluid processing and basic chemical units.",
+    "category": "chemical",
+    "iconId": "minecraft:bucket",
+    "backgroundId": "default",
+    "level": 2,
+    "x": 60,
+    "y": 40,
+    "dependencies": ["power_storage"],
+    "requirements": {
+      "CHEMICAL": 25,
+      "STRUCTURAL": 15
+    },
+    "templates": [
+      { "type": "b", "id": "4" }
+    ]
+  },
+  "nuclear_basics": {
+    "id": "nuclear_basics",
+    "name": "Nuclear Basics",
+    "description": "Unlocks access to low-tier nuclear components.",
+    "category": "nuclear",
+    "iconId": "minecraft:uranium_ingot",
+    "backgroundId": "rare",
+    "level": 2,
+    "x": 90,
+    "y": 0,
+    "dependencies": ["industrial_machinery"],
+    "requirements": {
+      "NUCLEAR": 40,
+      "STRUCTURAL": 25
+    },
+    "templates": [
+      { "type": "b", "id": "5" }
+    ]
+  },
+  "nuclear_containment": {
+    "id": "nuclear_containment",
+    "name": "Containment Systems",
+    "description": "Enables safe usage of radioactive materials.",
+    "category": "nuclear",
+    "iconId": "minecraft:iron_door",
+    "backgroundId": "rare",
+    "level": 3,
+    "x": 120,
+    "y": 0,
+    "dependencies": ["nuclear_basics"],
+    "requirements": {
+      "NUCLEAR": 50,
+      "STRUCTURAL": 30
+    },
+    "templates": [
+      { "type": "c", "id": "6" }
+    ]
+  },
+  "explosives_handling": {
+    "id": "explosives_handling",
+    "name": "Explosives Handling",
+    "description": "Unlocks TNT-based and controlled explosive tech.",
+    "category": "weaponry",
+    "iconId": "minecraft:tnt",
+    "backgroundId": "special",
+    "level": 2,
+    "x": 90,
+    "y": 40,
+    "dependencies": ["chemical_processing"],
+    "requirements": {
+      "EXPLOSIVES": 30
+    },
+    "templates": [
+      { "type": "b", "id": "7" }
+    ]
+  },
+  "missile_guidance": {
+    "id": "missile_guidance",
+    "name": "Missile Guidance Systems",
+    "description": "Enables precision targeting for advanced weapons.",
+    "category": "weaponry",
+    "iconId": "minecraft:repeater",
+    "backgroundId": "special",
+    "level": 3,
+    "x": 120,
+    "y": 40,
+    "dependencies": ["explosives_handling"],
+    "requirements": {
+      "WEAPONRY": 40,
+      "ELECTRONICS": 20
+    },
+    "templates": [
+      { "type": "c", "id": "8" }
+    ]
+  },
+  "orbital_mechanics": {
+    "id": "orbital_mechanics",
+    "name": "Orbital Mechanics",
+    "description": "Unlocks satellite systems and orbital deployment.",
+    "category": "space",
+    "iconId": "minecraft:ender_pearl",
+    "backgroundId": "special",
+    "level": 4,
+    "x": 150,
+    "y": 40,
+    "dependencies": ["missile_guidance"],
+    "requirements": {
+      "SPACE": 50,
+      "ELECTRONICS": 30
+    },
+    "templates": [
+      { "type": "c", "id": "9" }
+    ]
+  },
+  "exotic_matter": {
+    "id": "exotic_matter",
+    "name": "Exotic Matter Research",
+    "description": "Enables research into unstable and alien materials.",
+    "category": "advanced",
+    "iconId": "minecraft:nether_star",
+    "backgroundId": "special",
+    "level": 4,
+    "x": 150,
+    "y": 0,
+    "dependencies": ["nuclear_containment"],
+    "requirements": {
+      "EXOTIC": 60,
+      "NUCLEAR": 40
+    },
+    "templates": [
+      { "type": "c", "id": "10" }
     ]
   }
 }

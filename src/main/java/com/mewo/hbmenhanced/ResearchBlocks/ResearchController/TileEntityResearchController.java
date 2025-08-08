@@ -5,6 +5,8 @@ import api.hbm.energymk2.IEnergyReceiverMK2;
 import api.hbm.energymk2.Nodespace;
 import api.hbm.energymk2.Nodespace.PowerNode;
 import com.hbm.util.fauxpointtwelve.BlockPos;
+import com.hbm.util.fauxpointtwelve.DirPos;
+import com.mewo.hbmenhanced.Connections.ResearchNetwork.*;
 import com.mewo.hbmenhanced.ResearchBlocks.Tier1.TileEntityT1;
 import com.mewo.hbmenhanced.ResearchBlocks.Tier2.TileEntityT2;
 import com.mewo.hbmenhanced.ResearchBlocks.Tier3.TileEntityT3;
@@ -20,16 +22,18 @@ import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
-public class TileEntityResearchController extends TileEntity implements IInventory, IEnergyReceiverMK2, IEnergyConductorMK2 {
+public class TileEntityResearchController extends TileEntity implements IInventory, IEnergyReceiverMK2, IEnergyConductorMK2, IResearchReceiver {
 
     protected PowerNode node;
 
     // MultiBlock stuff
     Map<Integer, TileEntity> connectedTiers;
     Map<TileEntity, BlockPos> connectedPos;
+    public DirPos dirPos;
+    public AbstractNetwork<?> network;
+    public NetworkNodeType type;
 
     //Constants
     private final int INV_SIZE = 3;
@@ -381,5 +385,84 @@ public class TileEntityResearchController extends TileEntity implements IInvento
     @Override
     public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
         this.readFromNBT(pkt.func_148857_g());
+    }
+
+    @Override
+    public BlockPos getPos() {
+        return new BlockPos(xCoord, yCoord, zCoord);
+    }
+
+    @Override
+    public DirPos getDirPos() {
+        if (dirPos == null) {
+            return new DirPos(getPos().getX(), getPos().getY(), getPos().getZ(), ForgeDirection.UNKNOWN);
+        }
+        return dirPos;
+    }
+
+    public AbstractNetwork<?> getNetwork() {
+        if (network == null && worldObj != null) {
+            network = (AbstractNetwork<?>) ResearchNetworkManager.getNetwork(worldObj, getType());
+        }
+        return network;
+    }
+
+    @Override
+    public NetworkNodeType getType() {
+        if (this.type == null) {
+            this.type = NetworkNodeType.CONTROLLER;
+        }
+        return this.type;
+    }
+
+    @Override
+    public List<BlockPos> getNeighbors() {
+        List<BlockPos> pos = new ArrayList<>();
+        for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+            TileEntity te = worldObj.getTileEntity(
+                    xCoord + dir.offsetX,
+                    yCoord + dir.offsetY,
+                    zCoord + dir.offsetZ);
+            if (te instanceof IConnectableNode && ((IConnectableNode) te).getType() == this.type) {
+                pos.add(new BlockPos(te));
+            }
+        }
+        return pos;
+    }
+
+    @Override
+    public void setNetwork(AbstractNetwork<?> network) {
+        this.network = network;
+    }
+
+    @Override
+    public void setDirPos(DirPos dirPos) {
+        this.dirPos = dirPos;
+    }
+
+    @Override
+    public void setType(NetworkNodeType type) {
+
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public void validate() {
+        super.validate();
+        if (!worldObj.isRemote) {
+            AbstractNetwork<IConnectableNode> net = (AbstractNetwork<IConnectableNode>) ResearchNetworkManager.getNetwork(worldObj, getType());
+            setNetwork(net);
+            net.add(this);
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public void invalidate() {
+        super.invalidate();
+        if (!worldObj.isRemote && getNetwork() != null) {
+            AbstractNetwork<IConnectableNode> net = (AbstractNetwork<IConnectableNode>) ResearchNetworkManager.getNetwork(worldObj, getType());
+            net.remove(this);
+        }
     }
 }

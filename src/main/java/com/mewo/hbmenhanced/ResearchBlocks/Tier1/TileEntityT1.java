@@ -1,5 +1,8 @@
 package com.mewo.hbmenhanced.ResearchBlocks.Tier1;
 
+import com.hbm.util.fauxpointtwelve.BlockPos;
+import com.hbm.util.fauxpointtwelve.DirPos;
+import com.mewo.hbmenhanced.Connections.ResearchNetwork.*;
 import com.mewo.hbmenhanced.ResearchBlock.Research;
 import com.mewo.hbmenhanced.ResearchBlocks.ResearchController.TileEntityResearchController;
 import net.minecraft.entity.player.EntityPlayer;
@@ -11,8 +14,13 @@ import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityFurnace;
+import net.minecraftforge.common.util.ForgeDirection;
 
-public class TileEntityT1 extends TileEntity implements IInventory {
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+public class TileEntityT1 extends TileEntity implements IInventory, IResearchProvider {
 
     // Constants
     private final int INV_SIZE = 3;
@@ -24,6 +32,9 @@ public class TileEntityT1 extends TileEntity implements IInventory {
     public ItemStack[] inventory;
     public Research research;
     public String team;
+    public DirPos dirPos;
+    public AbstractNetwork<?> network;
+    public NetworkNodeType type;
 
     // Variables
     public int totalBurnTime;
@@ -211,5 +222,84 @@ public class TileEntityT1 extends TileEntity implements IInventory {
                 inventory[i] = null;
             }
         }
+    }
+
+    @Override
+    public BlockPos getPos() {
+        return new BlockPos(xCoord, yCoord, zCoord);
+    }
+
+    @Override
+    public DirPos getDirPos() {
+        if (dirPos == null) {
+            return new DirPos(getPos().getX(), getPos().getY(), getPos().getZ(), ForgeDirection.UNKNOWN);
+        }
+        return dirPos;
+    }
+
+    public AbstractNetwork<?> getNetwork() {
+        if (network == null && worldObj != null) {
+            network = (AbstractNetwork<?>) ResearchNetworkManager.getNetwork(worldObj, getType());
+        }
+        return network;
+    }
+
+    @Override
+    public NetworkNodeType getType() {
+        if (this.type == null) {
+            this.type = NetworkNodeType.CONTROLLER;
+        }
+        return this.type;
+    }
+
+    @Override
+    public List<BlockPos> getNeighbors() {
+        List<BlockPos> pos = new ArrayList<>();
+        for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+            TileEntity te = worldObj.getTileEntity(
+                    xCoord + dir.offsetX,
+                    yCoord + dir.offsetY,
+                    zCoord + dir.offsetZ);
+            if (te instanceof IConnectableNode && ((IConnectableNode) te).getType() == this.type) {
+                pos.add(new BlockPos(te));
+            }
+        }
+        return pos;
+    }
+
+    @Override
+    public void setNetwork(AbstractNetwork<?> network) {
+        this.network = network;
+    }
+
+    @Override
+    public void setDirPos(DirPos dirPos) {
+        this.dirPos = dirPos;
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public void validate() {
+        super.validate();
+        if (!worldObj.isRemote) {
+            AbstractNetwork<IConnectableNode> net = (AbstractNetwork<IConnectableNode>) ResearchNetworkManager.getNetwork(worldObj, getType());
+            setNetwork(net);
+            net.add(this);
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public void invalidate() {
+        super.invalidate();
+        if (!worldObj.isRemote && getNetwork() != null) {
+            AbstractNetwork<IConnectableNode> net = (AbstractNetwork<IConnectableNode>) ResearchNetworkManager.getNetwork(worldObj, getType());
+            net.remove(this);
+        }
+    }
+
+    @Override
+    public void setType(NetworkNodeType type) {
+
     }
 }

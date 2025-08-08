@@ -3,8 +3,7 @@ package com.mewo.hbmenhanced;
 import com.mewo.hbmenhanced.Gui.GuiHandler;
 import com.mewo.hbmenhanced.OpenComputers.ResearchTree;
 import com.mewo.hbmenhanced.OpenComputers.RpComponentDriver;
-import com.mewo.hbmenhanced.Packets.ConnectionsPacket;
-import com.mewo.hbmenhanced.Packets.EnergyPacket;
+import com.mewo.hbmenhanced.Packets.*;
 import com.mewo.hbmenhanced.ReactorResearch.TileEntityResearchCore;
 import com.mewo.hbmenhanced.ResearchBlocks.ResearchController.BlockResearchController;
 import com.mewo.hbmenhanced.ResearchBlocks.ResearchController.TileEntityResearchController;
@@ -40,6 +39,8 @@ import net.minecraft.creativetab.CreativeTabs;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.*;
 import net.minecraft.server.MinecraftServer;
 import org.apache.logging.log4j.LogManager;
@@ -108,21 +109,23 @@ public class hbmenhanced
     public void init(FMLInitializationEvent event)
     {
         proxy.registerRenderers();
-        System.out.println("[HBMENHANCED LOGGING] Logger is: " + LOGGER.getClass());
-        System.out.println("[HBMENHANCED LOGGING] Logger is: " + LOGGER.getName());
-        System.out.println("[HBMENHANCED LOGGING] Logger is: " + LOGGER.getMessageFactory());
-        LOGGER.debug("DEBUG IS WORKING ONG");
-        LOGGER.info("Is debug enabled? ? ???????? {}", LOGGER.isDebugEnabled());
         FMLCommonHandler.instance().bus().register(new TickHandler());
+        FMLCommonHandler.instance().bus().register(new ServerEventHandler());
         network = NetworkRegistry.INSTANCE.newSimpleChannel("hbmenhanced");
         int packetId = 0;
         network.registerMessage(EnergyPacket.Handler.class, EnergyPacket.class, packetId++, Side.CLIENT);
-        network.registerMessage(
-                ConnectionsPacket.Handler.class,
-                ConnectionsPacket.class,
-                packetId++,
-                Side.CLIENT
-        );
+        network.registerMessage(ConnectionsPacket.Handler.class, ConnectionsPacket.class, packetId++, Side.CLIENT);
+
+        // PacketResearchTree is bidirectional, so register for both server and client
+        network.registerMessage(PacketResearchTree.Handler.class, PacketResearchTree.class, packetId++, Side.SERVER);
+        network.registerMessage(PacketResearchTree.Handler.class, PacketResearchTree.class, packetId++, Side.CLIENT);
+
+        // PacketResearchTreeRequest only sent client -> server
+        network.registerMessage(PacketResearchTreeRequest.Handler.class, PacketResearchTreeRequest.class, packetId++, Side.SERVER);
+
+        // PacketResearchTreeResponse only sent server -> client
+        network.registerMessage(PacketResearchTreeResponse.Handler.class, PacketResearchTreeResponse.class, packetId++, Side.CLIENT);
+        network.registerMessage(PacketSyncTeam.Handler.class, PacketSyncTeam.class, packetId++, Side.CLIENT);
         Driver.add(new RpComponentDriver());
     }
 
@@ -190,8 +193,31 @@ public class hbmenhanced
             public void run() {
                 Result res = PointManager.saveData();
                 System.out.println(res.isSuccess() + res.getMessage());
+//                for (Object player : server.getEntityWorld().playerEntities) {
+//                    if (player instanceof EntityPlayerMP) {
+//                        EntityPlayerMP mpPlayer = (EntityPlayerMP) player;
+//                        String teamName = mpPlayer.getEntityData().getString("hbmenhanced:team");
+//                        System.out.println("SERVER TEAM FOR PLR: " + teamName);
+//                        network.sendTo(new PacketSyncTeam(teamName), mpPlayer);
+//                    }
+//                }
             }
         }, 0, 60000);
+        timer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                Result res = PointManager.saveData();
+                System.out.println(res.isSuccess() + res.getMessage());
+                for (Object player : server.getEntityWorld().playerEntities) {
+                    if (player instanceof EntityPlayerMP) {
+                        EntityPlayerMP mpPlayer = (EntityPlayerMP) player;
+                        String teamName = mpPlayer.getEntityData().getString("hbmenhanced:team");
+                        System.out.println("SERVER TEAM FOR PLR: " + teamName);
+                        network.sendTo(new PacketSyncTeam(teamName), mpPlayer);
+                    }
+                }
+            }
+        }, 0, 10000);
     }
 
     public static CreativeTabs tabhbmenhanced = new CreativeTabs("tabhbmenhanced") {

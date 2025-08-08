@@ -15,7 +15,11 @@ public class ResearchNode {
     public String name;
     public String category;
     public String description;
+    public String iconId;
+    public String backgroundId;
     public int level;
+    public int x;
+    public int y;
     public boolean isUnlocked;
     public String[] dependencies;
     public List<ResearchTemplate> templates;
@@ -57,6 +61,8 @@ public class ResearchNode {
             PointManager.addPoints(team, type, -entry.getValue(), world);
         }
         this.isUnlocked = true;
+        thisTree.markDirty();
+        thisTree.save();
         return new Result(true, "Successfully unlocked node!");
     }
 }

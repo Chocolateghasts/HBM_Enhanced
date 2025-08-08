@@ -8,6 +8,9 @@ import com.hbm.inventory.fluid.FluidType;
 import com.hbm.inventory.fluid.Fluids;
 import com.hbm.inventory.fluid.tank.FluidTank;
 import com.hbm.util.Compat;
+import com.hbm.util.fauxpointtwelve.BlockPos;
+import com.hbm.util.fauxpointtwelve.DirPos;
+import com.mewo.hbmenhanced.Connections.ResearchNetwork.*;
 import com.mewo.hbmenhanced.ResearchBlock.Research;
 import com.mewo.hbmenhanced.ResearchBlocks.ResearchController.TileEntityResearchController;
 import net.minecraft.entity.player.EntityPlayer;
@@ -21,7 +24,11 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
-public class TileEntityT2 extends TileEntity implements IInventory, IFluidStandardReceiver, IEnergyReceiverMK2 {
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+public class TileEntityT2 extends TileEntity implements IInventory, IFluidStandardReceiver, IEnergyReceiverMK2, IResearchProvider {
 
     // Constants
     public final int INV_SIZE = 4;
@@ -34,6 +41,9 @@ public class TileEntityT2 extends TileEntity implements IInventory, IFluidStanda
     public Research research;
     public ItemStack[] inventory;
     public String team;
+    public DirPos dirPos;
+    public AbstractNetwork<?> network;
+    public NetworkNodeType type;
 
     // Variables
     public int researchProgress;
@@ -299,8 +309,6 @@ public class TileEntityT2 extends TileEntity implements IInventory, IFluidStanda
         return amount;
     }
 
-
-
     @Override
     public long getPower() {
         return currentEnergy;
@@ -319,5 +327,84 @@ public class TileEntityT2 extends TileEntity implements IInventory, IFluidStanda
     @Override
     public boolean canConnect(ForgeDirection dir) {
         return true;
+    }
+
+    @Override
+    public BlockPos getPos() {
+        return new BlockPos(xCoord, yCoord, zCoord);
+    }
+
+    @Override
+    public DirPos getDirPos() {
+        if (dirPos == null) {
+            return new DirPos(getPos().getX(), getPos().getY(), getPos().getZ(), ForgeDirection.UNKNOWN);
+        }
+        return dirPos;
+    }
+
+    public AbstractNetwork<?> getNetwork() {
+        if (network == null && worldObj != null) {
+            network = (AbstractNetwork<?>) ResearchNetworkManager.getNetwork(worldObj, getType());
+        }
+        return network;
+    }
+
+    @Override
+    public NetworkNodeType getType() {
+        if (this.type == null) {
+            this.type = NetworkNodeType.CONTROLLER;
+        }
+        return this.type;
+    }
+
+    @Override
+    public List<BlockPos> getNeighbors() {
+        List<BlockPos> pos = new ArrayList<>();
+        for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+            TileEntity te = worldObj.getTileEntity(
+                    xCoord + dir.offsetX,
+                    yCoord + dir.offsetY,
+                    zCoord + dir.offsetZ);
+            if (te instanceof IConnectableNode && ((IConnectableNode) te).getType() == this.type) {
+                pos.add(new BlockPos(te));
+            }
+        }
+        return pos;
+    }
+
+    @Override
+    public void setNetwork(AbstractNetwork<?> network) {
+        this.network = network;
+    }
+
+    @Override
+    public void setDirPos(DirPos dirPos) {
+        this.dirPos = dirPos;
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public void validate() {
+        super.validate();
+        if (!worldObj.isRemote) {
+            AbstractNetwork<IConnectableNode> net = (AbstractNetwork<IConnectableNode>) ResearchNetworkManager.getNetwork(worldObj, getType());
+            setNetwork(net);
+            net.add(this);
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public void invalidate() {
+        super.invalidate();
+        if (!worldObj.isRemote && getNetwork() != null) {
+            AbstractNetwork<IConnectableNode> net = (AbstractNetwork<IConnectableNode>) ResearchNetworkManager.getNetwork(worldObj, getType());
+            net.remove(this);
+        }
+    }
+
+    @Override
+    public void setType(NetworkNodeType type) {
+
     }
 }

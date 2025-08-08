@@ -15,7 +15,11 @@ public class JavaToLua {
         tmp.put("name", node.name);
         tmp.put("category", node.category);
         tmp.put("description", node.description);
+        tmp.put("iconId", node.iconId);
+        tmp.put("backgroundId", node.backgroundId);
         tmp.put("level", node.level);
+        tmp.put("x", node.x);
+        tmp.put("y", node.y);
         tmp.put("unlocked", node.isUnlocked);
         tmp.put("dependencies", node.dependencies);
         tmp.put("requirements", node.requirements);

@@ -182,5 +182,4 @@ public class BlockResearchCable extends BlockContainer {
         }
         return false;
     }
-
 }

@@ -51,7 +51,7 @@ public abstract class AbstractNetwork<TNode extends IConnectableNode> {
     protected abstract void onAdd(TNode node);
     protected abstract void onRemove(TNode node);
 
-    protected void queueNode(TNode node) {
+    public void queueNode(TNode node) {
         if (node == null) return;
         if (!changedPositions.add(node.getPos())) return;
 
@@ -60,7 +60,7 @@ public abstract class AbstractNetwork<TNode extends IConnectableNode> {
 
     // Abstract or default implementations
     protected abstract void harshUpdate();
-    protected abstract void reset();
+    public abstract void reset();
     protected abstract void transmit();
 
 }

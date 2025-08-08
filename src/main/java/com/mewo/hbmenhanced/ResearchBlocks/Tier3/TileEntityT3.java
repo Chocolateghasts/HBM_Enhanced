@@ -6,6 +6,9 @@ import api.hbm.energymk2.Nodespace;
 import com.hbm.handler.threading.PacketThreading;
 import com.hbm.packet.toclient.AuxParticlePacketNT;
 import com.hbm.util.Compat;
+import com.hbm.util.fauxpointtwelve.BlockPos;
+import com.hbm.util.fauxpointtwelve.DirPos;
+import com.mewo.hbmenhanced.Connections.ResearchNetwork.*;
 import com.mewo.hbmenhanced.ResearchBlock.Research;
 import com.mewo.hbmenhanced.ResearchBlocks.ResearchController.TileEntityResearchController;
 import cpw.mods.fml.common.network.NetworkRegistry;
@@ -20,9 +23,12 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
-public class TileEntityT3 extends TileEntity implements IInventory, IEnergyReceiverMK2, IEnergyConductorMK2 {
+public class TileEntityT3 extends TileEntity implements IInventory, IEnergyReceiverMK2, IEnergyConductorMK2, IResearchProvider {
     public String team;
     public ItemStack[] inventory;
     private Research research;
@@ -30,6 +36,9 @@ public class TileEntityT3 extends TileEntity implements IInventory, IEnergyRecei
     public long currentEnergy;
     public long maxEnergy = 50000;
     private boolean isSubscribed;
+    public DirPos dirPos;
+    public AbstractNetwork<?> network;
+    public NetworkNodeType type;
 
     public boolean isResearching;
     public int researchProgress;
@@ -267,5 +276,84 @@ public class TileEntityT3 extends TileEntity implements IInventory, IEnergyRecei
             data.setDouble("mZ", -dir.offsetZ * (red ? 0.025 : 0.1));
             PacketThreading.createAllAroundThreadedPacket(new AuxParticlePacketNT(data, posX, posY, posZ), new NetworkRegistry.TargetPoint(world.provider.dimensionId, posX, posY, posZ, 25));
         }
+    }
+
+    @Override
+    public BlockPos getPos() {
+        return new BlockPos(xCoord, yCoord, zCoord);
+    }
+
+    @Override
+    public DirPos getDirPos() {
+        if (dirPos == null) {
+            return new DirPos(getPos().getX(), getPos().getY(), getPos().getZ(), ForgeDirection.UNKNOWN);
+        }
+        return dirPos;
+    }
+
+    public AbstractNetwork<?> getNetwork() {
+        if (network == null && worldObj != null) {
+            network = (AbstractNetwork<?>) ResearchNetworkManager.getNetwork(worldObj, getType());
+        }
+        return network;
+    }
+
+    @Override
+    public NetworkNodeType getType() {
+        if (this.type == null) {
+            this.type = NetworkNodeType.CONTROLLER;
+        }
+        return this.type;
+    }
+
+    @Override
+    public List<BlockPos> getNeighbors() {
+        List<BlockPos> pos = new ArrayList<>();
+        for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+            TileEntity te = worldObj.getTileEntity(
+                    xCoord + dir.offsetX,
+                    yCoord + dir.offsetY,
+                    zCoord + dir.offsetZ);
+            if (te instanceof IConnectableNode && ((IConnectableNode) te).getType() == this.type) {
+                pos.add(new BlockPos(te));
+            }
+        }
+        return pos;
+    }
+
+    @Override
+    public void setNetwork(AbstractNetwork<?> network) {
+        this.network = network;
+    }
+
+    @Override
+    public void setDirPos(DirPos dirPos) {
+        this.dirPos = dirPos;
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public void validate() {
+        super.validate();
+        if (!worldObj.isRemote) {
+            AbstractNetwork<IConnectableNode> net = (AbstractNetwork<IConnectableNode>) ResearchNetworkManager.getNetwork(worldObj, getType());
+            setNetwork(net);
+            net.add(this);
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public void invalidate() {
+        super.invalidate();
+        if (!worldObj.isRemote && getNetwork() != null) {
+            AbstractNetwork<IConnectableNode> net = (AbstractNetwork<IConnectableNode>) ResearchNetworkManager.getNetwork(worldObj, getType());
+            net.remove(this);
+        }
+    }
+
+    @Override
+    public void setType(NetworkNodeType type) {
+
     }
 }

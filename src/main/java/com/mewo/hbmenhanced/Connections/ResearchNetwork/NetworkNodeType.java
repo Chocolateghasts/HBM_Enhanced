@@ -3,7 +3,7 @@ package com.mewo.hbmenhanced.Connections.ResearchNetwork;
 public enum NetworkNodeType {
     RESEARCH,
     TERMINAL,
-    CONTROLLER_TERMINAL;
+    CONTROLLER;
 
     public static NetworkNodeType next(NetworkNodeType current) {
         NetworkNodeType[] values = values();

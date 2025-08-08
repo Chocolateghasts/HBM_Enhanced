@@ -3,18 +3,76 @@ package com.mewo.hbmenhanced.ResearchBlocks.ResearchSource;
 import com.hbm.util.fauxpointtwelve.BlockPos;
 import com.hbm.util.fauxpointtwelve.DirPos;
 import com.mewo.hbmenhanced.Connections.ResearchNetwork.*;
-import com.mewo.hbmenhanced.Connections.ResearchNetwork.NetworkTypes.ResearchNetwork;
+import com.mewo.hbmenhanced.OpenComputers.ResearchNode;
+import com.mewo.hbmenhanced.OpenComputers.ResearchTree;
+import com.mewo.hbmenhanced.OpenComputers.Util.DriveManager;
+import com.mewo.hbmenhanced.OpenComputers.Util.JavaToLua;
+import com.mewo.hbmenhanced.ResearchManager.PointManager;
+import com.mewo.hbmenhanced.Util.Result;
+import li.cil.oc.api.Network;
+import li.cil.oc.api.machine.Arguments;
+import li.cil.oc.api.machine.Callback;
+import li.cil.oc.api.machine.Context;
+import li.cil.oc.api.network.*;
+import li.cil.oc.server.component.Drive;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
-public class TileEntityResearchSource extends TileEntity implements IResearchProvider {
+public class TileEntityResearchSource extends TileEntity implements IResearchProvider, Environment {
     private DirPos dirPos;
     private AbstractNetwork<?> network;
     public NetworkNodeType type;
+
+    @Override
+    public void onMessage(Message message) {
+
+    }
+
+    @Override
+    public Node node() {
+        return null;
+    }
+
+    @Override
+    public void onConnect(Node node) {
+
+    }
+
+    @Override
+    public void onDisconnect(Node node) {
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     @Override
     public BlockPos getPos() {

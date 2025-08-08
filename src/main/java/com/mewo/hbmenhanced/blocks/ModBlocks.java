@@ -22,8 +22,6 @@ public class ModBlocks {
         addBlock(new com.mewo.hbmenhanced.ResearchBlocks.ResearchSource.BlockResearchSource());
         addBlock(new com.mewo.hbmenhanced.ResearchBlocks.ResearchTerminal.BlockResearchTerminal());
 
-
-
         // Add tile entities here
         addTileEntity(com.mewo.hbmenhanced.ResearchBlocks.ResearchSource.TileEntityResearchSource.class);
         addTileEntity(com.mewo.hbmenhanced.ResearchBlocks.ResearchCable.TileEntityResearchCable.class);

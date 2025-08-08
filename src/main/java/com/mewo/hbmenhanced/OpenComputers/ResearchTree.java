@@ -7,10 +7,7 @@ import net.minecraft.world.storage.ISaveHandler;
 
 import java.io.File;
 import java.lang.reflect.Type;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class ResearchTree {
     public static File folder;
@@ -22,6 +19,7 @@ public class ResearchTree {
 
     public static final String DEFAULT_TREE_PATH = "config/hbmenhanced/ResearchTree/tree.json";
 
+    public int version = 1;
     public Map<String, ResearchNode> nodes;
 
     public static void init(MinecraftServer server) {
@@ -113,9 +111,26 @@ public class ResearchTree {
         return nodes.get(id);
     }
 
-    public void addNode(ResearchNode node) {nodes.put(node.id, node);}
+    public boolean canUnlock(String id) {
+        ResearchNode node = nodes.get(id);
+        if (node == null) return false;
+        for (String dependency : node.dependencies) {
+            ResearchNode depNode = nodes.get(dependency);
+            if (depNode == null) return false;
+            if (!depNode.isUnlocked) return false;
+        }
+        return true;
+    }
 
-    public void removeNode(String id) {nodes.remove(id);}
+    public void addNode(ResearchNode node) {
+        nodes.put(node.id, node);
+        markDirty();
+    }
+
+    public void removeNode(String id){
+        nodes.remove(id);
+        markDirty();
+    }
 
     private void checkNodeUnlocks() {
         for (Map.Entry<String, ResearchNode> entry : nodes.entrySet()) {
@@ -134,5 +149,27 @@ public class ResearchTree {
         if (loadedNodes != null) {
             this.nodes = loadedNodes;
         }
+    }
+
+    public List<String> getNodesForCategory(String cat) {
+        List<String> tmp = new ArrayList<>();
+        for (Map.Entry<String, ResearchNode> entry : nodes.entrySet()) {
+            String id = entry.getKey();
+            ResearchNode node = entry.getValue();
+            //System.out.println("Candidate category: " + node.category);
+            //System.out.println("Required category: " + cat);
+            if (node.category != null && node.category.equalsIgnoreCase(cat)) {
+                tmp.add(id);
+            }
+        }
+        return tmp;
+    }
+
+    public int getVersion() {
+        return version;
+    }
+
+    public void markDirty() {
+        version++;
     }
 }

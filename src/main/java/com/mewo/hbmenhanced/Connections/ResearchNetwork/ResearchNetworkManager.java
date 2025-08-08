@@ -30,7 +30,7 @@ public class ResearchNetworkManager {
                 return new ResearchNetwork();
             case TERMINAL:
                 return new TerminalNetwork(); // create this similarly
-            case CONTROLLER_TERMINAL:
+            case CONTROLLER:
                 return new ControllerTerminalNetwork(); // also create this
             default:
                 throw new IllegalArgumentException("Unknown network type: " + type);
