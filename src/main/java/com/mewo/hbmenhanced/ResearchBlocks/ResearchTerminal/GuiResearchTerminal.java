@@ -69,6 +69,8 @@ public class GuiResearchTerminal extends GuiScreen {
         super.initGui();
         EntityClientPlayerMP playerMP = Minecraft.getMinecraft().thePlayer;
         String team = playerMP.getEntityData().getString("hbmenhanced:team");
+        PacketResearchTreeRequest pkt = PacketResearchTreeRequest.versionCheck(team, ClientResearchSync.getVersion());
+        network.sendToServer(pkt);
         this.team = team;
         int texWidth = 256;
         int texHeight = 192;

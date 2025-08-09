@@ -24,6 +24,7 @@ public class ResearchTree {
 
     public static void init(MinecraftServer server) {
         mcServer = server;
+        trees.clear();
         ISaveHandler saveHandler = server.getEntityWorld().getSaveHandler();
         File worldDirectory = saveHandler.getWorldDirectory();
         worldDir = worldDirectory;
