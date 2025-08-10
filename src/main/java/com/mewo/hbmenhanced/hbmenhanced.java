@@ -1,5 +1,7 @@
 package com.mewo.hbmenhanced;
 
+import com.hbm.inventory.recipes.AssemblyMachineRecipes;
+import com.hbm.inventory.recipes.ChemicalPlantRecipes;
 import com.mewo.hbmenhanced.Gui.GuiHandler;
 import com.mewo.hbmenhanced.OpenComputers.ResearchTree;
 import com.mewo.hbmenhanced.OpenComputers.RpComponentDriver;
@@ -227,7 +229,8 @@ public class hbmenhanced
                 }
             }
         }, 0, 10000);
-
+        LOGGER.info("[TOTAL RECIPES ASSEMBLY]: {}", (AssemblyMachineRecipes.INSTANCE.recipeOrderedList.size()));
+        LOGGER.info("[TOTAL RECIPES CHEM]: {}", (ChemicalPlantRecipes.INSTANCE.recipeOrderedList.size()));
         ServerTemplates.init();
     }
 
