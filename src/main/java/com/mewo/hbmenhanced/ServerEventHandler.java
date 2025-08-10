@@ -4,6 +4,7 @@ import com.mewo.hbmenhanced.OpenComputers.ResearchTree;
 import com.mewo.hbmenhanced.Packets.PacketResearchTree;
 import com.mewo.hbmenhanced.Packets.PacketResearchTreeResponse;
 import com.mewo.hbmenhanced.Packets.PacketSyncTeam;
+import com.mewo.hbmenhanced.recipes.ServerTemplates;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -23,6 +24,7 @@ public class ServerEventHandler {
             ResearchTree tree = ResearchTree.getOrCreate(team);
             PacketResearchTree pkt = PacketResearchTree.fullTree(team, tree.nodes, tree.getVersion());
             network.sendTo(pkt, player);
+            network.sendTo(ServerTemplates.fullSync(team), mpPlayer);
         }
     }
 }

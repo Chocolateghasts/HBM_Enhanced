@@ -24,6 +24,7 @@ import com.mewo.hbmenhanced.commands.*;
 import com.mewo.hbmenhanced.containers.labBlockTileEntity;
 import com.mewo.hbmenhanced.items.*;
 import com.mewo.hbmenhanced.proxy.CommonProxy;
+import com.mewo.hbmenhanced.recipes.ServerTemplates;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
@@ -110,6 +111,7 @@ public class hbmenhanced
     @EventHandler
     public void init(FMLInitializationEvent event)
     {
+        ServerTemplates.preInit();
         proxy.registerRenderers();
         FMLCommonHandler.instance().bus().register(new TickHandler());
         FMLCommonHandler.instance().bus().register(new ServerEventHandler());
@@ -131,6 +133,8 @@ public class hbmenhanced
         // PacketResearchTreeResponse only sent server -> client
         network.registerMessage(PacketResearchTreeResponse.Handler.class, PacketResearchTreeResponse.class, packetId++, Side.CLIENT);
         network.registerMessage(PacketSyncTeam.Handler.class, PacketSyncTeam.class, packetId++, Side.CLIENT);
+
+        network.registerMessage(PacketTemplates.Handler.class, PacketTemplates.class, packetId++, Side.CLIENT);
         Driver.add(new RpComponentDriver());
     }
 
@@ -223,6 +227,8 @@ public class hbmenhanced
                 }
             }
         }, 0, 10000);
+
+        ServerTemplates.init();
     }
 
     public static CreativeTabs tabhbmenhanced = new CreativeTabs("tabhbmenhanced") {
