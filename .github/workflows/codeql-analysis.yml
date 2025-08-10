@@ -8,7 +8,7 @@ on:
     branches:
       - main
   schedule:
-    - cron: '0 0 * * 0'  # weekly Sunday at midnight
+    - cron: '0 0 * * 0'  # Weekly on Sunday at midnight
 
 permissions:
   contents: read
@@ -42,6 +42,9 @@ jobs:
 
       - name: Make gradlew executable
         run: chmod +x ./gradlew
+
+      - name: Verify Gradle version
+        run: ./gradlew --version
 
       - name: Build with Gradle wrapper
         run: ./gradlew clean build --no-daemon
