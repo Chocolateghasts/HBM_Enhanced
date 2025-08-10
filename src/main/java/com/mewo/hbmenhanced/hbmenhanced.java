@@ -7,6 +7,7 @@ import com.mewo.hbmenhanced.Packets.*;
 import com.mewo.hbmenhanced.ReactorResearch.TileEntityResearchCore;
 import com.mewo.hbmenhanced.ResearchBlocks.ResearchController.BlockResearchController;
 import com.mewo.hbmenhanced.ResearchBlocks.ResearchController.TileEntityResearchController;
+import com.mewo.hbmenhanced.ResearchBlocks.Test;
 import com.mewo.hbmenhanced.ResearchBlocks.Tier1.T1Block;
 import com.mewo.hbmenhanced.ResearchBlocks.Tier1.TileEntityT1;
 import com.mewo.hbmenhanced.ResearchBlocks.Tier2.T2Block;
@@ -43,6 +44,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.*;
 import net.minecraft.server.MinecraftServer;
+import net.minecraftforge.common.MinecraftForge;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -111,6 +113,9 @@ public class hbmenhanced
         proxy.registerRenderers();
         FMLCommonHandler.instance().bus().register(new TickHandler());
         FMLCommonHandler.instance().bus().register(new ServerEventHandler());
+        Test testInstance = new Test();
+        FMLCommonHandler.instance().bus().register(testInstance);
+        MinecraftForge.EVENT_BUS.register(testInstance);
         network = NetworkRegistry.INSTANCE.newSimpleChannel("hbmenhanced");
         int packetId = 0;
         network.registerMessage(EnergyPacket.Handler.class, EnergyPacket.class, packetId++, Side.CLIENT);
