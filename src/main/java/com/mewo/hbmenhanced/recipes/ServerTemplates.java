@@ -41,6 +41,7 @@ public class ServerTemplates {
             for (ResearchNode node : tree.nodes.values()) {
                 if (node.isUnlocked) {
                     unlockedTemplates.addAll(node.templates);
+                    System.out.println("Added templates to team: " + Arrays.toString(unlockedTemplates.toArray()));
                 }
             }
         }

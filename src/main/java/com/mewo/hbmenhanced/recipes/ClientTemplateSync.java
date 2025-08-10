@@ -15,6 +15,8 @@ public class ClientTemplateSync {
                 tmp.add(template);
             }
         }
+        System.out.println("Got templates for type " + type);
+        System.out.println("Templates are: " + Arrays.toString(tmp.toArray()));
         return tmp;
     }
 
