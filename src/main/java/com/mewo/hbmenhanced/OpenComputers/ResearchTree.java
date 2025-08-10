@@ -149,6 +149,7 @@ public class ResearchTree {
         Map<String, ResearchNode> loadedNodes = JsonUtil.read(teamFile, listType);
         if (loadedNodes != null) {
             this.nodes = loadedNodes;
+            markDirty();
         }
     }
 
