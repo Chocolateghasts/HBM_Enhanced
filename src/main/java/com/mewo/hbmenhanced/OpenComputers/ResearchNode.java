@@ -4,6 +4,7 @@ import com.mewo.hbmenhanced.ResearchManager.PointManager;
 import com.mewo.hbmenhanced.ResearchManager.PointManager.ResearchType;
 import com.mewo.hbmenhanced.Util.ResearchTemplate;
 import com.mewo.hbmenhanced.Util.Result;
+import com.mewo.hbmenhanced.recipes.ServerTemplates;
 import net.minecraft.world.World;
 
 import java.util.HashMap;
@@ -63,6 +64,7 @@ public class ResearchNode {
         this.isUnlocked = true;
         thisTree.markDirty();
         thisTree.save();
+        ServerTemplates.markDirty();
         return new Result(true, "Successfully unlocked node!");
     }
 }
