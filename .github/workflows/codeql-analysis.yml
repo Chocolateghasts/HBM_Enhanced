@@ -24,6 +24,10 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
+      # Make gradlew executable immediately after checkout
+      - name: Make gradlew executable
+        run: git update-index --chmod=+x gradlew && chmod +x gradlew
+
       - name: Set up JDK 8
         uses: actions/setup-java@v3
         with:
@@ -39,9 +43,6 @@ jobs:
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
           restore-keys: |
             ${{ runner.os }}-gradle-
-
-      - name: Make gradlew executable
-        run: chmod +x ./gradlew
 
       - name: Verify Gradle version
         run: ./gradlew --version
