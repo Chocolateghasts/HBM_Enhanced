@@ -12,6 +12,8 @@ import com.mewo.hbmenhanced.Util.ResearchTemplate;
 
 import java.util.*;
 
+import static com.mewo.hbmenhanced.hbmenhanced.network;
+
 public class ServerTemplates {
     public static int version;
     public static Map<ResearchTemplate, GenericRecipe> templateRecipeMap = new HashMap<>();
@@ -32,6 +34,7 @@ public class ServerTemplates {
     }
 
     public static void init() {
+        teamTemplates.clear();
         for (Map.Entry<String, ResearchTree> entry : ResearchTree.trees.entrySet()) {
             String team = entry.getKey();
             ResearchTree tree = entry.getValue();
@@ -52,6 +55,8 @@ public class ServerTemplates {
             Set<ResearchTemplate> unlocked = teamTemplates.computeIfAbsent(team, k -> new HashSet<>());
             unlocked.addAll(node.templates);
             markDirty();
+            PacketTemplates pkt = new PacketTemplates(PacketTemplates.PacketType.UPDATE, version, unlocked);
+            network.sendToAll(pkt);
         }
     }
 

@@ -65,6 +65,7 @@ public class ResearchNode {
         thisTree.markDirty();
         thisTree.save();
         ServerTemplates.markDirty();
+        ServerTemplates.update(team, this);
         return new Result(true, "Successfully unlocked node!");
     }
 }
