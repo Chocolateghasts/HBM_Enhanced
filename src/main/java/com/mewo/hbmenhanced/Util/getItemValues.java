@@ -13,9 +13,20 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 
 import java.util.*;
+
 public class getItemValues {
 
+    public static Map<String, Map<String, Integer>> researchCounts = new HashMap<>();
     public static Map<String, ResearchValue> Values = new HashMap<>();
+
+    // Creates a truly unique identifier for an item including metadata
+    private static String getUniqueItemKey(Item item, int meta) {
+        return Item.itemRegistry.getNameForObject(item) + ":" + meta;
+    }
+
+    private static String getUniqueItemKey(ItemStack stack) {
+        return getUniqueItemKey(stack.getItem(), stack.getItemDamage());
+    }
 
     public static boolean isBlackListed(String key) {
         String[] keywords = {
@@ -34,7 +45,8 @@ public class getItemValues {
                 "glass", "bars", "door", "sand",
                 "axe", "tank", "scaffold", "corner",
                 "pedestal", "port", "carrot", "tile",
-                "flint", "furnace"};
+                "flint", "furnace"
+        };
         for (String keyword : keywords) {
             if (key.toLowerCase().trim().contains(keyword)) {
                 return true;
@@ -46,12 +58,14 @@ public class getItemValues {
     public static boolean isResearchItem(String name) {
         return !isBlackListed(name);
     }
-    public static ResearchValue getItemValue(Item item) {
-        System.out.println("Item is: " + item.getUnlocalizedName());
-        if (Values.containsKey(item.getUnlocalizedName().toLowerCase())) {
+
+    public static ResearchValue getItemValue(ItemStack stack) {
+        String key = getUniqueItemKey(stack); // uses damage/meta from stack
+        System.out.println("Item is: " + key);
+        if (Values.containsKey(key)) {
             System.out.println("Found item in map");
         }
-        return Values.getOrDefault(item.getUnlocalizedName().toLowerCase(), new ResearchValue());
+        return Values.getOrDefault(key, new ResearchValue());
     }
 
     public static int getResearchTime(TileEntity te) {
@@ -78,36 +92,34 @@ public class getItemValues {
     }
 
     private static TileEntityResearchController getCore(TileEntity te) {
-        TileEntityResearchController core = null;
         if (te instanceof TileEntityT1) {
-            if (((TileEntityT1) te).core != null) {
-                core = ((TileEntityT1) te).core;
-            }
+            return ((TileEntityT1) te).core;
         } else if (te instanceof TileEntityT2) {
-            if (((TileEntityT2) te).core != null) {
-                core = ((TileEntityT2) te).core;
-            }
+            return ((TileEntityT2) te).core;
         } else if (te instanceof TileEntityT3) {
-            if (((TileEntityT3) te).core != null) {
-                core = ((TileEntityT3) te).core;
-            }
+            return ((TileEntityT3) te).core;
         }
-        return core;
+        return null;
     }
 
     public static void init() {
         for (Object obj : Item.itemRegistry) {
-
             Item item = (Item) obj;
-            String name = item.getUnlocalizedName().toLowerCase();
+            String rawName = item.getUnlocalizedName().toLowerCase();
+            String normalizedName = rawName
+                    .replace("tile.", "")
+                    .replace("item.", "")
+                    .replace("_", " ")
+                    .trim();
 
-            if (!isResearchItem(name)) continue;
+            if (!isResearchItem(normalizedName)) continue;
+
             ResearchValue value = new ResearchValue();
             for (Map.Entry<String, ResearchValue> entry : ResearchMap.keywordMap.entrySet()) {
                 String keyword = entry.getKey().toLowerCase();
-                if (name.contains(keyword)) {
-                    System.out.println("Registered " + name);
-                    System.out.println(name + " contains " + keyword);
+                if (normalizedName.contains(keyword)) {
+                    System.out.println("Registered " + normalizedName);
+                    System.out.println(normalizedName + " contains " + keyword);
                     ResearchValue toAdd = entry.getValue();
                     for (Map.Entry<PointManager.ResearchType, Integer> point : toAdd.getAllPoints().entrySet()) {
                         value.addPoints(point.getKey(), point.getValue());
@@ -116,25 +128,52 @@ public class getItemValues {
             }
 
             if (!value.getAllPoints().isEmpty()) {
-                System.out.println("Added " + item.getUnlocalizedName());
-                Values.put(item.getUnlocalizedName().toLowerCase(), value);
+                String key = getUniqueItemKey(item, 0); // Default meta for base item
+                System.out.println("Added " + key);
+                Values.put(key, value);
             }
-
         }
         System.out.println("VALUES OF RESEARCHMAPIDK: " + Values.keySet());
     }
 
-    public static void setValues(ResearchValue value, ItemStack stack) {
-        ItemResearchPoint.setRp(stack, "CHEMICAL", 0);
-        System.out.println("setValues called for: " + stack);
+    private static int getDiminishedValues(String itemKey, int base, String team) {
+        researchCounts.computeIfAbsent(team, t -> new HashMap<>());
+        int count = researchCounts.get(team).getOrDefault(itemKey, 0);
+        return Math.max(1, base / (1 + count));
+    }
+
+    public static void setValues(ResearchValue value, ItemStack outStack, String team, ItemStack sourceStack) {
+        if (!outStack.hasTagCompound()) {
+            outStack.setTagCompound(new NBTTagCompound());
+        }
+
+        if (sourceStack == null) {
+            System.out.println("sourceStack is null, cannot apply diminishing correctly");
+            return;
+        }
+
+        String sourceKey = getUniqueItemKey(sourceStack); // << use this for diminishing
+        System.out.println("Got source item key for diminishing: " + sourceKey + " for team: " + team);
+
+        ItemResearchPoint.setRp(outStack, "CHEMICAL", 0);
+        System.out.println("setValues called for: " + outStack);
+
         if (value == null) {
             System.out.println("value is null!");
             return;
         }
+
         Map<PointManager.ResearchType, Integer> map = value.getAllPoints();
         System.out.println("Map size: " + map.size());
+        researchCounts.computeIfAbsent(team, t -> new HashMap<>());
+
         for (Map.Entry<PointManager.ResearchType, Integer> entry : map.entrySet()) {
-            stack.getTagCompound().setInteger(entry.getKey().toString(), entry.getValue());
+            int diminishedValue = getDiminishedValues(sourceKey, entry.getValue(), team);
+            outStack.getTagCompound().setInteger(entry.getKey().toString(), diminishedValue);
         }
+
+        int current = researchCounts.get(team).getOrDefault(sourceKey, 0);
+        researchCounts.get(team).put(sourceKey, current + 1);
+        System.out.println("Applied diminishing for source item: " + sourceKey + " for team: " + team);
     }
 }

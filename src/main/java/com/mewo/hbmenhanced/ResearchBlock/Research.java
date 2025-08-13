@@ -21,6 +21,7 @@ public class Research {
     public void Tier1(TileEntityT1 te) {
         if (te.core == null) return;
         if (!te.core.canResearch(te)) return;
+
         int mainSlot = te.MAIN_SLOT;
         int outputSlot = te.OUTPUT_SLOT;
         int fuelSlot = te.FUEL_SLOT;
@@ -36,39 +37,43 @@ public class Research {
             te.isResearching = false;
             te.researchProgress = 0;
             te.maxResearchProgress = 0;
-        } else {
-            te.isResearching = true;
-            if (te.researchProgress == 0) {
-                te.maxResearchProgress = getItemValues.getResearchTime(te);
-            }
+            return;
         }
 
-        if (te.isResearching) {
-            if (te.currentBurnTime <= 0) te.isBurning = false;
-            if (fuel != null && !te.isBurning) {
-                te.isBurning = true;
-                te.totalBurnTime = TileEntityFurnace.getItemBurnTime(fuel);
-                te.currentBurnTime = TileEntityFurnace.getItemBurnTime(fuel);
-                fuel.stackSize--;
-                inventory[fuelSlot] = fuel.stackSize <= 0 ? null : fuel;
-            }
-            if (te.currentBurnTime > 0) {
-                te.currentBurnTime--;
-                te.researchProgress++;
-                if (te.researchProgress >= te.maxResearchProgress) {
-                    te.researchProgress = 0;
-                    te.maxResearchProgress = 0;
-                    input.stackSize--;
-                    inventory[mainSlot] = input.stackSize <= 0 ? null : input;
-                    ItemStack itemStack = new ItemStack(hbmenhanced.researchPoint, 1);
-                    ResearchValue researchValue = getItemValues.getItemValue(input.getItem());
-                    getItemValues.setValues(researchValue, itemStack);
-                    output = itemStack;
-                    inventory[outputSlot] = output;
-                }
+        te.isResearching = true;
+        if (te.researchProgress == 0) {
+            te.maxResearchProgress = getItemValues.getResearchTime(te);
+        }
+
+        if (te.currentBurnTime <= 0) te.isBurning = false;
+        if (fuel != null && !te.isBurning) {
+            te.isBurning = true;
+            te.totalBurnTime = TileEntityFurnace.getItemBurnTime(fuel);
+            te.currentBurnTime = te.totalBurnTime;
+            fuel.stackSize--;
+            inventory[fuelSlot] = (fuel.stackSize <= 0) ? null : fuel;
+        }
+
+        if (te.currentBurnTime > 0) {
+            te.currentBurnTime--;
+            te.researchProgress++;
+
+            if (te.researchProgress >= te.maxResearchProgress) {
+                te.researchProgress = 0;
+                te.maxResearchProgress = 0;
+
+                ResearchValue researchValue = getItemValues.getItemValue(input);
+
+                input.stackSize--;
+                inventory[mainSlot] = (input.stackSize <= 0) ? null : input;
+
+                ItemStack itemStack = new ItemStack(hbmenhanced.researchPoint, 1);
+                getItemValues.setValues(researchValue, itemStack, te.team, input);
+                inventory[outputSlot] = itemStack;
             }
         }
     }
+
 
     public void Tier2(TileEntityT2 te) {
         if (te.core == null) return;
@@ -118,9 +123,9 @@ public class Research {
             if (te.researchProgress >= te.maxResearchProgress) {
                 System.out.println("Research Finished");
                 //Award Points
-                ResearchValue val = getItemValues.getItemValue(input.getItem());
+                ResearchValue val = getItemValues.getItemValue(input);
                 ItemStack point = new ItemStack(hbmenhanced.researchPoint);
-                getItemValues.setValues(val, point);
+                getItemValues.setValues(val, point, te.team, input);
                 te.inventory[outputSlot] = point;
                 te.researchProgress = 0;
                 te.isResearching = false;
@@ -165,9 +170,9 @@ public class Research {
                     te.researchProgress = 0;
                     te.maxResearchProgress = 0;
 
-                    ResearchValue val = getItemValues.getItemValue(input.getItem());
+                    ResearchValue val = getItemValues.getItemValue(input);
                     ItemStack point = new ItemStack(hbmenhanced.researchPoint);
-                    getItemValues.setValues(val, point);
+                    getItemValues.setValues(val, point, te.team, input);
                     output = point;
                     te.inventory[output_slot] = output;
                     te.inventory[main_slot].stackSize--;
