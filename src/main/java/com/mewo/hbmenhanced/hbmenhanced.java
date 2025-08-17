@@ -17,6 +17,8 @@ import com.mewo.hbmenhanced.ResearchBlocks.Tier2.TileEntityT2;
 import com.mewo.hbmenhanced.ResearchBlocks.Tier3.T3Block;
 import com.mewo.hbmenhanced.ResearchBlocks.Tier3.TileEntityT3;
 import com.mewo.hbmenhanced.ResearchManager.PointManager;
+import com.mewo.hbmenhanced.Util.ResearchUtil.ResearchItemUtil;
+import com.mewo.hbmenhanced.Util.ResearchUtil.ResearchRegistry;
 import com.mewo.hbmenhanced.Util.Result;
 import com.mewo.hbmenhanced.Util.getItemValues;
 import com.mewo.hbmenhanced.blocks.BlockResearchCore;
@@ -113,6 +115,9 @@ public class hbmenhanced
     @EventHandler
     public void init(FMLInitializationEvent event)
     {
+        ResearchItemUtil.initMaterials();
+        ResearchItemUtil.init();
+        ResearchRegistry.init();
         ServerTemplates.preInit();
         proxy.registerRenderers();
         FMLCommonHandler.instance().bus().register(new TickHandler());

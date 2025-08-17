@@ -49,7 +49,7 @@ public class ControllerTerminalNetwork  extends AbstractNetwork<IConnectableNode
 
     @Override
     public void harshUpdate() {
-        LOGGER.info("Path cache size: {}", pathCache.size());
+        //LOGGER.info("Path cache size: {}", pathCache.size());
 
         long startTime = System.nanoTime();
 
@@ -86,9 +86,9 @@ public class ControllerTerminalNetwork  extends AbstractNetwork<IConnectableNode
 
         long durationMs = (System.nanoTime() - startTime) / 1_000_000;
         if (changedNodeCount > 0) {
-            LOGGER.info("harshUpdate processed {} changed nodes, rebuilt {} paths in {} ms", changedNodeCount, pathsRebuilt, durationMs);
+            //LOGGER.info("harshUpdate processed {} changed nodes, rebuilt {} paths in {} ms", changedNodeCount, pathsRebuilt, durationMs);
             if (durationMs > 50) {
-                LOGGER.warn("harshUpdate took longer than expected: {} ms", durationMs);
+                //LOGGER.warn("harshUpdate took longer than expected: {} ms", durationMs);
             }
         }
     }
@@ -96,15 +96,15 @@ public class ControllerTerminalNetwork  extends AbstractNetwork<IConnectableNode
     @Override
     public void reset() {
         long startTime = System.nanoTime();
-        LOGGER.info("Source points: {}", sourcePoints);
-        LOGGER.info("Endpoints: {}", endPoints);
+        //LOGGER.info("Source points: {}", sourcePoints);
+        //LOGGER.info("Endpoints: {}", endPoints);
         pathCache.clear();
 
         int pathsBuilt = 0;
         for (IResearchProvider provider : sourcePoints.values()) {
             for (IResearchReceiver receiver : endPoints.values()) {
                 ResearchNetworkPath path = PathUtil.createPath(nodes, provider, receiver);
-                LOGGER.info("Path is: {}", path);
+                //LOGGER.info("Path is: {}", path);
                 if (path != null) {
                     pathCache.put(pair(provider.getPos(), receiver.getPos()), path);
                     pathsBuilt++;
@@ -113,7 +113,7 @@ public class ControllerTerminalNetwork  extends AbstractNetwork<IConnectableNode
         }
 
         long durationMs = (System.nanoTime() - startTime) / 1_000_000;
-        LOGGER.info("reset rebuilt {} paths in {} ms", pathsBuilt, durationMs);
+        //LOGGER.info("reset rebuilt {} paths in {} ms", pathsBuilt, durationMs);
     }
 
 

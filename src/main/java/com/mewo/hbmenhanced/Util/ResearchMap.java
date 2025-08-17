@@ -14,7 +14,7 @@ public class ResearchMap {
             int value = (int) entries[i + 1];
             map.put(type, value);
         }
-        return new ResearchValue(map);
+        return new ResearchValue();
     }
 
     static {
