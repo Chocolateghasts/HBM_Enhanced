@@ -130,8 +130,6 @@ public class Research {
         }
     }
 
-
-
     public void Tier2(TileEntityT2 te) {
         if (te.core == null) return;
         if (!te.core.canResearch(te)) return;
@@ -223,7 +221,6 @@ public class Research {
         }
     }
 
-
     public void Tier3(TileEntityT3 te) {
         if (te.core == null) return;
         if (!te.core.canResearch(te)) return;
@@ -308,6 +305,4 @@ public class Research {
             }
         }
     }
-
-
 }

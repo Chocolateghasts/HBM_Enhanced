@@ -89,7 +89,7 @@ public class ResearchItemUtil {
 
     public static ResearchValue getResearchPoints(MaterialInfo info) {
         ResearchValue base = getBasePointsForMaterial(info.material);
-        if (base == null) return new ResearchValue();
+        if (base == null) return null;
 
         ResearchValue val = base.copy();
         switch (info.type) {
