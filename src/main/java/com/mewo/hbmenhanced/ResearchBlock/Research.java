@@ -18,11 +18,7 @@ import net.minecraft.tileentity.TileEntityFurnace;
 import java.util.Map;
 
 // TODO: Research May Produce Waste Or Fail Research
-// TODO: Tier 1 May Only Research Low Level Items
-// TODO: Make researchers only research materials, not other items
 // TODO: Make researchers give boosts to items from the previous tier
-// TODO: Make research take longer, but more rewarding
-// TODO: Make research repeatable, but not overpowered
 // TODO: Try to keep research fun instead of a chore
 
 public class Research {
@@ -40,7 +36,6 @@ public class Research {
         ItemStack fuel = inventory[fuelSlot];
 
         if (output != null) {
-            // output blocked -> stop burning/researching
             te.isResearching = false;
             te.isBurning = false;
             return;
@@ -53,8 +48,8 @@ public class Research {
             te.isBurning = false;
             return;
         }
+        if (!ResearchRegistry.canResearch(input.getItem(), 1)) return;
 
-        // start preparing research time only when we haven't started progress yet
         if (!te.isResearching || te.researchProgress == 0 && te.maxResearchProgress == 0) {
             MaterialInfo info = ResearchRegistry.getInfo(input.getItem());
             if (info != null) {
@@ -90,7 +85,7 @@ public class Research {
                 fuel.stackSize--;
                 inventory[fuelSlot] = (fuel.stackSize <= 0) ? null : fuel;
             } else {
-                // not valid fuel - don't consume
+
             }
         }
 
@@ -150,6 +145,7 @@ public class Research {
             te.isResearching = false;
             return;
         }
+        if (!ResearchRegistry.canResearch(input.getItem(), 1)) return;
 
         // constants for clarity
         final int fluidCost = 1000; // ml / units used to start a research cycle
@@ -246,6 +242,7 @@ public class Research {
             return;
         }
 
+        if (!ResearchRegistry.canResearch(input.getItem(), 1)) return;
         final int powerPerTick = te.core.getPowerUsage(250);
 
         // start research (don't subtract per-tick energy here)

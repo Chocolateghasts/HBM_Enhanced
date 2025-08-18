@@ -32,7 +32,8 @@ public class ResearchRegistry {
     public static boolean canResearch(Item item, int tier) {
         MaterialInfo info = itemMaterialInfoMap.get(item);
         if (info == null) return false;
-
+        if (ResearchItemUtil.getResearchPoints(info) == null) return false;
+        if (info.type == MaterialType.UNKNOWN) return false;
         switch (tier) {
             case 1:
                 return info.rarity.rank() < MaterialRarity.RARE.rank();
