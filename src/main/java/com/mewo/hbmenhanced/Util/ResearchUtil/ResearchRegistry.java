@@ -75,5 +75,16 @@ public class ResearchRegistry {
         return ResearchItemUtil.rarityMap.getOrDefault(item, MaterialRarity.COMMON);
     }
 
+    public static boolean isSuccessful(int tier) {
+        double base = 1;
+        switch (tier) {
+            case 1: base = 0.9D; break;
+            case 2: base = 0.85D; break;
+            case 3: base = 0.80D; break;
+        }
+        double chance = Math.random();
+        return chance <= base;
+    }
+
 
 }

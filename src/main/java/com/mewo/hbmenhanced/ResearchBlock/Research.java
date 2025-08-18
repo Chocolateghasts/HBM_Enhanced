@@ -1,5 +1,6 @@
 package com.mewo.hbmenhanced.ResearchBlock;
 
+import com.hbm.items.ModItems;
 import com.mewo.hbmenhanced.ResearchBlocks.Tier1.TileEntityT1;
 import com.mewo.hbmenhanced.ResearchBlocks.Tier2.TileEntityT2;
 import com.mewo.hbmenhanced.ResearchBlocks.Tier3.TileEntityT3;
@@ -17,8 +18,6 @@ import net.minecraft.tileentity.TileEntityFurnace;
 
 import java.util.Map;
 
-// TODO: Research May Produce Waste Or Fail Research
-// TODO: Make researchers give boosts to items from the previous tier
 // TODO: Try to keep research fun instead of a chore
 
 public class Research {
@@ -107,11 +106,13 @@ public class Research {
                             input.stackSize--;
                             te.inventory[mainSlot] = (input.stackSize <= 0) ? null : input;
 
-                            // Create the research point output
+                            if (!ResearchRegistry.isSuccessful(1)) {
+                                researchValue.multiply(0.8D);
+                            }
                             ItemStack itemStack = new ItemStack(hbmenhanced.researchPoint, 1);
                             getItemValues.setValues(researchValue, itemStack, te.team, input);
-
                             te.inventory[outputSlot] = itemStack;
+
                         } else {
                             System.out.println("researchValue null at completion");
                         }
@@ -198,9 +199,11 @@ public class Research {
                                 te.inventory[mainSlot] = (input.stackSize <= 0) ? null : input;
 
                                 // Create the research point output
+                                if (!ResearchRegistry.isSuccessful(2)) {
+                                    researchValue.multiply(0.7D);
+                                }
                                 ItemStack itemStack = new ItemStack(hbmenhanced.researchPoint, 1);
                                 getItemValues.setValues(researchValue, itemStack, te.team, input);
-
                                 te.inventory[outputSlot] = itemStack;
                             } else {
                                 System.out.println("researchValue null at completion");
@@ -286,6 +289,9 @@ public class Research {
                                 te.inventory[mainSlot] = (input.stackSize <= 0) ? null : input;
 
                                 // produce output
+                                if (!ResearchRegistry.isSuccessful(3)) {
+                                    researchValue.multiply(0.65D);
+                                }
                                 ItemStack itemStack = new ItemStack(hbmenhanced.researchPoint, 1);
                                 getItemValues.setValues(researchValue, itemStack, te.team, input);
                                 te.inventory[outputSlot] = itemStack;
