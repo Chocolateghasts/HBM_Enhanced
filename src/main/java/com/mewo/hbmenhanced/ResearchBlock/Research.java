@@ -145,7 +145,7 @@ public class Research {
             te.isResearching = false;
             return;
         }
-        if (!ResearchRegistry.canResearch(input.getItem(), 1)) return;
+        if (!ResearchRegistry.canResearch(input.getItem(), 2)) return;
 
         // constants for clarity
         final int fluidCost = 1000; // ml / units used to start a research cycle
@@ -242,7 +242,7 @@ public class Research {
             return;
         }
 
-        if (!ResearchRegistry.canResearch(input.getItem(), 1)) return;
+        if (!ResearchRegistry.canResearch(input.getItem(), 3)) return;
         final int powerPerTick = te.core.getPowerUsage(250);
 
         // start research (don't subtract per-tick energy here)

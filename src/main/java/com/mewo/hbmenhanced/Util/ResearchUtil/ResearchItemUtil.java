@@ -9,6 +9,7 @@ import net.minecraft.item.Item;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.mewo.hbmenhanced.Util.ResearchUtil.ResearchRegistry.MaterialRarity.*;
 import static com.mewo.hbmenhanced.Util.ResearchValue.mapOf;
 import static com.mewo.hbmenhanced.Util.ResearchValue.pairOf;
 import static com.mewo.hbmenhanced.ResearchManager.PointManager.ResearchType.*;
@@ -17,29 +18,31 @@ public class ResearchItemUtil {
 
     public static Map<String, ResearchValue> materialRegistry = new HashMap<>();
     public static Map<Item, String> itemMaterialRegistry = new HashMap<>();
+    public static Map<Item, ResearchRegistry.MaterialRarity> rarityMap = new HashMap<>();
 
     public static void value(String material, Map<PointManager.ResearchType, Integer> m, int r) {
         ResearchValue value = new ResearchValue(m, r);
         materialRegistry.put(material, value);
     }
 
-    public static void registerItem(Item item, String material) {
+    public static void registerItem(Item item, String material, ResearchRegistry.MaterialRarity rarity) {
         itemMaterialRegistry.put(item, material);
+        rarityMap.put(item, rarity);
     }
     // TODO: Call initMaterials BEFORE init(). Otherwise it will break!
     public static void initMaterials() {
-        registerItem(Items.iron_ingot, "iron");
-        registerItem(Items.gold_ingot, "gold");
-        registerItem(ModItems.ingot_copper, "copper");
-        registerItem(ModItems.ingot_red_copper, "red_copper");
-        registerItem(ModItems.ingot_steel, "steel");
-        registerItem(ModItems.ingot_steel_dusted, "dusted_steel");
-        registerItem(ModItems.ingot_dura_steel, "durasteel");
-        registerItem(ModItems.ingot_u238, "u238");
-        registerItem(ModItems.ingot_u235, "u235");
-        registerItem(ModItems.ingot_u233, "u233");
-        registerItem(ModItems.ingot_uranium, "uranium");
-        registerItem(ModItems.ingot_technetium, "technetium");
+        registerItem(Items.iron_ingot, "iron", COMMON);
+        registerItem(Items.gold_ingot, "gold", RARE);
+        registerItem(ModItems.ingot_copper, "copper", COMMON);
+        registerItem(ModItems.ingot_red_copper, "red_copper", COMMON);
+        registerItem(ModItems.ingot_steel, "steel", COMMON);
+        registerItem(ModItems.ingot_steel_dusted, "dusted_steel", EPIC);
+        registerItem(ModItems.ingot_dura_steel, "durasteel", RARE);
+        registerItem(ModItems.ingot_u238, "u238", EPIC);
+        registerItem(ModItems.ingot_u235, "u235", EPIC);
+        registerItem(ModItems.ingot_u233, "u233", EPIC);
+        registerItem(ModItems.ingot_uranium, "uranium", EPIC);
+        registerItem(ModItems.ingot_technetium, "technetium", EPIC);
     }
 
     public static void init() {
@@ -103,7 +106,7 @@ public class ResearchItemUtil {
 
 
     public static ResearchValue getBasePointsForMaterial(String material) {
-        return materialRegistry.getOrDefault(material.toLowerCase(), new ResearchValue());
+        return materialRegistry.get(material.toLowerCase());
     }
 
     public static ResearchValue getResearchValue(Item item) {

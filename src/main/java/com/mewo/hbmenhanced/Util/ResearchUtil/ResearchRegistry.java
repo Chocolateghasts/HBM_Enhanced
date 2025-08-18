@@ -38,7 +38,7 @@ public class ResearchRegistry {
             case 1:
                 return info.rarity.rank() < MaterialRarity.RARE.rank();
             case 2:
-                return info.rarity.rank() < MaterialRarity.SPECIAL.rank();
+                return info.rarity.rank() < MaterialRarity.EPIC.rank();
             case 3:
                 return info.rarity.rank() <= MaterialRarity.SPECIAL.rank();
             default:
@@ -52,10 +52,9 @@ public class ResearchRegistry {
     }
 
     public static MaterialInfo getInfo(Item item) {
-        System.out.println("Get info called for item: " + item.getUnlocalizedName());
         MaterialType type = getMaterialType(item);
         MaterialRarity rarity = getMaterialRarity(item);
-        System.out.println("[getInfo] Type: " + type + " Rarity: " + rarity);
+        System.out.println("[getInfo] Item=" + item.getUnlocalizedName() + " Rarity=" + rarity + " Type=" + type);
         if (type == null || rarity == null) return null;
         return new MaterialInfo(type, rarity, ResearchItemUtil.getMaterial(item));
     }
@@ -73,9 +72,7 @@ public class ResearchRegistry {
     }
 
     public static MaterialRarity getMaterialRarity(Item item) {
-        String itemName = getItemName(item);
-        // TODO: Make actual logic
-        return MaterialRarity.COMMON;
+        return ResearchItemUtil.rarityMap.getOrDefault(item, MaterialRarity.COMMON);
     }
 
 
