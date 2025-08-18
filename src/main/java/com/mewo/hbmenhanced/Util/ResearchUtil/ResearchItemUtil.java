@@ -43,6 +43,7 @@ public class ResearchItemUtil {
         registerItem(ModItems.ingot_u233, "u233", EPIC);
         registerItem(ModItems.ingot_uranium, "uranium", EPIC);
         registerItem(ModItems.ingot_technetium, "technetium", EPIC);
+        registerItem(ModItems.particle_copper, "apple", EPIC);
     }
 
     public static void init() {
@@ -84,6 +85,9 @@ public class ResearchItemUtil {
         value("technetium", mapOf(
                 pairOf(STRUCTURAL, 25)
         ), 680);
+        value("apple", mapOf(
+                pairOf(STRUCTURAL, 69)
+        ), 25);
     }
 
     public static String getMaterial(Item item) {

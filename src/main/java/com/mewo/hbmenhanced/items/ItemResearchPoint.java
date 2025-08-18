@@ -12,6 +12,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 
 import java.util.EnumMap;
@@ -20,6 +21,9 @@ import java.util.HashMap;
 import static com.mewo.hbmenhanced.hbmenhanced.tabhbmenhanced;
 
 public class ItemResearchPoint extends Item {
+
+    @SideOnly(Side.CLIENT)
+    private IIcon[] icons;
 
     public ItemResearchPoint() {
         this.setCreativeTab(tabhbmenhanced);
@@ -37,9 +41,28 @@ public class ItemResearchPoint extends Item {
         }
     }
 
+    @Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister register) {
-        this.itemIcon = register.registerIcon(hbmenhanced.MODID + ":" + this.getUnlocalizedName().substring(5));
+        icons = new IIcon[getRpValue.researchType.values().length]; // Number of types
+        getRpValue.researchType[] types = getRpValue.researchType.values();
+
+        String baseName = this.getUnlocalizedName().replace("item.", ""); // Remove 'item.' prefix
+
+        for (int i = 0; i < types.length; i++) {
+            icons[i] = register.registerIcon(
+                    hbmenhanced.MODID + ":" + baseName + "_" + i
+            );
+            System.out.println(hbmenhanced.MODID + ":" + baseName + "_" + i);
+        }
+    }
+
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public IIcon getIconFromDamage(int meta) {
+        if (meta < 0 || meta >= icons.length) return itemIcon;
+        return icons[meta];
     }
 
     @Override

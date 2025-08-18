@@ -105,11 +105,13 @@ public class Research {
                             // Consume the input
                             input.stackSize--;
                             te.inventory[mainSlot] = (input.stackSize <= 0) ? null : input;
-
+                            ItemStack itemStack;
                             if (!ResearchRegistry.isSuccessful(1)) {
-                                researchValue.multiply(0.8D);
+                                researchValue.multiply(0.6D);
+                                itemStack = new ItemStack(hbmenhanced.researchPoint, 1, 2);
+                            } else {
+                                itemStack = new ItemStack(hbmenhanced.researchPoint, 1);
                             }
-                            ItemStack itemStack = new ItemStack(hbmenhanced.researchPoint, 1);
                             getItemValues.setValues(researchValue, itemStack, te.team, input);
                             te.inventory[outputSlot] = itemStack;
 
@@ -199,10 +201,13 @@ public class Research {
                                 te.inventory[mainSlot] = (input.stackSize <= 0) ? null : input;
 
                                 // Create the research point output
+                                ItemStack itemStack;
                                 if (!ResearchRegistry.isSuccessful(2)) {
-                                    researchValue.multiply(0.7D);
+                                    researchValue.multiply(0.5D);
+                                    itemStack = new ItemStack(hbmenhanced.researchPoint, 1, 2);
+                                } else {
+                                    itemStack = new ItemStack(hbmenhanced.researchPoint, 1);
                                 }
-                                ItemStack itemStack = new ItemStack(hbmenhanced.researchPoint, 1);
                                 getItemValues.setValues(researchValue, itemStack, te.team, input);
                                 te.inventory[outputSlot] = itemStack;
                             } else {
@@ -289,10 +294,13 @@ public class Research {
                                 te.inventory[mainSlot] = (input.stackSize <= 0) ? null : input;
 
                                 // produce output
+                                ItemStack itemStack;
                                 if (!ResearchRegistry.isSuccessful(3)) {
-                                    researchValue.multiply(0.65D);
+                                    researchValue.multiply(0.4D);
+                                    itemStack = new ItemStack(hbmenhanced.researchPoint, 1, 2);
+                                } else {
+                                    itemStack = new ItemStack(hbmenhanced.researchPoint, 1);
                                 }
-                                ItemStack itemStack = new ItemStack(hbmenhanced.researchPoint, 1);
                                 getItemValues.setValues(researchValue, itemStack, te.team, input);
                                 te.inventory[outputSlot] = itemStack;
                             } else {
