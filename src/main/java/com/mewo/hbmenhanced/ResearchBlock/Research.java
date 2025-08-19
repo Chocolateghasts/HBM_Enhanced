@@ -103,6 +103,7 @@ public class Research {
                         ResearchValue researchValue = ResearchItemUtil.getResearchPoints(info);
                         if (researchValue != null) {
                             // Consume the input
+                            ItemStack old = input.copy();
                             input.stackSize--;
                             te.inventory[mainSlot] = (input.stackSize <= 0) ? null : input;
                             ItemStack itemStack;
@@ -112,7 +113,7 @@ public class Research {
                             } else {
                                 itemStack = new ItemStack(hbmenhanced.researchPoint, 1);
                             }
-                            getItemValues.setValues(researchValue, itemStack, te.team, input);
+                            getItemValues.setValues(researchValue, itemStack, te.team, old);
                             te.inventory[outputSlot] = itemStack;
 
                         } else {
@@ -197,6 +198,7 @@ public class Research {
                             ResearchValue researchValue = ResearchItemUtil.getResearchPoints(info);
                             if (researchValue != null) {
                                 // Consume the input
+                                ItemStack old = input.copy();
                                 input.stackSize--;
                                 te.inventory[mainSlot] = (input.stackSize <= 0) ? null : input;
 
@@ -208,7 +210,7 @@ public class Research {
                                 } else {
                                     itemStack = new ItemStack(hbmenhanced.researchPoint, 1);
                                 }
-                                getItemValues.setValues(researchValue, itemStack, te.team, input);
+                                getItemValues.setValues(researchValue, itemStack, te.team, old);
                                 te.inventory[outputSlot] = itemStack;
                             } else {
                                 System.out.println("researchValue null at completion");
@@ -290,6 +292,7 @@ public class Research {
                             ResearchValue researchValue = ResearchItemUtil.getResearchPoints(info);
                             if (researchValue != null) {
                                 // consume input
+                                ItemStack old = input.copy();
                                 input.stackSize--;
                                 te.inventory[mainSlot] = (input.stackSize <= 0) ? null : input;
 
@@ -301,7 +304,7 @@ public class Research {
                                 } else {
                                     itemStack = new ItemStack(hbmenhanced.researchPoint, 1);
                                 }
-                                getItemValues.setValues(researchValue, itemStack, te.team, input);
+                                getItemValues.setValues(researchValue, itemStack, te.team, old);
                                 te.inventory[outputSlot] = itemStack;
                             } else {
                                 System.out.println("researchValue null at completion");
