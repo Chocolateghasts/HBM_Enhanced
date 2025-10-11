@@ -1,0 +1,84 @@
+[
+  {
+    "type": "shaped",
+    "pattern": [
+      "CBC",
+      "SFS",
+      "CSC"
+    ],
+    "key": {
+      "C": {
+        "item": "hbm:item.coil_copper"
+      },
+      "B": {
+        "item": "minecraft:dye",
+        "meta": 4
+      },
+      "S": {
+        "item": "hbm:item.plate_steel"
+      },
+      "F": {
+        "item": "minecraft:furnace"
+      }
+    },
+    "result": {
+      "item": "hbmenhanced:researchBlockT1",
+      "count": 1
+    }
+  },
+  {
+    "type": "shaped",
+    "pattern": [
+      "SBS",
+      "PLP",
+      "SPS"
+    ],
+    "key": {
+      "S": {
+        "item": "hbm:tile_block_steel"
+      },
+      "B": {
+        "item": "minecraft:dye",
+        "meta": 4
+      },
+      "P": {
+        "item": "hbm:item.pipe",
+        "meta": 2900
+      },
+      "L": {
+        "item": "hbm:tile.machine_lithium_battery"
+      }
+    },
+    "result": {
+      "item": "hbmenhanced:researchBlockT2",
+      "count": 1
+    }
+  },
+  {
+    "type": "shaped",
+    "pattern": [
+      "CBC",
+      "SFS",
+      "CSC"
+    ],
+    "key": {
+      "C": {
+        "item": "hbm:item.coil_copper"
+      },
+      "B": {
+        "item": "minecraft:dye",
+        "meta": 4
+      },
+      "S": {
+        "item": "hbm:item.plate_steel"
+      },
+      "F": {
+        "item": "minecraft:furnace"
+      }
+    },
+    "result": {
+      "item": "hbmenhanced:researchBlockT3",
+      "count": 1
+    }
+  }
+]
