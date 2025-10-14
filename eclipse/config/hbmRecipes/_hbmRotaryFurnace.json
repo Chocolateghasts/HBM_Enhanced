@@ -85,6 +85,17 @@
       "steam": 400
     },
     {
+      "inputs": [
+        ["dict","dustDuraSteel",4],
+        ["dict","dustCopper"],
+        ["dict","dustBorax"]
+      ],
+      "fluid": ["REFORMGAS",250],
+      "output": ["Saturnite",288],
+      "duration": 200,
+      "steam": 300
+    },
+    {
       "inputs": [],
       "fluid": ["SODIUM_ALUMINATE",150],
       "output": ["Aluminum",144],

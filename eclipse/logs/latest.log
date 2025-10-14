@@ -1,27 +1,17 @@
-[19:41:39] [main/INFO]: Setting user: Player203
-[19:41:41] [Client thread/INFO]: LWJGL Version: 2.9.1
-[19:41:53] [Client thread/INFO]: Reloading ResourceManager: Default, FMLFileResourcePack:Forge Mod Loader, FMLFileResourcePack:Minecraft Forge, FMLFileResourcePack:Not Enough Items, FMLFileResourcePack:WorldEdit, FMLFileResourcePack:LunatriusCore, FMLFileResourcePack:Schematica, FMLFileResourcePack:Hbm's Nuclear Tech, FMLFileResourcePack:OpenComputers, FMLFileResourcePack:HBM Enhanced
-[19:42:08] [Sound Library Loader/INFO]: Sound engine started
-[19:42:12] [Client thread/WARN]: File hbm:sounds/clap.ogg does not exist, cannot add it to event hbm:fm.clap
-[19:42:12] [Client thread/WARN]: File hbm:sounds/mug.ogg does not exist, cannot add it to event hbm:fm.mug
-[19:42:12] [Client thread/WARN]: File hbm:sounds/sample.ogg does not exist, cannot add it to event hbm:fm.sample
-[19:42:12] [Client thread/INFO]: Created: 16x16 textures/blocks-atlas
-[19:42:12] [Client thread/INFO]: Created: 16x16 textures/items-atlas
-[19:42:13] [Client thread/INFO]: Reloading ResourceManager: Default, FMLFileResourcePack:Forge Mod Loader, FMLFileResourcePack:Minecraft Forge, FMLFileResourcePack:Not Enough Items, FMLFileResourcePack:WorldEdit, FMLFileResourcePack:LunatriusCore, FMLFileResourcePack:Schematica, FMLFileResourcePack:Hbm's Nuclear Tech, FMLFileResourcePack:OpenComputers, FMLFileResourcePack:HBM Enhanced
-[19:42:15] [Client thread/INFO]: Created: 1024x1024 textures/blocks-atlas
-[19:42:15] [Client thread/INFO]: Created: 2048x1024 textures/items-atlas
-[19:42:16] [Client thread/WARN]: File hbm:sounds/clap.ogg does not exist, cannot add it to event hbm:fm.clap
-[19:42:16] [Client thread/WARN]: File hbm:sounds/mug.ogg does not exist, cannot add it to event hbm:fm.mug
-[19:42:16] [Client thread/WARN]: File hbm:sounds/sample.ogg does not exist, cannot add it to event hbm:fm.sample
-[19:42:16] [Sound Library Loader/INFO]: Sound engine started
-[19:43:03] [Server thread/INFO]: Starting integrated minecraft server version 1.7.10
-[19:43:03] [Server thread/INFO]: Generating keypair
-[19:43:04] [Server thread/INFO]: Preparing start region for level 0
-[19:43:04] [Server thread/INFO]: Changing view distance to 12, from 10
-[19:43:05] [Server thread/INFO]: Player203[local:E:981d0c8e] logged in with entity id 276 at (-239.18653053696198, 86.98935596546764, 166.06655731195877)
-[19:43:05] [Server thread/INFO]: Player203 joined the game
-[19:43:06] [Client thread/INFO]: [CHAT] Loaded world with JameH2's NTM: Space 1.0.27 BETA (5231) for Minecraft 1.7.10!
-[19:43:06] [Client thread/INFO]: [CHAT] New version 1.0.27 BETA (5383) is available! Click [here] to download!
-[19:43:08] [Client thread/INFO]: [CHAT] §aOpenComputers§f: A new version is available: 1.12.2-forge/1.8.9a
-[19:43:12] [Server thread/INFO]: Player203 has just earned the achievement [Taking Inventory]
-[19:43:12] [Client thread/INFO]: [CHAT] Player203 has just earned the achievement [Taking Inventory]
+[21:19:41] [main/INFO]: Setting user: Player437
+[21:19:42] [Client thread/INFO]: LWJGL Version: 2.9.1
+[21:19:49] [Client thread/INFO]: Reloading ResourceManager: Default, FMLFileResourcePack:Forge Mod Loader, FMLFileResourcePack:Minecraft Forge, FMLFileResourcePack:Not Enough Items, FMLFileResourcePack:WorldEdit, FMLFileResourcePack:LunatriusCore, FMLFileResourcePack:Schematica, FMLFileResourcePack:NTM: Space, FMLFileResourcePack:OpenComputers, FMLFileResourcePack:HBM Enhanced
+[21:20:02] [Client thread/WARN]: File hbm:sounds/clap.ogg does not exist, cannot add it to event hbm:fm.clap
+[21:20:02] [Client thread/WARN]: File hbm:sounds/mug.ogg does not exist, cannot add it to event hbm:fm.mug
+[21:20:02] [Client thread/WARN]: File hbm:sounds/sample.ogg does not exist, cannot add it to event hbm:fm.sample
+[21:20:02] [Client thread/INFO]: Created: 16x16 textures/blocks-atlas
+[21:20:02] [Sound Library Loader/INFO]: Sound engine started
+[21:20:03] [Client thread/INFO]: Created: 16x16 textures/items-atlas
+[21:20:05] [Client thread/INFO]: Reloading ResourceManager: Default, FMLFileResourcePack:Forge Mod Loader, FMLFileResourcePack:Minecraft Forge, FMLFileResourcePack:Not Enough Items, FMLFileResourcePack:WorldEdit, FMLFileResourcePack:LunatriusCore, FMLFileResourcePack:Schematica, FMLFileResourcePack:NTM: Space, FMLFileResourcePack:OpenComputers, FMLFileResourcePack:HBM Enhanced
+[21:20:07] [Client thread/INFO]: Created: 2048x2048 textures/blocks-atlas
+[21:20:08] [Client thread/INFO]: Created: 4096x2048 textures/items-atlas
+[21:20:08] [Client thread/WARN]: File hbm:sounds/clap.ogg does not exist, cannot add it to event hbm:fm.clap
+[21:20:08] [Client thread/WARN]: File hbm:sounds/mug.ogg does not exist, cannot add it to event hbm:fm.mug
+[21:20:08] [Client thread/WARN]: File hbm:sounds/sample.ogg does not exist, cannot add it to event hbm:fm.sample
+[21:20:09] [Sound Library Loader/INFO]: Sound engine started
+[21:20:14] [Client thread/INFO]: Stopping!

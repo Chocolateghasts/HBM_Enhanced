@@ -85,22 +85,22 @@
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,2816],
-      "fluid": [["Iron",1344]]
+      "fluid": [["Iron",720]]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,3328],
-      "fluid": [["Iron",384]]
+      "fluid": [["Iron",144]]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,4352],
-      "fluid": [["Copper",864]]
+      "fluid": [["Copper",216]]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,5376]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,6400],
-      "fluid": [["Sodium",216]]
+      "fluid": [["Sodium",72]]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,3585],
@@ -128,23 +128,23 @@
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,2817],
-      "fluid": [["Tungsten",1344]]
+      "fluid": [["Tungsten",720]]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,3329],
-      "fluid": [["Tungsten",384]]
+      "fluid": [["Tungsten",144]]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,4353],
-      "fluid": [["Tungsten",864]]
+      "fluid": [["Tungsten",216]]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,5377],
-      "fluid": [["Tungsten",432]]
+      "fluid": [["Tungsten",144]]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,6401],
-      "fluid": [["Zinc",216]]
+      "fluid": [["Zinc",72]]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,3586],
@@ -211,14 +211,15 @@
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,2819],
-      "fluid": [["Asbestos",1344]]
+      "fluid": [["Redstone",720]]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,3331],
-      "fluid": [["Asbestos",384]]
+      "fluid": [["Redstone",144]]
     },
     {
-      "input": ["item","hbm:item.bedrock_ore",1,4355]
+      "input": ["item","hbm:item.bedrock_ore",1,4355],
+      "fluid": [["Asbestos",216]]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,5379]
@@ -252,19 +253,19 @@
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,2820],
-      "fluid": [["Iron",1344]]
+      "fluid": [["Lithium",720]]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,3332],
-      "fluid": [["Iron",384]]
+      "fluid": [["Lithium",144]]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,4356],
-      "fluid": [["Lithium",864]]
+      "fluid": [["Iron",216]]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,5380],
-      "fluid": [["Sodium",432]]
+      "fluid": [["Sodium",144]]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,6404]
@@ -295,23 +296,23 @@
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,2821],
-      "fluid": [["Lead",1344]]
+      "fluid": [["Lead",720]]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,3333],
-      "fluid": [["Lead",384]]
+      "fluid": [["Lead",144]]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,4357],
-      "fluid": [["Zinc",864]]
+      "fluid": [["Zinc",216]]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,5381],
-      "fluid": [["Gold",432]]
+      "fluid": [["Gold",144]]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,6405],
-      "fluid": [["Bismuth",216]]
+      "fluid": [["Bismuth",72]]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,3590],
@@ -339,22 +340,22 @@
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,2822],
-      "fluid": [["Cobalt",1344]]
+      "fluid": [["Cobalt",720]]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,3334],
-      "fluid": [["Cobalt",384]]
+      "fluid": [["Cobalt",144]]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,4358]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,5382],
-      "fluid": [["Neodymium",432]]
+      "fluid": [["Neodymium",144]]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,6406],
-      "fluid": [["Strontium",216]]
+      "fluid": [["Strontium",72]]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,3591],
@@ -394,7 +395,7 @@
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,6407],
-      "fluid": [["Silicon",216]]
+      "fluid": [["Silicon",72]]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,3592],
@@ -421,12 +422,10 @@
       "solid": ["hbm:item.bedrock_ore",4,6152]
     },
     {
-      "input": ["item","hbm:item.bedrock_ore",1,2824],
-      "fluid": [["Redstone",1344]]
+      "input": ["item","hbm:item.bedrock_ore",1,2824]
     },
     {
-      "input": ["item","hbm:item.bedrock_ore",1,3336],
-      "fluid": [["Redstone",384]]
+      "input": ["item","hbm:item.bedrock_ore",1,3336]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,4360]
@@ -463,22 +462,22 @@
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,2825],
-      "fluid": [["Copper",1344]]
+      "fluid": [["Copper",720]]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,3337],
-      "fluid": [["Copper",384]]
+      "fluid": [["Copper",144]]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,4361],
-      "fluid": [["Titanium",864]]
+      "fluid": [["Titanium",216]]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,5385]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,6409],
-      "fluid": [["Copper",216]]
+      "fluid": [["Copper",72]]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,3594],
@@ -506,23 +505,23 @@
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,2826],
-      "fluid": [["Lead",1344]]
+      "fluid": [["Lead",720]]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,3338],
-      "fluid": [["Lead",384]]
+      "fluid": [["Lead",144]]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,4362],
-      "fluid": [["Gold",864]]
+      "fluid": [["Gold",216]]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,5386],
-      "fluid": [["Tungsten",432]]
+      "fluid": [["Tungsten",144]]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,6410],
-      "fluid": [["Bismuth",216]]
+      "fluid": [["Bismuth",72]]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,3595],
@@ -550,23 +549,23 @@
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,2827],
-      "fluid": [["Zirconium",1344]]
+      "fluid": [["Zirconium",720]]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,3339],
-      "fluid": [["Zirconium",384]]
+      "fluid": [["Zirconium",144]]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,4363],
-      "fluid": [["Boron",864]]
+      "fluid": [["Boron",216]]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,5387],
-      "fluid": [["Cobalt",432]]
+      "fluid": [["Cobalt",144]]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,6411],
-      "fluid": [["Strontium",216]]
+      "fluid": [["Strontium",72]]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,3596],
@@ -606,7 +605,7 @@
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,6412],
-      "fluid": [["Silicon",216]]
+      "fluid": [["Silicon",72]]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,3597],
@@ -673,19 +672,19 @@
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,2830],
-      "fluid": [["Iron",1344]]
+      "fluid": [["Iron",720]]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,3342],
-      "fluid": [["Iron",384]]
+      "fluid": [["Iron",144]]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,4366],
-      "fluid": [["Nickel",864]]
+      "fluid": [["NickelPure",216]]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,5390],
-      "fluid": [["Titanium",432]]
+      "fluid": [["Titanium",144]]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,6414]
@@ -716,23 +715,23 @@
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,2831],
-      "fluid": [["Beryllium",1344]]
+      "fluid": [["Beryllium",720]]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,3343],
-      "fluid": [["Beryllium",384]]
+      "fluid": [["Beryllium",144]]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,4367],
-      "fluid": [["Tungsten",864]]
+      "fluid": [["Tungsten",216]]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,5391],
-      "fluid": [["Zinc",432]]
+      "fluid": [["Zinc",144]]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,6415],
-      "fluid": [["Bismuth",216]]
+      "fluid": [["Bismuth",72]]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,3600],
@@ -766,15 +765,15 @@
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,4368],
-      "fluid": [["Boron",864]]
+      "fluid": [["Boron",216]]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,5392],
-      "fluid": [["Zirconium",432]]
+      "fluid": [["Zirconium",144]]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,6416],
-      "fluid": [["Strontium",216]]
+      "fluid": [["Strontium",72]]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,3601],
@@ -802,23 +801,23 @@
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,2833],
-      "fluid": [["Thorium232",1344]]
+      "fluid": [["Thorium232",720]]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,3345],
-      "fluid": [["Thorium232",384]]
+      "fluid": [["Thorium232",144]]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,4369],
-      "fluid": [["Radium226",864]]
+      "fluid": [["Radium226",216]]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,5393],
-      "fluid": [["Polonium210",432]]
+      "fluid": [["Polonium210",144]]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,6417],
-      "fluid": [["Uranium233",216]]
+      "fluid": [["Uranium233",72]]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,3602],
@@ -855,7 +854,7 @@
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,5394],
-      "fluid": [["Silicon",432]]
+      "fluid": [["Silicon",144]]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,6418]
@@ -886,11 +885,11 @@
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,2835],
-      "fluid": [["Redstone",1344]]
+      "fluid": [["Redstone",720]]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,3347],
-      "fluid": [["Redstone",384]]
+      "fluid": [["Redstone",144]]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,4371]
@@ -927,22 +926,22 @@
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,2836],
-      "fluid": [["Titanium",1344]]
+      "fluid": [["Titanium",720]]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,3348],
-      "fluid": [["Titanium",384]]
+      "fluid": [["Titanium",144]]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,4372]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,5396],
-      "fluid": [["Nickel",432]]
+      "fluid": [["NickelPure",144]]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,6420],
-      "fluid": [["Lithium",216]]
+      "fluid": [["Lithium",72]]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,3605],
@@ -970,23 +969,23 @@
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,2837],
-      "fluid": [["Gold",1344]]
+      "fluid": [["Gold",720]]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,3349],
-      "fluid": [["Gold",384]]
+      "fluid": [["Gold",144]]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,4373],
-      "fluid": [["Zinc",864]]
+      "fluid": [["Zinc",216]]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,5397],
-      "fluid": [["Lead",432]]
+      "fluid": [["Lead",144]]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,6421],
-      "fluid": [["Bismuth",216]]
+      "fluid": [["Bismuth",72]]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,3606],
@@ -1014,23 +1013,22 @@
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,2838],
-      "fluid": [["Neodymium",1344]]
+      "fluid": [["Neodymium",720]]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,3350],
-      "fluid": [["Neodymium",384]]
+      "fluid": [["Neodymium",144]]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,4374],
-      "fluid": [["Zirconium",864]]
+      "fluid": [["Zirconium",216]]
     },
     {
-      "input": ["item","hbm:item.bedrock_ore",1,5398],
-      "fluid": [["Bromine",432]]
+      "input": ["item","hbm:item.bedrock_ore",1,5398]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,6422],
-      "fluid": [["Strontium",216]]
+      "fluid": [["Strontium",72]]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,3607],
@@ -1058,23 +1056,23 @@
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,2839],
-      "fluid": [["Australium",1344]]
+      "fluid": [["Australium",720]]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,3351],
-      "fluid": [["Australium",384]]
+      "fluid": [["Australium",144]]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,4375],
-      "fluid": [["Australium",864]]
+      "fluid": [["Australium",216]]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,5399],
-      "fluid": [["Tasmanite",432]]
+      "fluid": [["Tasmanite",144]]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,6423],
-      "fluid": [["Ayerite",216]]
+      "fluid": [["Ayerite",72]]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,3608],
@@ -1101,12 +1099,10 @@
       "solid": ["hbm:item.bedrock_ore",4,6168]
     },
     {
-      "input": ["item","hbm:item.bedrock_ore",1,2840],
-      "fluid": [["Glowstone",1344]]
+      "input": ["item","hbm:item.bedrock_ore",1,2840]
     },
     {
-      "input": ["item","hbm:item.bedrock_ore",1,3352],
-      "fluid": [["Glowstone",384]]
+      "input": ["item","hbm:item.bedrock_ore",1,3352]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,4376]
@@ -1149,11 +1145,10 @@
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,4377],
-      "fluid": [["Redstone",864]]
+      "fluid": [["Redstone",216]]
     },
     {
-      "input": ["item","hbm:item.bedrock_ore",1,5401],
-      "fluid": [["NetherQuartz",432]]
+      "input": ["item","hbm:item.bedrock_ore",1,5401]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,6425]
@@ -1184,23 +1179,23 @@
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,2842],
-      "fluid": [["Nickel",1344]]
+      "fluid": [["NickelPure",720]]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,3354],
-      "fluid": [["Nickel",384]]
+      "fluid": [["NickelPure",144]]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,4378],
-      "fluid": [["Titanium",864]]
+      "fluid": [["Titanium",216]]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,5402],
-      "fluid": [["Cadmium",432]]
+      "fluid": [["Cadmium",144]]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,6426],
-      "fluid": [["Gallium",216]]
+      "fluid": [["Gallium",72]]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,3611],
@@ -1228,23 +1223,23 @@
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,2843],
-      "fluid": [["Zinc",1344]]
+      "fluid": [["Zinc",720]]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,3355],
-      "fluid": [["Zinc",384]]
+      "fluid": [["Zinc",144]]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,4379],
-      "fluid": [["Gold",864]]
+      "fluid": [["Gold",216]]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,5403],
-      "fluid": [["Bismuth",432]]
+      "fluid": [["Bismuth",144]]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,6427],
-      "fluid": [["Arsenic",216]]
+      "fluid": [["Arsenic",72]]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,3612],
@@ -1272,23 +1267,23 @@
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,2844],
-      "fluid": [["Tantalum",1344]]
+      "fluid": [["Tantalum",720]]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,3356],
-      "fluid": [["Tantalum",384]]
+      "fluid": [["Tantalum",144]]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,4380],
-      "fluid": [["Lanthanum",864]]
+      "fluid": [["Lanthanum",216]]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,5404],
-      "fluid": [["Niobium",432]]
+      "fluid": [["Niobium",144]]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,6428],
-      "fluid": [["Strontium",216]]
+      "fluid": [["Strontium",72]]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,3613],
@@ -1316,23 +1311,23 @@
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,2845],
-      "fluid": [["Uranium",1344]]
+      "fluid": [["Uranium",720]]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,3357],
-      "fluid": [["Uranium",384]]
+      "fluid": [["Uranium",144]]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,4381],
-      "fluid": [["Radium226",864]]
+      "fluid": [["Radium226",216]]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,5405],
-      "fluid": [["Technetium99",432]]
+      "fluid": [["Technetium99",144]]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,6429],
-      "fluid": [["Uranium238",216]]
+      "fluid": [["Uranium238",72]]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,3614],
@@ -1360,15 +1355,15 @@
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,2846],
-      "fluid": [["Silicon",1344]]
+      "fluid": [["Silicon",720]]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,3358],
-      "fluid": [["Silicon",384]]
+      "fluid": [["Silicon",144]]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,4382],
-      "fluid": [["Silicon",864]]
+      "fluid": [["Silicon",216]]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,5406]
@@ -1408,7 +1403,7 @@
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,4383],
-      "fluid": [["Borax",864]]
+      "fluid": [["Borax",216]]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,5407]
@@ -1442,22 +1437,22 @@
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,2848],
-      "fluid": [["Sodium",1344]]
+      "fluid": [["Sodium",720]]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,3360],
-      "fluid": [["Sodium",384]]
+      "fluid": [["Sodium",144]]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,4384]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,5408],
-      "fluid": [["Iron",432]]
+      "fluid": [["Iron",144]]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,6432],
-      "fluid": [["Cobalt60",216]]
+      "fluid": [["Cobalt60",72]]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,3617],
@@ -1485,23 +1480,23 @@
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,2849],
-      "fluid": [["Tungsten",1344]]
+      "fluid": [["Tungsten",720]]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,3361],
-      "fluid": [["Tungsten",384]]
+      "fluid": [["Tungsten",144]]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,4385],
-      "fluid": [["Lead",864]]
+      "fluid": [["Lead",216]]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,5409],
-      "fluid": [["Arsenic",432]]
+      "fluid": [["Arsenic",144]]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,6433],
-      "fluid": [["Lead209",216]]
+      "fluid": [["Lead209",72]]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,3618],
@@ -1529,23 +1524,22 @@
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,2850],
-      "fluid": [["Niobium",1344]]
+      "fluid": [["Niobium",720]]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,3362],
-      "fluid": [["Niobium",384]]
+      "fluid": [["Niobium",144]]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,4386],
-      "fluid": [["Strontium",864]]
+      "fluid": [["Strontium",216]]
     },
     {
-      "input": ["item","hbm:item.bedrock_ore",1,5410],
-      "fluid": [["Iodine",432]]
+      "input": ["item","hbm:item.bedrock_ore",1,5410]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,6434],
-      "fluid": [["Gold198",216]]
+      "fluid": [["Gold198",72]]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,3619],
@@ -1573,23 +1567,23 @@
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,2851],
-      "fluid": [["Plutonium",1344]]
+      "fluid": [["Plutonium",720]]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,3363],
-      "fluid": [["Plutonium",384]]
+      "fluid": [["Plutonium",144]]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,4387],
-      "fluid": [["Polonium210",864]]
+      "fluid": [["Polonium210",216]]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,5411],
-      "fluid": [["Neptunium237",432]]
+      "fluid": [["Neptunium237",144]]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,6435],
-      "fluid": [["Plutonium239",216]]
+      "fluid": [["Plutonium239",72]]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,3620],
@@ -1617,23 +1611,23 @@
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,2852],
-      "fluid": [["Schrabidium",1344]]
+      "fluid": [["Schrabidium",720]]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,3364],
-      "fluid": [["Schrabidium",384]]
+      "fluid": [["Schrabidium",144]]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,4388],
-      "fluid": [["Solinium",864]]
+      "fluid": [["Solinium",216]]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,5412],
-      "fluid": [["Ghiorsium336",432]]
+      "fluid": [["Ghiorsium336",144]]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,6436],
-      "fluid": [["Schrabidium",216]]
+      "fluid": [["Schrabidium",72]]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,3621],
@@ -1673,7 +1667,7 @@
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,6437],
-      "fluid": [["Borax",216]]
+      "fluid": [["Borax",72]]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,3622],
@@ -1701,22 +1695,22 @@
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,2854],
-      "fluid": [["Copper",1344]]
+      "fluid": [["Copper",720]]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,3366],
-      "fluid": [["Copper",384]]
+      "fluid": [["Copper",144]]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,4390]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,5414],
-      "fluid": [["Nickel",432]]
+      "fluid": [["NickelPure",144]]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,6438],
-      "fluid": [["Sodium",216]]
+      "fluid": [["Sodium",72]]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,3623],
@@ -1744,23 +1738,23 @@
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,2855],
-      "fluid": [["Lead",1344]]
+      "fluid": [["Lead",720]]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,3367],
-      "fluid": [["Lead",384]]
+      "fluid": [["Lead",144]]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,4391],
-      "fluid": [["Zinc",864]]
+      "fluid": [["Zinc",216]]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,5415],
-      "fluid": [["Gold",432]]
+      "fluid": [["Gold",144]]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,6439],
-      "fluid": [["Arsenic",216]]
+      "fluid": [["Arsenic",72]]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,3624],
@@ -1788,23 +1782,23 @@
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,2856],
-      "fluid": [["Boron",1344]]
+      "fluid": [["Boron",720]]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,3368],
-      "fluid": [["Boron",384]]
+      "fluid": [["Boron",144]]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,4392],
-      "fluid": [["Neodymium",864]]
+      "fluid": [["Neodymium",216]]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,5416],
-      "fluid": [["Strontium",432]]
+      "fluid": [["Strontium",144]]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,6440],
-      "fluid": [["Lanthanum",216]]
+      "fluid": [["Lanthanum",72]]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,3625],
@@ -1832,23 +1826,23 @@
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,2857],
-      "fluid": [["Uranium",1344]]
+      "fluid": [["Uranium",720]]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,3369],
-      "fluid": [["Uranium",384]]
+      "fluid": [["Uranium",144]]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,4393],
-      "fluid": [["Uranium238",864]]
+      "fluid": [["Uranium238",216]]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,5417],
-      "fluid": [["Plutonium",432]]
+      "fluid": [["Plutonium",144]]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,6441],
-      "fluid": [["Technetium99",216]]
+      "fluid": [["Technetium99",72]]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,3626],
@@ -1875,22 +1869,24 @@
       "solid": ["hbm:item.bedrock_ore",4,6186]
     },
     {
-      "input": ["item","hbm:item.bedrock_ore",1,2858]
+      "input": ["item","hbm:item.bedrock_ore",1,2858],
+      "fluid": [["Aluminum",720]]
     },
     {
-      "input": ["item","hbm:item.bedrock_ore",1,3370]
+      "input": ["item","hbm:item.bedrock_ore",1,3370],
+      "fluid": [["Aluminum",144]]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,4394],
-      "fluid": [["Titanium",864]]
+      "fluid": [["Titanium",216]]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,5418],
-      "fluid": [["Gallium",432]]
+      "fluid": [["Gallium",144]]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,6442],
-      "fluid": [["Hafnium",216]]
+      "fluid": [["Hafnium",72]]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,3627],
@@ -1918,23 +1914,23 @@
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,2859],
-      "fluid": [["Beryllium",1344]]
+      "fluid": [["Beryllium",720]]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,3371],
-      "fluid": [["Beryllium",384]]
+      "fluid": [["Beryllium",144]]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,4395],
-      "fluid": [["Tungsten",864]]
+      "fluid": [["Tungsten",216]]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,5419],
-      "fluid": [["Lead",432]]
+      "fluid": [["Lead",144]]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,6443],
-      "fluid": [["Arsenic",216]]
+      "fluid": [["Arsenic",72]]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,3628],
@@ -1968,15 +1964,15 @@
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,4396],
-      "fluid": [["Neodymium",864]]
+      "fluid": [["Neodymium",216]]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,5420],
-      "fluid": [["Strontium",432]]
+      "fluid": [["Strontium",144]]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,6444],
-      "fluid": [["Niobium",216]]
+      "fluid": [["Niobium",72]]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,3629],
@@ -2004,23 +2000,23 @@
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,2861],
-      "fluid": [["Uranium",1344]]
+      "fluid": [["Uranium",720]]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,3373],
-      "fluid": [["Uranium",384]]
+      "fluid": [["Uranium",144]]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,4397],
-      "fluid": [["Thorium232",864]]
+      "fluid": [["Thorium232",216]]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,5421],
-      "fluid": [["Polonium210",432]]
+      "fluid": [["Polonium210",144]]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,6445],
-      "fluid": [["Uranium235",216]]
+      "fluid": [["Uranium235",72]]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,3630],
@@ -2060,7 +2056,7 @@
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,6446],
-      "fluid": [["Silicon",216]]
+      "fluid": [["Silicon",72]]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,3631],
@@ -2088,11 +2084,11 @@
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,2863],
-      "fluid": [["Asbestos",1344]]
+      "fluid": [["Asbestos",720]]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,3375],
-      "fluid": [["Asbestos",384]]
+      "fluid": [["Asbestos",144]]
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,4399]
@@ -2102,6 +2098,261 @@
     },
     {
       "input": ["item","hbm:item.bedrock_ore",1,6447]
+    },
+    {
+      "input": ["item","hbm:item.bedrock_ore",1,3632],
+      "solid": ["hbm:item.bedrock_ore",2,4144]
+    },
+    {
+      "input": ["item","hbm:item.bedrock_ore",1,3888],
+      "solid": ["hbm:item.bedrock_ore",4,4144]
+    },
+    {
+      "input": ["item","hbm:item.bedrock_ore",1,4656],
+      "solid": ["hbm:item.bedrock_ore",2,5168]
+    },
+    {
+      "input": ["item","hbm:item.bedrock_ore",1,4912],
+      "solid": ["hbm:item.bedrock_ore",4,5168]
+    },
+    {
+      "input": ["item","hbm:item.bedrock_ore",1,5680],
+      "solid": ["hbm:item.bedrock_ore",2,6192]
+    },
+    {
+      "input": ["item","hbm:item.bedrock_ore",1,5936],
+      "solid": ["hbm:item.bedrock_ore",4,6192]
+    },
+    {
+      "input": ["item","hbm:item.bedrock_ore",1,2864],
+      "fluid": [["Titanium",720]]
+    },
+    {
+      "input": ["item","hbm:item.bedrock_ore",1,3376],
+      "fluid": [["Titanium",144]]
+    },
+    {
+      "input": ["item","hbm:item.bedrock_ore",1,4400],
+      "fluid": [["Copper",216]]
+    },
+    {
+      "input": ["item","hbm:item.bedrock_ore",1,5424],
+      "fluid": [["NickelPure",144]]
+    },
+    {
+      "input": ["item","hbm:item.bedrock_ore",1,6448],
+      "fluid": [["Lithium",72]]
+    },
+    {
+      "input": ["item","hbm:item.bedrock_ore",1,3633],
+      "solid": ["hbm:item.bedrock_ore",2,4145]
+    },
+    {
+      "input": ["item","hbm:item.bedrock_ore",1,3889],
+      "solid": ["hbm:item.bedrock_ore",4,4145]
+    },
+    {
+      "input": ["item","hbm:item.bedrock_ore",1,4657],
+      "solid": ["hbm:item.bedrock_ore",2,5169]
+    },
+    {
+      "input": ["item","hbm:item.bedrock_ore",1,4913],
+      "solid": ["hbm:item.bedrock_ore",4,5169]
+    },
+    {
+      "input": ["item","hbm:item.bedrock_ore",1,5681],
+      "solid": ["hbm:item.bedrock_ore",2,6193]
+    },
+    {
+      "input": ["item","hbm:item.bedrock_ore",1,5937],
+      "solid": ["hbm:item.bedrock_ore",4,6193]
+    },
+    {
+      "input": ["item","hbm:item.bedrock_ore",1,2865],
+      "fluid": [["Beryllium",720]]
+    },
+    {
+      "input": ["item","hbm:item.bedrock_ore",1,3377],
+      "fluid": [["Beryllium",144]]
+    },
+    {
+      "input": ["item","hbm:item.bedrock_ore",1,4401],
+      "fluid": [["Lead",216]]
+    },
+    {
+      "input": ["item","hbm:item.bedrock_ore",1,5425],
+      "fluid": [["Zinc",144]]
+    },
+    {
+      "input": ["item","hbm:item.bedrock_ore",1,6449],
+      "fluid": [["Zinc",72]]
+    },
+    {
+      "input": ["item","hbm:item.bedrock_ore",1,3634],
+      "solid": ["hbm:item.bedrock_ore",2,4146]
+    },
+    {
+      "input": ["item","hbm:item.bedrock_ore",1,3890],
+      "solid": ["hbm:item.bedrock_ore",4,4146]
+    },
+    {
+      "input": ["item","hbm:item.bedrock_ore",1,4658],
+      "solid": ["hbm:item.bedrock_ore",2,5170]
+    },
+    {
+      "input": ["item","hbm:item.bedrock_ore",1,4914],
+      "solid": ["hbm:item.bedrock_ore",4,5170]
+    },
+    {
+      "input": ["item","hbm:item.bedrock_ore",1,5682],
+      "solid": ["hbm:item.bedrock_ore",2,6194]
+    },
+    {
+      "input": ["item","hbm:item.bedrock_ore",1,5938],
+      "solid": ["hbm:item.bedrock_ore",4,6194]
+    },
+    {
+      "input": ["item","hbm:item.bedrock_ore",1,2866],
+      "fluid": [["Boron",720]]
+    },
+    {
+      "input": ["item","hbm:item.bedrock_ore",1,3378],
+      "fluid": [["Boron",144]]
+    },
+    {
+      "input": ["item","hbm:item.bedrock_ore",1,4402]
+    },
+    {
+      "input": ["item","hbm:item.bedrock_ore",1,5426],
+      "fluid": [["Tantalum",144]]
+    },
+    {
+      "input": ["item","hbm:item.bedrock_ore",1,6450],
+      "fluid": [["Bismuth",72]]
+    },
+    {
+      "input": ["item","hbm:item.bedrock_ore",1,3635],
+      "solid": ["hbm:item.bedrock_ore",2,4147]
+    },
+    {
+      "input": ["item","hbm:item.bedrock_ore",1,3891],
+      "solid": ["hbm:item.bedrock_ore",4,4147]
+    },
+    {
+      "input": ["item","hbm:item.bedrock_ore",1,4659],
+      "solid": ["hbm:item.bedrock_ore",2,5171]
+    },
+    {
+      "input": ["item","hbm:item.bedrock_ore",1,4915],
+      "solid": ["hbm:item.bedrock_ore",4,5171]
+    },
+    {
+      "input": ["item","hbm:item.bedrock_ore",1,5683],
+      "solid": ["hbm:item.bedrock_ore",2,6195]
+    },
+    {
+      "input": ["item","hbm:item.bedrock_ore",1,5939],
+      "solid": ["hbm:item.bedrock_ore",4,6195]
+    },
+    {
+      "input": ["item","hbm:item.bedrock_ore",1,2867],
+      "fluid": [["Uranium",720]]
+    },
+    {
+      "input": ["item","hbm:item.bedrock_ore",1,3379],
+      "fluid": [["Uranium",144]]
+    },
+    {
+      "input": ["item","hbm:item.bedrock_ore",1,4403],
+      "fluid": [["Neptunium237",216]]
+    },
+    {
+      "input": ["item","hbm:item.bedrock_ore",1,5427],
+      "fluid": [["Radium226",144]]
+    },
+    {
+      "input": ["item","hbm:item.bedrock_ore",1,6451],
+      "fluid": [["Technetium99",72]]
+    },
+    {
+      "input": ["item","hbm:item.bedrock_ore",1,3636],
+      "solid": ["hbm:item.bedrock_ore",2,4148]
+    },
+    {
+      "input": ["item","hbm:item.bedrock_ore",1,3892],
+      "solid": ["hbm:item.bedrock_ore",4,4148]
+    },
+    {
+      "input": ["item","hbm:item.bedrock_ore",1,4660],
+      "solid": ["hbm:item.bedrock_ore",2,5172]
+    },
+    {
+      "input": ["item","hbm:item.bedrock_ore",1,4916],
+      "solid": ["hbm:item.bedrock_ore",4,5172]
+    },
+    {
+      "input": ["item","hbm:item.bedrock_ore",1,5684],
+      "solid": ["hbm:item.bedrock_ore",2,6196]
+    },
+    {
+      "input": ["item","hbm:item.bedrock_ore",1,5940],
+      "solid": ["hbm:item.bedrock_ore",4,6196]
+    },
+    {
+      "input": ["item","hbm:item.bedrock_ore",1,2868]
+    },
+    {
+      "input": ["item","hbm:item.bedrock_ore",1,3380]
+    },
+    {
+      "input": ["item","hbm:item.bedrock_ore",1,4404],
+      "fluid": [["Silicon",216]]
+    },
+    {
+      "input": ["item","hbm:item.bedrock_ore",1,5428]
+    },
+    {
+      "input": ["item","hbm:item.bedrock_ore",1,6452],
+      "fluid": [["Borax",72]]
+    },
+    {
+      "input": ["item","hbm:item.bedrock_ore",1,3637],
+      "solid": ["hbm:item.bedrock_ore",2,4149]
+    },
+    {
+      "input": ["item","hbm:item.bedrock_ore",1,3893],
+      "solid": ["hbm:item.bedrock_ore",4,4149]
+    },
+    {
+      "input": ["item","hbm:item.bedrock_ore",1,4661],
+      "solid": ["hbm:item.bedrock_ore",2,5173]
+    },
+    {
+      "input": ["item","hbm:item.bedrock_ore",1,4917],
+      "solid": ["hbm:item.bedrock_ore",4,5173]
+    },
+    {
+      "input": ["item","hbm:item.bedrock_ore",1,5685],
+      "solid": ["hbm:item.bedrock_ore",2,6197]
+    },
+    {
+      "input": ["item","hbm:item.bedrock_ore",1,5941],
+      "solid": ["hbm:item.bedrock_ore",4,6197]
+    },
+    {
+      "input": ["item","hbm:item.bedrock_ore",1,2869]
+    },
+    {
+      "input": ["item","hbm:item.bedrock_ore",1,3381]
+    },
+    {
+      "input": ["item","hbm:item.bedrock_ore",1,4405]
+    },
+    {
+      "input": ["item","hbm:item.bedrock_ore",1,5429]
+    },
+    {
+      "input": ["item","hbm:item.bedrock_ore",1,6453]
     },
     {
       "input": ["dict","nuggetIron"],
@@ -2186,14 +2437,6 @@
     {
       "input": ["dict","blockRedstone"],
       "fluid": [["Redstone",648]]
-    },
-    {
-      "input": ["dict","bedrockorefragmentGlowstone"],
-      "fluid": [["Glowstone",8]]
-    },
-    {
-      "input": ["dict","dustGlowstone"],
-      "fluid": [["Glowstone",72]]
     },
     {
       "input": ["dict","nuggetUranium"],
@@ -2361,6 +2604,10 @@
     },
     {
       "input": ["dict","nuggetPlutonium239"],
+      "fluid": [["Plutonium239",8]]
+    },
+    {
+      "input": ["dict","bedrockorefragmentPlutonium239"],
       "fluid": [["Plutonium239",8]]
     },
     {
@@ -2796,10 +3043,6 @@
       "fluid": [["Titanium",648]]
     },
     {
-      "input": ["dict","componentHeavyTitanium"],
-      "fluid": [["Titanium",55296]]
-    },
-    {
       "input": ["dict","bedrockorefragmentCopper"],
       "fluid": [["Copper",8]]
     },
@@ -2844,10 +3087,6 @@
       "fluid": [["Copper",648]]
     },
     {
-      "input": ["dict","componentHeavyCopper"],
-      "fluid": [["Copper",55296]]
-    },
-    {
       "input": ["dict","bedrockorefragmentTungsten"],
       "fluid": [["Tungsten",8]]
     },
@@ -2882,10 +3121,6 @@
     {
       "input": ["dict","blockTungsten"],
       "fluid": [["Tungsten",648]]
-    },
-    {
-      "input": ["dict","componentHeavyTungsten"],
-      "fluid": [["Tungsten",55296]]
     },
     {
       "input": ["dict","bedrockorefragmentAluminum"],
@@ -2928,10 +3163,6 @@
       "fluid": [["Aluminum",648]]
     },
     {
-      "input": ["dict","componentHeavyAluminum"],
-      "fluid": [["Aluminum",55296]]
-    },
-    {
       "input": ["dict","nuggetLead"],
       "fluid": [["Lead",8]]
     },
@@ -2970,10 +3201,6 @@
     {
       "input": ["dict","blockLead"],
       "fluid": [["Lead",648]]
-    },
-    {
-      "input": ["dict","componentHeavyLead"],
-      "fluid": [["Lead",55296]]
     },
     {
       "input": ["dict","nuggetBismuth"],
@@ -3336,10 +3563,6 @@
       "fluid": [["Asbestos",8]]
     },
     {
-      "input": ["dict","bedrockorefragmentNetherQuartz"],
-      "fluid": [["NetherQuartz",8]]
-    },
-    {
       "input": ["dict","nuggetOsmiridium"],
       "fluid": [["Osmiridium",8]]
     },
@@ -3360,28 +3583,28 @@
       "fluid": [["Osmiridium",648]]
     },
     {
-      "input": ["dict","nuggetNickel"],
-      "fluid": [["Nickel",8]]
+      "input": ["dict","nuggetNickelPure"],
+      "fluid": [["NickelPure",8]]
     },
     {
-      "input": ["dict","bedrockorefragmentNickel"],
-      "fluid": [["Nickel",8]]
+      "input": ["dict","bedrockorefragmentNickelPure"],
+      "fluid": [["NickelPure",8]]
     },
     {
-      "input": ["dict","ingotNickel"],
-      "fluid": [["Nickel",72]]
+      "input": ["dict","ingotNickelPure"],
+      "fluid": [["NickelPure",72]]
     },
     {
-      "input": ["dict","dustNickel"],
-      "fluid": [["Nickel",72]]
+      "input": ["dict","dustNickelPure"],
+      "fluid": [["NickelPure",72]]
     },
     {
-      "input": ["dict","plateNickel"],
-      "fluid": [["Nickel",72]]
+      "input": ["dict","plateNickelPure"],
+      "fluid": [["NickelPure",72]]
     },
     {
-      "input": ["dict","blockNickel"],
-      "fluid": [["Nickel",648]]
+      "input": ["dict","blockNickelPure"],
+      "fluid": [["NickelPure",648]]
     },
     {
       "input": ["dict","nuggetGallium"],
@@ -3424,22 +3647,6 @@
       "fluid": [["Zinc",72]]
     },
     {
-      "input": ["dict","bedrockorefragmentBromine"],
-      "fluid": [["Bromine",8]]
-    },
-    {
-      "input": ["dict","dustBromine"],
-      "fluid": [["Bromine",72]]
-    },
-    {
-      "input": ["dict","bedrockorefragmentIodine"],
-      "fluid": [["Iodine",8]]
-    },
-    {
-      "input": ["dict","dustIodine"],
-      "fluid": [["Iodine",72]]
-    },
-    {
       "input": ["dict","nuggetHafnium"],
       "fluid": [["Hafnium",8]]
     },
@@ -3454,18 +3661,6 @@
     {
       "input": ["dict","ingotIridium"],
       "fluid": [["Iridium",72]]
-    },
-    {
-      "input": ["dict","nuggetPlatnium"],
-      "fluid": [["Platnium",8]]
-    },
-    {
-      "input": ["dict","ingotPlatnium"],
-      "fluid": [["Platnium",72]]
-    },
-    {
-      "input": ["dict","dustPlatnium"],
-      "fluid": [["Platnium",72]]
     },
     {
       "input": ["dict","dustTinySteel"],
@@ -3512,10 +3707,6 @@
       "fluid": [["Steel",648]]
     },
     {
-      "input": ["dict","componentHeavySteel"],
-      "fluid": [["Steel",55296]]
-    },
-    {
       "input": ["dict","barrelLightSteel"],
       "fluid": [["Steel",216]]
     },
@@ -3545,6 +3736,10 @@
     },
     {
       "input": ["dict","dustMingrade"],
+      "fluid": [["Mingrade",72]]
+    },
+    {
+      "input": ["dict","wireDenseMingrade"],
       "fluid": [["Mingrade",72]]
     },
     {
@@ -3580,10 +3775,6 @@
       "fluid": [["AdvancedAlloy",648]]
     },
     {
-      "input": ["dict","componentHeavyAdvancedAlloy"],
-      "fluid": [["AdvancedAlloy",55296]]
-    },
-    {
       "input": ["dict","boltDuraSteel"],
       "fluid": [["DuraSteel",9]]
     },
@@ -3598,6 +3789,10 @@
     {
       "input": ["dict","plateDuraSteel"],
       "fluid": [["DuraSteel",72]]
+    },
+    {
+      "input": ["dict","plateTripleDuraSteel"],
+      "fluid": [["DuraSteel",216]]
     },
     {
       "input": ["dict","ntmpipeDuraSteel"],
@@ -3648,10 +3843,6 @@
       "fluid": [["Desh",648]]
     },
     {
-      "input": ["dict","componentHeavyDesh"],
-      "fluid": [["Desh",55296]]
-    },
-    {
       "input": ["dict","barrelLightDesh"],
       "fluid": [["Desh",216]]
     },
@@ -3688,6 +3879,10 @@
       "fluid": [["Ferrouranium",72]]
     },
     {
+      "input": ["dict","plateTripleFerrouranium"],
+      "fluid": [["Ferrouranium",216]]
+    },
+    {
       "input": ["dict","barrelHeavyFerrouranium"],
       "fluid": [["Ferrouranium",432]]
     },
@@ -3714,10 +3909,6 @@
     {
       "input": ["dict","blockTcAlloy"],
       "fluid": [["TcAlloy",648]]
-    },
-    {
-      "input": ["dict","componentHeavyTcAlloy"],
-      "fluid": [["TcAlloy",55296]]
     },
     {
       "input": ["dict","barrelLightTcAlloy"],
@@ -3752,10 +3943,6 @@
       "fluid": [["CdAlloy",648]]
     },
     {
-      "input": ["dict","componentHeavyCdAlloy"],
-      "fluid": [["CdAlloy",55296]]
-    },
-    {
       "input": ["dict","barrelLightCdAlloy"],
       "fluid": [["CdAlloy",216]]
     },
@@ -3788,6 +3975,10 @@
       "fluid": [["BismuthBronze",288]]
     },
     {
+      "input": ["dict","receiverHeavyBismuthBronze"],
+      "fluid": [["BismuthBronze",648]]
+    },
+    {
       "input": ["dict","ingotArsenicBronze"],
       "fluid": [["ArsenicBronze",72]]
     },
@@ -3802,6 +3993,10 @@
     {
       "input": ["dict","receiverLightArsenicBronze"],
       "fluid": [["ArsenicBronze",288]]
+    },
+    {
+      "input": ["dict","receiverHeavyArsenicBronze"],
+      "fluid": [["ArsenicBronze",648]]
     },
     {
       "input": ["dict","ingotBSCCO"],
@@ -3928,6 +4123,10 @@
       "fluid": [["WeaponSteel",72]]
     },
     {
+      "input": ["dict","plateTripleWeaponSteel"],
+      "fluid": [["WeaponSteel",216]]
+    },
+    {
       "input": ["dict","shellWeaponSteel"],
       "fluid": [["WeaponSteel",288]]
     },
@@ -4024,16 +4223,24 @@
       "fluid": [["StainlessSteel",72]]
     },
     {
+      "input": ["dict","plateTripleStainlessSteel"],
+      "fluid": [["StainlessSteel",216]]
+    },
+    {
+      "input": ["dict","plateSextupleStainlessSteel"],
+      "fluid": [["StainlessSteel",432]]
+    },
+    {
+      "input": ["dict","ingotRichMagma"],
+      "fluid": [["RichMagma",72]]
+    },
+    {
+      "input": ["dict","oreAluminum"],
+      "fluid": [["Aluminum",144],["Sodium",24],["Stone",162]]
+    },
+    {
       "input": ["dict","oreIron"],
       "fluid": [["Iron",144],["Titanium",24],["Stone",162]]
-    },
-    {
-      "input": ["dict","oreNetherThorium232"],
-      "fluid": [["Thorium232",144],["Uranium",24],["Stone",162]]
-    },
-    {
-      "input": ["dict","oreNetherTh232"],
-      "fluid": [["Thorium232",144],["Uranium",24],["Stone",162]]
     },
     {
       "input": ["dict","oreTh232"],
@@ -4064,6 +4271,10 @@
       "fluid": [["Cobalt",72],["Stone",162]]
     },
     {
+      "input": ["dict","oreZinc"],
+      "fluid": [["Zinc",144],["Stone",162]]
+    },
+    {
       "input": ["dict","cobblestone"],
       "fluid": [["Stone",648]]
     },
@@ -4084,14 +4295,6 @@
       "fluid": [["Uranium",144],["Lead",24],["Stone",162]]
     },
     {
-      "input": ["dict","oreNetherThorium"],
-      "fluid": [["Thorium232",144],["Uranium",24],["Stone",162]]
-    },
-    {
-      "input": ["dict","oreNickel"],
-      "fluid": [["Nickel",144],["Stone",162]]
-    },
-    {
       "input": ["dict","oreTitanium"],
       "fluid": [["Titanium",144],["Iron",24],["Stone",162]]
     },
@@ -4102,6 +4305,10 @@
     {
       "input": ["item","hbm:item.casing",1,3],
       "fluid": [["WeaponSteel",36]]
+    },
+    {
+      "input": ["item","hbm:item.blade_syngas"],
+      "fluid": [["StainlessSteel",216]]
     },
     {
       "input": ["item","minecraft:obsidian"],
@@ -4137,7 +4344,11 @@
     },
     {
       "input": ["item","hbm:item.blade_titanium"],
-      "fluid": [["Titanium",144]]
+      "fluid": [["Titanium",216]]
+    },
+    {
+      "input": ["item","hbm:item.ring_starmetal"],
+      "fluid": [["Starmetal",288]]
     },
     {
       "input": ["item","hbm:item.blades_advanced_alloy"],
@@ -4165,7 +4376,7 @@
     },
     {
       "input": ["item","hbm:item.blade_tungsten"],
-      "fluid": [["Tungsten",144]]
+      "fluid": [["Tungsten",216]]
     },
     {
       "input": ["item","hbm:item.chunk_ore",1,2],
@@ -4180,188 +4391,196 @@
       "fluid": [["Titanium",216]]
     },
     {
-      "input": ["item","hbm:item.powder_red_copper",1,32767],
-      "solid": ["hbm:item.ingot_red_copper"]
-    },
-    {
-      "input": ["item","hbm:tile.ore_redstone",1,32767],
-      "solid": ["minecraft:redstone"]
-    },
-    {
-      "input": ["item","hbm:item.powder_aluminium",1,32767],
-      "solid": ["hbm:item.ingot_aluminium"]
-    },
-    {
-      "input": ["item","hbm:tile.waste_trinitite_red"],
-      "solid": ["hbm:tile.glass_trinitite"]
-    },
-    {
-      "input": ["item","hbm:item.powder_plutonium",1,32767],
-      "solid": ["hbm:item.ingot_plutonium"]
-    },
-    {
-      "input": ["item","hbm:item.powder_niobium",1,32767],
-      "solid": ["hbm:item.ingot_niobium"]
-    },
-    {
-      "input": ["item","hbm:item.powder_actinium",1,32767],
-      "solid": ["hbm:item.ingot_actinium"]
-    },
-    {
-      "input": ["item","hbm:item.powder_magnetized_tungsten",1,32767],
-      "solid": ["hbm:item.ingot_magnetized_tungsten"]
-    },
-    {
-      "input": ["item","hbm:item.powder_tcalloy",1,32767],
-      "solid": ["hbm:item.ingot_tcalloy"]
-    },
-    {
-      "input": ["item","hbm:item.arc_electrode_burnt",1,1],
-      "solid": ["hbm:item.ingot_lanthanium"]
-    },
-    {
-      "input": ["item","hbm:item.powder_uranium",1,32767],
-      "solid": ["hbm:item.ingot_uranium"]
-    },
-    {
-      "input": ["item","hbm:tile.ore_gneiss_gold",1,32767],
-      "solid": ["minecraft:gold_ingot"]
-    },
-    {
-      "input": ["item","hbm:tile.ore_lead",1,32767],
-      "solid": ["hbm:item.ingot_lead"]
-    },
-    {
-      "input": ["item","hbm:item.powder_combine_steel",1,32767],
-      "solid": ["hbm:item.ingot_combine_steel"]
-    },
-    {
-      "input": ["item","hbm:tile.ore_gneiss_lithium",1,32767],
-      "solid": ["hbm:item.lithium"]
-    },
-    {
-      "input": ["item","hbm:tile.ore_nickel",1,32767],
-      "solid": ["hbm:item.ingot_nickel"]
-    },
-    {
-      "input": ["item","hbm:item.powder_calcium",1,32767],
-      "solid": ["hbm:item.ingot_calcium"]
-    },
-    {
-      "input": ["item","hbm:item.powder_dura_steel",1,32767],
-      "solid": ["hbm:item.ingot_dura_steel"]
-    },
-    {
-      "input": ["item","hbm:tile.ore_cobalt",1,32767],
-      "solid": ["hbm:item.ingot_cobalt"]
-    },
-    {
-      "input": ["item","hbm:item.powder_boron",1,32767],
-      "solid": ["hbm:item.ingot_boron"]
-    },
-    {
-      "input": ["item","hbm:item.powder_bismuth",1,32767],
-      "solid": ["hbm:item.ingot_bismuth"]
-    },
-    {
-      "input": ["item","hbm:item.crystal_niobium",1,32767],
-      "solid": ["hbm:item.ingot_niobium"]
-    },
-    {
-      "input": ["item","hbm:item.powder_steel",1,32767],
-      "solid": ["hbm:item.ingot_steel"]
-    },
-    {
-      "input": ["item","hbm:item.powder_beryllium",1,32767],
-      "solid": ["hbm:item.ingot_beryllium"]
-    },
-    {
-      "input": ["item","hbm:item.powder_gold",1,32767],
-      "solid": ["minecraft:gold_ingot"]
-    },
-    {
-      "input": ["item","hbm:item.ball_resin",1,32767],
-      "solid": ["hbm:item.ingot_biorubber"]
-    },
-    {
-      "input": ["item","hbm:tile.ore_quartz",1,32767],
-      "solid": ["minecraft:quartz"]
-    },
-    {
-      "input": ["item","hbm:tile.ore_gneiss_iron",1,32767],
-      "solid": ["minecraft:iron_ingot"]
-    },
-    {
-      "input": ["item","hbm:tile.ore_tungsten",1,32767],
-      "solid": ["hbm:item.ingot_tungsten"]
-    },
-    {
-      "input": ["item","hbm:item.powder_advanced_alloy",1,32767],
-      "solid": ["hbm:item.ingot_advanced_alloy"]
-    },
-    {
-      "input": ["item","hbm:item.powder_cadmium",1,32767],
-      "solid": ["hbm:item.ingot_cadmium"]
-    },
-    {
-      "input": ["item","hbm:item.powder_schrabidate",1,32767],
-      "solid": ["hbm:item.ingot_schrabidate"]
-    },
-    {
-      "input": ["item","hbm:tile.ore_copper",1,32767],
-      "solid": ["hbm:item.ingot_copper"]
-    },
-    {
-      "input": ["item","hbm:item.powder_iron",1,32767],
-      "solid": ["minecraft:iron_ingot"]
-    },
-    {
-      "input": ["item","hbm:tile.ore_gneiss_uranium_scorched",1,32767],
-      "solid": ["hbm:item.ingot_uranium"]
-    },
-    {
-      "input": ["item","hbm:item.powder_schrabidium",1,32767],
-      "solid": ["hbm:item.ingot_schrabidium"]
-    },
-    {
-      "input": ["item","hbm:item.powder_copper",1,32767],
-      "solid": ["hbm:item.ingot_copper"]
-    },
-    {
-      "input": ["item","hbm:tile.ore_nether_uranium_scorched",1,32767],
-      "solid": ["hbm:item.ingot_uranium"]
-    },
-    {
-      "input": ["item","hbm:tile.waste_trinitite"],
-      "solid": ["hbm:tile.glass_trinitite"]
-    },
-    {
-      "input": ["item","hbm:item.powder_ra226",1,32767],
-      "solid": ["hbm:item.ingot_ra226"]
-    },
-    {
-      "input": ["item","hbm:tile.ore_uranium",1,32767],
-      "solid": ["hbm:item.ingot_uranium"]
-    },
-    {
-      "input": ["item","hbm:tile.ore_gneiss_copper",1,32767],
-      "solid": ["hbm:item.ingot_copper"]
+      "input": ["item","hbm:item.arc_electrode_burnt"],
+      "solid": ["hbm:item.ingot_graphite"]
     },
     {
       "input": ["item","hbm:tile.sand_boron"],
       "solid": ["hbm:tile.glass_boron"]
     },
     {
-      "input": ["item","hbm:item.powder_desh",1,32767],
-      "solid": ["hbm:item.ingot_desh"]
+      "input": ["item","minecraft:clay_ball",1,32767],
+      "solid": ["minecraft:brick"]
     },
     {
-      "input": ["item","hbm:item.powder_lithium",1,32767],
-      "solid": ["hbm:item.lithium"]
+      "input": ["item","minecraft:iron_ore",1,32767],
+      "solid": ["minecraft:iron_ingot"]
+    },
+    {
+      "input": ["item","hbm:item.powder_euphemium",1,32767],
+      "solid": ["hbm:item.ingot_euphemium"]
+    },
+    {
+      "input": ["item","hbm:item.powder_tcalloy",1,32767],
+      "solid": ["hbm:item.ingot_tcalloy"]
+    },
+    {
+      "input": ["item","hbm:tile.ore_aluminium",1,32767],
+      "solid": ["hbm:item.chunk_ore",1,2]
+    },
+    {
+      "input": ["item","hbm:item.powder_lead",1,32767],
+      "solid": ["hbm:item.ingot_lead"]
+    },
+    {
+      "input": ["item","hbm:item.powder_au198",1,32767],
+      "solid": ["hbm:item.ingot_au198"]
+    },
+    {
+      "input": ["item","hbm:tile.ore_nether_schrabidium",1,32767],
+      "solid": ["hbm:item.ingot_schrabidium"]
+    },
+    {
+      "input": ["item","hbm:tile.ore_gneiss_copper",1,32767],
+      "solid": ["hbm:item.ingot_copper"]
+    },
+    {
+      "input": ["item","hbm:item.arc_electrode_burnt",1,1],
+      "solid": ["hbm:item.ingot_lanthanium"]
+    },
+    {
+      "input": ["item","hbm:tile.ore_iron",1,32767],
+      "solid": ["minecraft:iron_ingot"]
+    },
+    {
+      "input": ["item","hbm:item.powder_thorium",1,32767],
+      "solid": ["hbm:item.ingot_th232"]
+    },
+    {
+      "input": ["item","hbm:tile.ore_nickel",1,32767],
+      "solid": ["hbm:item.chunk_ore",1,3]
+    },
+    {
+      "input": ["item","hbm:item.scrap_plastic",1,32767],
+      "solid": ["hbm:item.ingot_polymer"]
+    },
+    {
+      "input": ["item","hbm:item.powder_rubber",1,32767],
+      "solid": ["hbm:item.ingot_rubber"]
+    },
+    {
+      "input": ["item","hbm:tile.ore_australium",1,32767],
+      "solid": ["hbm:item.nugget_australium"]
+    },
+    {
+      "input": ["item","hbm:tile.ore_gneiss_uranium_scorched",1,32767],
+      "solid": ["hbm:item.ingot_uranium"]
+    },
+    {
+      "input": ["item","hbm:item.powder_schrabidate",1,32767],
+      "solid": ["hbm:item.ingot_schrabidate"]
+    },
+    {
+      "input": ["item","hbm:tile.ore_tungsten",1,32767],
+      "solid": ["hbm:item.ingot_tungsten"]
+    },
+    {
+      "input": ["item","hbm:tile.ore_lapis",1,32767],
+      "solid": ["minecraft:dye",1,4]
+    },
+    {
+      "input": ["item","minecraft:netherrack",1,32767],
+      "solid": ["minecraft:netherbrick"]
+    },
+    {
+      "input": ["item","hbm:item.powder_nickel",1,32767],
+      "solid": ["hbm:item.ingot_nickel"]
+    },
+    {
+      "input": ["item","hbm:tile.ore_quartz",1,32767],
+      "solid": ["minecraft:quartz"]
+    },
+    {
+      "input": ["item","hbm:tile.ore_beryllium",1,32767],
+      "solid": ["hbm:item.ingot_beryllium"]
+    },
+    {
+      "input": ["item","minecraft:gold_ore",1,32767],
+      "solid": ["minecraft:gold_ingot"]
+    },
+    {
+      "input": ["item","hbm:tile.ash_digamma"],
+      "solid": ["hbm:tile.glass_ash"]
+    },
+    {
+      "input": ["item","hbm:tile.ore_redstone",1,32767],
+      "solid": ["minecraft:redstone"]
+    },
+    {
+      "input": ["item","hbm:tile.ore_gneiss_schrabidium",1,32767],
+      "solid": ["hbm:item.ingot_schrabidium"]
+    },
+    {
+      "input": ["item","hbm:item.powder_schrabidium",1,32767],
+      "solid": ["hbm:item.ingot_schrabidium"]
+    },
+    {
+      "input": ["item","hbm:item.powder_iron",1,32767],
+      "solid": ["minecraft:iron_ingot"]
+    },
+    {
+      "input": ["item","hbm:tile.ore_lead",1,32767],
+      "solid": ["hbm:item.ingot_lead"]
+    },
+    {
+      "input": ["item","hbm:tile.ore_nether_plutonium",1,32767],
+      "solid": ["hbm:item.ingot_plutonium"]
     },
     {
       "input": ["item","hbm:item.powder_gallium",1,32767],
       "solid": ["hbm:item.ingot_gallium"]
+    },
+    {
+      "input": ["item","hbm:item.powder_dineutronium",1,32767],
+      "solid": ["hbm:item.ingot_dineutronium"]
+    },
+    {
+      "input": ["item","hbm:item.ball_resin",1,32767],
+      "solid": ["hbm:item.ingot_biorubber"]
+    },
+    {
+      "input": ["item","hbm:item.powder_zinc",1,32767],
+      "solid": ["hbm:item.ingot_zinc"]
+    },
+    {
+      "input": ["item","hbm:item.powder_advanced_alloy",1,32767],
+      "solid": ["hbm:item.ingot_advanced_alloy"]
+    },
+    {
+      "input": ["item","hbm:item.powder_zirconium",1,32767],
+      "solid": ["hbm:item.ingot_zirconium"]
+    },
+    {
+      "input": ["item","hbm:item.powder_polymer",1,32767],
+      "solid": ["hbm:item.ingot_polymer"]
+    },
+    {
+      "input": ["item","hbm:tile.gravel_diamond"],
+      "solid": ["minecraft:diamond"]
+    },
+    {
+      "input": ["item","hbm:item.powder_lanthanium",1,32767],
+      "solid": ["hbm:item.ingot_lanthanium"]
+    },
+    {
+      "input": ["item","hbm:item.powder_titanium",1,32767],
+      "solid": ["hbm:item.ingot_titanium"]
+    },
+    {
+      "input": ["item","hbm:item.powder_tungsten",1,32767],
+      "solid": ["hbm:item.ingot_tungsten"]
+    },
+    {
+      "input": ["item","hbm:tile.ore_diamond",1,32767],
+      "solid": ["minecraft:diamond"]
+    },
+    {
+      "input": ["item","hbm:tile.ore_uranium_scorched",1,32767],
+      "solid": ["hbm:item.ingot_uranium"]
+    },
+    {
+      "input": ["item","hbm:item.powder_steel",1,32767],
+      "solid": ["hbm:item.ingot_steel"]
     },
     {
       "input": ["item","hbm:tile.ore_gneiss_uranium",1,32767],
@@ -4372,232 +4591,216 @@
       "solid": ["hbm:item.ingot_titanium"]
     },
     {
-      "input": ["item","hbm:tile.ore_nether_tungsten",1,32767],
-      "solid": ["hbm:item.ingot_tungsten"]
-    },
-    {
-      "input": ["item","minecraft:clay_ball",1,32767],
-      "solid": ["minecraft:brick"]
+      "input": ["item","hbm:item.powder_ra226",1,32767],
+      "solid": ["hbm:item.ingot_ra226"]
     },
     {
       "input": ["item","hbm:item.powder_cobalt",1,32767],
       "solid": ["hbm:item.ingot_cobalt"]
     },
     {
-      "input": ["item","hbm:item.powder_zinc",1,32767],
-      "solid": ["hbm:item.ingot_zinc"]
-    },
-    {
-      "input": ["item","hbm:tile.ore_gold",1,32767],
-      "solid": ["minecraft:gold_ingot"]
-    },
-    {
-      "input": ["item","hbm:item.powder_nickel",1,32767],
-      "solid": ["hbm:item.ingot_nickel"]
-    },
-    {
-      "input": ["item","hbm:item.powder_tungsten",1,32767],
-      "solid": ["hbm:item.ingot_tungsten"]
-    },
-    {
-      "input": ["item","hbm:item.powder_euphemium",1,32767],
-      "solid": ["hbm:item.ingot_euphemium"]
-    },
-    {
-      "input": ["item","hbm:item.powder_platnium",1,32767],
-      "solid": ["hbm:item.ingot_platnium"]
-    },
-    {
-      "input": ["item","hbm:tile.ore_gneiss_schrabidium",1,32767],
-      "solid": ["hbm:item.ingot_schrabidium"]
-    },
-    {
-      "input": ["item","hbm:item.arc_electrode_burnt"],
-      "solid": ["hbm:item.ingot_graphite"]
-    },
-    {
-      "input": ["item","hbm:item.powder_sr90",1,32767],
-      "solid": ["hbm:item.ingot_sr90"]
-    },
-    {
-      "input": ["item","hbm:tile.ore_diamond",1,32767],
-      "solid": ["minecraft:diamond"]
-    },
-    {
-      "input": ["item","hbm:tile.ore_lapis",1,32767],
-      "solid": ["minecraft:dye",1,4]
+      "input": ["item","hbm:item.arc_electrode_burnt",1,3],
+      "solid": ["hbm:item.ingot_saturnite"]
     },
     {
       "input": ["item","hbm:tile.ore_thorium",1,32767],
       "solid": ["hbm:item.ingot_th232"]
     },
     {
-      "input": ["item","hbm:tile.ore_nether_cobalt",1,32767],
-      "solid": ["hbm:item.ingot_cobalt"]
+      "input": ["item","hbm:tile.ore_zinc",1,32767],
+      "solid": ["hbm:item.ingot_zinc"]
     },
     {
-      "input": ["item","hbm:item.combine_scrap",1,32767],
-      "solid": ["hbm:item.ingot_combine_steel"]
-    },
-    {
-      "input": ["item","hbm:item.powder_lead",1,32767],
-      "solid": ["hbm:item.ingot_lead"]
-    },
-    {
-      "input": ["item","hbm:tile.sand_lead"],
-      "solid": ["hbm:tile.glass_lead"]
-    },
-    {
-      "input": ["item","hbm:item.powder_polonium",1,32767],
-      "solid": ["hbm:item.ingot_polonium"]
-    },
-    {
-      "input": ["item","minecraft:netherrack",1,32767],
-      "solid": ["minecraft:netherbrick"]
-    },
-    {
-      "input": ["item","hbm:tile.ore_emerald",1,32767],
-      "solid": ["minecraft:emerald"]
-    },
-    {
-      "input": ["item","hbm:tile.ore_beryllium",1,32767],
-      "solid": ["hbm:item.ingot_beryllium"]
-    },
-    {
-      "input": ["item","hbm:tile.ore_uranium_scorched",1,32767],
-      "solid": ["hbm:item.ingot_uranium"]
+      "input": ["item","hbm:tile.ore_gneiss_lithium",1,32767],
+      "solid": ["hbm:item.lithium"]
     },
     {
       "input": ["item","hbm:tile.ore_schrabidium",1,32767],
       "solid": ["hbm:item.ingot_schrabidium"]
     },
     {
-      "input": ["item","minecraft:gold_ore",1,32767],
-      "solid": ["minecraft:gold_ingot"]
-    },
-    {
-      "input": ["item","hbm:item.powder_lanthanium",1,32767],
-      "solid": ["hbm:item.ingot_lanthanium"]
-    },
-    {
-      "input": ["item","hbm:item.powder_thorium",1,32767],
-      "solid": ["hbm:item.ingot_th232"]
-    },
-    {
-      "input": ["item","hbm:item.powder_polymer",1,32767],
-      "solid": ["hbm:item.ingot_polymer"]
-    },
-    {
-      "input": ["item","hbm:tile.ore_aluminium",1,32767],
-      "solid": ["hbm:item.chunk_ore",1,2]
-    },
-    {
-      "input": ["item","hbm:item.crystal_nickel",1,32767],
-      "solid": ["hbm:item.ingot_nickel"]
-    },
-    {
-      "input": ["item","hbm:item.powder_titanium",1,32767],
-      "solid": ["hbm:item.ingot_titanium"]
-    },
-    {
-      "input": ["item","hbm:item.powder_australium",1,32767],
-      "solid": ["hbm:item.ingot_australium"]
-    },
-    {
-      "input": ["item","hbm:tile.sand_uranium"],
-      "solid": ["hbm:tile.glass_uranium"]
-    },
-    {
-      "input": ["item","hbm:item.crystal_osmiridium",1,32767],
-      "solid": ["hbm:item.ingot_osmiridium"]
-    },
-    {
-      "input": ["item","hbm:tile.ore_plutonium",1,32767],
-      "solid": ["hbm:item.ingot_plutonium"]
-    },
-    {
-      "input": ["item","minecraft:iron_ore",1,32767],
-      "solid": ["minecraft:iron_ingot"]
-    },
-    {
-      "input": ["item","hbm:tile.ore_niobium",1,32767],
-      "solid": ["hbm:item.ingot_niobium"]
-    },
-    {
-      "input": ["item","hbm:tile.ore_zinc",1,32767],
-      "solid": ["hbm:item.ingot_zinc"]
-    },
-    {
-      "input": ["item","hbm:item.powder_zirconium",1,32767],
-      "solid": ["hbm:item.ingot_zirconium"]
-    },
-    {
-      "input": ["item","hbm:item.powder_dineutronium",1,32767],
-      "solid": ["hbm:item.ingot_dineutronium"]
-    },
-    {
-      "input": ["item","hbm:tile.ore_lanthanium",1,32767],
-      "solid": ["hbm:item.ingot_lanthanium"]
-    },
-    {
-      "input": ["item","hbm:tile.ore_iron",1,32767],
-      "solid": ["minecraft:iron_ingot"]
-    },
-    {
-      "input": ["item","hbm:tile.sand_polonium"],
-      "solid": ["hbm:tile.glass_polonium"]
-    },
-    {
-      "input": ["item","hbm:item.arc_electrode_burnt",1,2],
-      "solid": ["hbm:item.ingot_desh"]
-    },
-    {
       "input": ["item","hbm:item.powder_bakelite",1,32767],
       "solid": ["hbm:item.ingot_bakelite"]
-    },
-    {
-      "input": ["item","hbm:tile.gravel_diamond"],
-      "solid": ["minecraft:diamond"]
-    },
-    {
-      "input": ["item","hbm:tile.ore_australium",1,32767],
-      "solid": ["hbm:item.nugget_australium"]
-    },
-    {
-      "input": ["item","hbm:item.powder_au198",1,32767],
-      "solid": ["hbm:item.ingot_au198"]
-    },
-    {
-      "input": ["item","hbm:item.powder_tantalium",1,32767],
-      "solid": ["hbm:item.ingot_tantalium"]
-    },
-    {
-      "input": ["item","hbm:tile.ore_nether_plutonium",1,32767],
-      "solid": ["hbm:item.ingot_plutonium"]
-    },
-    {
-      "input": ["item","hbm:item.scrap_plastic",1,32767],
-      "solid": ["hbm:item.ingot_polymer"]
-    },
-    {
-      "input": ["item","hbm:tile.ash_digamma"],
-      "solid": ["hbm:tile.glass_ash"]
-    },
-    {
-      "input": ["item","hbm:tile.ore_nether_schrabidium",1,32767],
-      "solid": ["hbm:item.ingot_schrabidium"]
-    },
-    {
-      "input": ["item","hbm:item.arc_electrode_burnt",1,3],
-      "solid": ["hbm:item.ingot_saturnite"]
     },
     {
       "input": ["item","hbm:tile.ore_nether_uranium",1,32767],
       "solid": ["hbm:item.ingot_uranium"]
     },
     {
+      "input": ["item","hbm:item.powder_polonium",1,32767],
+      "solid": ["hbm:item.ingot_polonium"]
+    },
+    {
+      "input": ["item","hbm:tile.ore_uranium",1,32767],
+      "solid": ["hbm:item.ingot_uranium"]
+    },
+    {
+      "input": ["item","hbm:item.powder_calcium",1,32767],
+      "solid": ["hbm:item.ingot_calcium"]
+    },
+    {
+      "input": ["item","hbm:item.powder_cadmium",1,32767],
+      "solid": ["hbm:item.ingot_cadmium"]
+    },
+    {
+      "input": ["item","hbm:item.powder_uranium",1,32767],
+      "solid": ["hbm:item.ingot_uranium"]
+    },
+    {
+      "input": ["item","hbm:item.powder_boron",1,32767],
+      "solid": ["hbm:item.ingot_boron"]
+    },
+    {
+      "input": ["item","hbm:item.powder_lithium",1,32767],
+      "solid": ["hbm:item.lithium"]
+    },
+    {
+      "input": ["item","hbm:tile.sand_lead"],
+      "solid": ["hbm:tile.glass_lead"]
+    },
+    {
+      "input": ["item","hbm:item.arc_electrode_burnt",1,2],
+      "solid": ["hbm:item.ingot_desh"]
+    },
+    {
+      "input": ["item","hbm:item.powder_gold",1,32767],
+      "solid": ["minecraft:gold_ingot"]
+    },
+    {
+      "input": ["item","hbm:tile.ore_niobium",1,32767],
+      "solid": ["hbm:item.ingot_niobium"]
+    },
+    {
+      "input": ["item","hbm:item.powder_magnetized_tungsten",1,32767],
+      "solid": ["hbm:item.ingot_magnetized_tungsten"]
+    },
+    {
+      "input": ["item","hbm:tile.ore_gneiss_gold",1,32767],
+      "solid": ["minecraft:gold_ingot"]
+    },
+    {
+      "input": ["item","hbm:tile.ore_plutonium",1,32767],
+      "solid": ["hbm:item.ingot_plutonium"]
+    },
+    {
+      "input": ["item","hbm:item.powder_red_copper",1,32767],
+      "solid": ["hbm:item.ingot_red_copper"]
+    },
+    {
+      "input": ["item","hbm:tile.waste_trinitite_red"],
+      "solid": ["hbm:tile.glass_trinitite"]
+    },
+    {
+      "input": ["item","hbm:item.powder_plutonium",1,32767],
+      "solid": ["hbm:item.ingot_plutonium"]
+    },
+    {
+      "input": ["item","hbm:item.powder_copper",1,32767],
+      "solid": ["hbm:item.ingot_copper"]
+    },
+    {
+      "input": ["item","hbm:tile.ore_lanthanium",1,32767],
+      "solid": ["hbm:item.ingot_lanthanium"]
+    },
+    {
+      "input": ["item","hbm:tile.ore_nether_tungsten",1,32767],
+      "solid": ["hbm:item.ingot_tungsten"]
+    },
+    {
+      "input": ["item","hbm:tile.ore_nether_uranium_scorched",1,32767],
+      "solid": ["hbm:item.ingot_uranium"]
+    },
+    {
+      "input": ["item","hbm:tile.sand_uranium"],
+      "solid": ["hbm:tile.glass_uranium"]
+    },
+    {
+      "input": ["item","hbm:tile.ore_copper",1,32767],
+      "solid": ["hbm:item.ingot_copper"]
+    },
+    {
       "input": ["item","hbm:item.powder_neptunium",1,32767],
       "solid": ["hbm:item.ingot_neptunium"]
+    },
+    {
+      "input": ["item","hbm:tile.waste_trinitite"],
+      "solid": ["hbm:tile.glass_trinitite"]
+    },
+    {
+      "input": ["item","hbm:tile.ore_gold",1,32767],
+      "solid": ["minecraft:gold_ingot"]
+    },
+    {
+      "input": ["item","hbm:item.powder_combine_steel",1,32767],
+      "solid": ["hbm:item.ingot_combine_steel"]
+    },
+    {
+      "input": ["item","hbm:item.powder_actinium",1,32767],
+      "solid": ["hbm:item.ingot_actinium"]
+    },
+    {
+      "input": ["item","hbm:tile.ore_gneiss_iron",1,32767],
+      "solid": ["minecraft:iron_ingot"]
+    },
+    {
+      "input": ["item","hbm:item.crystal_osmiridium",1,32767],
+      "solid": ["hbm:item.ingot_osmiridium"]
+    },
+    {
+      "input": ["item","hbm:tile.ore_nether_cobalt",1,32767],
+      "solid": ["hbm:item.ingot_cobalt"]
+    },
+    {
+      "input": ["item","hbm:tile.sand_polonium"],
+      "solid": ["hbm:tile.glass_polonium"]
+    },
+    {
+      "input": ["item","hbm:item.powder_bismuth",1,32767],
+      "solid": ["hbm:item.ingot_bismuth"]
+    },
+    {
+      "input": ["item","hbm:item.powder_desh",1,32767],
+      "solid": ["hbm:item.ingot_desh"]
+    },
+    {
+      "input": ["item","hbm:item.powder_aluminium",1,32767],
+      "solid": ["hbm:item.ingot_aluminium"]
+    },
+    {
+      "input": ["item","hbm:tile.ore_emerald",1,32767],
+      "solid": ["minecraft:emerald"]
+    },
+    {
+      "input": ["item","hbm:item.powder_australium",1,32767],
+      "solid": ["hbm:item.ingot_australium"]
+    },
+    {
+      "input": ["item","hbm:item.powder_dura_steel",1,32767],
+      "solid": ["hbm:item.ingot_dura_steel"]
+    },
+    {
+      "input": ["item","hbm:item.powder_beryllium",1,32767],
+      "solid": ["hbm:item.ingot_beryllium"]
+    },
+    {
+      "input": ["item","hbm:item.powder_sr90",1,32767],
+      "solid": ["hbm:item.ingot_sr90"]
+    },
+    {
+      "input": ["item","hbm:item.powder_tantalium",1,32767],
+      "solid": ["hbm:item.ingot_tantalium"]
+    },
+    {
+      "input": ["item","hbm:tile.ore_cobalt",1,32767],
+      "solid": ["hbm:item.ingot_cobalt"]
+    },
+    {
+      "input": ["item","hbm:item.powder_niobium",1,32767],
+      "solid": ["hbm:item.ingot_niobium"]
+    },
+    {
+      "input": ["item","hbm:item.combine_scrap",1,32767],
+      "solid": ["hbm:item.ingot_combine_steel"]
     }
   ]
 }

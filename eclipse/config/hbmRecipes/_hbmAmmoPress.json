@@ -282,6 +282,76 @@
       ]
     },
     {
+      "output": ["hbm:item.ammo_standard",8,85],
+      "input": [
+        null,
+        ["dict","ingotLead"],
+        null,
+        null,
+        ["dict","dustAnySmokeless"],
+        null,
+        null,
+        ["item","hbm:item.casing"],
+        null
+      ]
+    },
+    {
+      "output": ["hbm:item.ammo_standard",8,86],
+      "input": [
+        null,
+        ["dict","ingotSteel"],
+        null,
+        null,
+        ["dict","dustAnySmokeless"],
+        null,
+        null,
+        ["item","hbm:item.casing"],
+        null
+      ]
+    },
+    {
+      "output": ["hbm:item.ammo_standard",8,87],
+      "input": [
+        ["dict","ingotAnyPlastic"],
+        ["dict","ingotCopper"],
+        null,
+        null,
+        ["dict","dustAnySmokeless"],
+        null,
+        null,
+        ["item","hbm:item.casing"],
+        null
+      ]
+    },
+    {
+      "output": ["hbm:item.ammo_standard",8,88],
+      "input": [
+        null,
+        ["dict","ingotWeaponSteel"],
+        null,
+        null,
+        ["dict","dustAnySmokeless",2],
+        null,
+        null,
+        ["item","hbm:item.casing",1,2],
+        null
+      ]
+    },
+    {
+      "output": ["hbm:item.ammo_standard",8,89],
+      "input": [
+        null,
+        ["dict","ingotUranium238"],
+        null,
+        null,
+        ["dict","dustAnySmokeless",2],
+        null,
+        null,
+        ["item","hbm:item.casing",1,2],
+        null
+      ]
+    },
+    {
       "output": ["hbm:item.ammo_standard",16,24],
       "input": [
         null,
@@ -408,6 +478,20 @@
       ]
     },
     {
+      "output": ["hbm:item.ammo_standard",12,82],
+      "input": [
+        ["dict","ingotAnyHighexplosive"],
+        ["dict","ingotFerrouranium"],
+        null,
+        null,
+        ["dict","dustAnySmokeless",4],
+        null,
+        null,
+        ["item","hbm:item.casing",2,2],
+        null
+      ]
+    },
+    {
       "output": ["hbm:item.ammo_standard",12,33],
       "input": [
         null,
@@ -468,6 +552,20 @@
       "input": [
         null,
         ["dict","ingotUranium238",2],
+        null,
+        null,
+        ["dict","dustAnySmokeless",6],
+        null,
+        null,
+        ["item","hbm:item.casing",1,3],
+        null
+      ]
+    },
+    {
+      "output": ["hbm:item.ammo_standard",12,83],
+      "input": [
+        ["dict","ingotAnyHighexplosive"],
+        ["dict","ingotFerrouranium"],
         null,
         null,
         ["dict","dustAnySmokeless",6],
@@ -650,6 +748,20 @@
       "input": [
         null,
         ["dict","ingotLead"],
+        null,
+        null,
+        ["dict","dustAnySmokeless",2],
+        null,
+        null,
+        ["item","hbm:item.casing",1,6],
+        null
+      ]
+    },
+    {
+      "output": ["hbm:item.ammo_standard",4,84],
+      "input": [
+        ["dict","ingotAnyHighexplosive"],
+        ["dict","ingotFerrouranium"],
         null,
         null,
         ["dict","dustAnySmokeless",2],
@@ -974,7 +1086,7 @@
         ["dict","ingotAnyPlastic"],
         null,
         null,
-        ["dict","billetSilicon",4],
+        ["dict","ingotNiobium"],
         null,
         null,
         ["dict","ingotAnyPlastic"],
@@ -1090,6 +1202,48 @@
         null,
         null,
         ["dict","plateSteel",4],
+        null
+      ]
+    },
+    {
+      "output": ["hbm:item.ammo_standard",1,93],
+      "input": [
+        null,
+        ["item","hbm:item.egg_balefire_shard"],
+        null,
+        null,
+        ["item","hbm:item.assembly_nuke"],
+        null,
+        null,
+        null,
+        null
+      ]
+    },
+    {
+      "output": ["hbm:item.ammo_standard",16,90],
+      "input": [
+        null,
+        ["dict","ingotSteel"],
+        null,
+        null,
+        ["dict","ntmpipeSteel"],
+        null,
+        null,
+        ["dict","dustAnySmokeless"],
+        null
+      ]
+    },
+    {
+      "output": ["hbm:item.ammo_standard",4,91],
+      "input": [
+        null,
+        ["dict","ingotAnyHighexplosive",4],
+        null,
+        null,
+        ["dict","ntmpipeSteel"],
+        null,
+        null,
+        ["dict","dustAnySmokeless"],
         null
       ]
     }

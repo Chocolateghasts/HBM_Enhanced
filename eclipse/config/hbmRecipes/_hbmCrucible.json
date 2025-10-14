@@ -123,20 +123,6 @@
       ]
     },
     {
-      "id": 12,
-      "name": "crucible.conglomerate",
-      "frequency": 6,
-      "icon": ["hbm:tile.stone_resource",1,6],
-      "input": [
-        ["conglomerate",144],
-        ["Technetium99",0]
-      ],
-      "output": [
-        ["Iron",56],
-        ["Nickel",16]
-      ]
-    },
-    {
       "id": 13,
       "name": "crucible.cdalloy",
       "frequency": 9,
@@ -240,7 +226,7 @@
       "icon": ["hbm:item.ingot_stainless"],
       "input": [
         ["Steel",8],
-        ["Nickel",8]
+        ["NickelPure",8]
       ],
       "output": [
         ["StainlessSteel",16]

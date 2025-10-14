@@ -7,19 +7,9 @@
       "output2": ["PETROLEUM",20]
     },
     {
-      "input": "KEROSENE",
-      "output1": ["PETROLEUM",60],
-      "output2": ["NONE",0]
-    },
-    {
-      "input": "TEKTOAIR",
-      "output1": ["METHANOL",80],
+      "input": "BITUMEN",
+      "output1": ["OIL",80],
       "output2": ["AROMATICS",20]
-    },
-    {
-      "input": "DIESEL_CRACK",
-      "output1": ["KEROSENE",40],
-      "output2": ["PETROLEUM",30]
     },
     {
       "input": "DIESEL",
@@ -27,19 +17,34 @@
       "output2": ["PETROLEUM",30]
     },
     {
+      "input": "KEROSENE",
+      "output1": ["PETROLEUM",60],
+      "output2": ["NONE",0]
+    },
+    {
+      "input": "ELBOWGREASE",
+      "output1": ["MERCURY",70],
+      "output2": ["SOURGAS",50]
+    },
+    {
+      "input": "CBENZ",
+      "output1": ["AROMATICS",50],
+      "output2": ["CHLORINE",30]
+    },
+    {
       "input": "DIESEL_REFORM",
       "output1": ["KEROSENE_REFORM",40],
       "output2": ["PETROLEUM",30]
     },
     {
-      "input": "OIL_DS",
-      "output1": ["CRACKOIL_DS",80],
-      "output2": ["PETROLEUM",20]
-    },
-    {
       "input": "DIESEL_CRACK_REFORM",
       "output1": ["KEROSENE_REFORM",40],
       "output2": ["PETROLEUM",30]
+    },
+    {
+      "input": "SMEAR",
+      "output1": ["NAPHTHA",60],
+      "output2": ["PETROLEUM",40]
     },
     {
       "input": "REFORMATE",
@@ -52,24 +57,9 @@
       "output2": ["REFORMGAS",20]
     },
     {
-      "input": "XYLENE",
-      "output1": ["AROMATICS",80],
-      "output2": ["PETROLEUM",20]
-    },
-    {
-      "input": "MORKINE",
-      "output1": ["METHANOL",40],
-      "output2": ["REFORMGAS",20]
-    },
-    {
-      "input": "BITUMEN",
-      "output1": ["OIL",80],
-      "output2": ["AROMATICS",20]
-    },
-    {
-      "input": "ELBOWGREASE",
-      "output1": ["MERCURY",70],
-      "output2": ["SOURGAS",50]
+      "input": "CHLOROETHANE",
+      "output1": ["POLYTHYLENE",50],
+      "output2": ["CHLORINE",30]
     },
     {
       "input": "WOODOIL",
@@ -77,9 +67,24 @@
       "output2": ["AROMATICS",10]
     },
     {
-      "input": "SMEAR",
-      "output1": ["NAPHTHA",60],
-      "output2": ["PETROLEUM",40]
+      "input": "OIL_DS",
+      "output1": ["CRACKOIL_DS",80],
+      "output2": ["PETROLEUM",20]
+    },
+    {
+      "input": "DIESEL_CRACK",
+      "output1": ["KEROSENE",40],
+      "output2": ["PETROLEUM",30]
+    },
+    {
+      "input": "BIOGAS",
+      "output1": ["PETROLEUM",20],
+      "output2": ["AROMATICS",20]
+    },
+    {
+      "input": "XYLENE",
+      "output1": ["AROMATICS",80],
+      "output2": ["PETROLEUM",20]
     }
   ]
 }

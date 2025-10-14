@@ -18,6 +18,10 @@
       "output": [["WeaponSteel",36]]
     },
     {
+      "input": ["item","hbm:item.blade_syngas"],
+      "output": [["StainlessSteel",216]]
+    },
+    {
       "input": ["item","minecraft:obsidian"],
       "output": [["Obsidian",648]]
     },
@@ -63,11 +67,15 @@
     },
     {
       "input": ["item","hbm:item.blade_titanium"],
-      "output": [["Titanium",144]]
+      "output": [["Titanium",216]]
     },
     {
       "input": ["item","minecraft:coal",1,1],
       "output": [["Carbon",24]]
+    },
+    {
+      "input": ["item","hbm:item.ring_starmetal"],
+      "output": [["Starmetal",288]]
     },
     {
       "input": ["item","hbm:item.blades_advanced_alloy"],
@@ -99,7 +107,7 @@
     },
     {
       "input": ["item","hbm:item.blade_tungsten"],
-      "output": [["Tungsten",144]]
+      "output": [["Tungsten",216]]
     },
     {
       "input": ["item","hbm:item.chunk_ore",1,2],
@@ -118,20 +126,12 @@
       "output": [["Malachite",432]]
     },
     {
-      "input": ["dict","oreconglomerate"],
-      "output": [["conglomerate",288]]
+      "input": ["dict","oreAluminum"],
+      "output": [["Aluminum",144],["Sodium",24],["Stone",162]]
     },
     {
       "input": ["dict","oreIron"],
       "output": [["Iron",144],["Titanium",24],["Stone",162]]
-    },
-    {
-      "input": ["dict","oreNetherThorium232"],
-      "output": [["Thorium232",144],["Uranium",24],["Stone",162]]
-    },
-    {
-      "input": ["dict","oreNetherTh232"],
-      "output": [["Thorium232",144],["Uranium",24],["Stone",162]]
     },
     {
       "input": ["dict","oreTh232"],
@@ -140,6 +140,10 @@
     {
       "input": ["dict","oreHematite"],
       "output": [["Hematite",72]]
+    },
+    {
+      "input": ["dict","oreConglomerate"],
+      "output": [["Conglomerate",288]]
     },
     {
       "input": ["dict","oreThorium232"],
@@ -170,6 +174,10 @@
       "output": [["Cobalt",72],["Stone",162]]
     },
     {
+      "input": ["dict","oreZinc"],
+      "output": [["Zinc",144],["Stone",162]]
+    },
+    {
       "input": ["dict","cobblestone"],
       "output": [["Stone",648]]
     },
@@ -192,14 +200,6 @@
     {
       "input": ["dict","oreUranium"],
       "output": [["Uranium",144],["Lead",24],["Stone",162]]
-    },
-    {
-      "input": ["dict","oreNetherThorium"],
-      "output": [["Thorium232",144],["Uranium",24],["Stone",162]]
-    },
-    {
-      "input": ["dict","oreNickel"],
-      "output": [["Nickel",144],["Stone",162]]
     },
     {
       "input": ["dict","oreTitanium"],

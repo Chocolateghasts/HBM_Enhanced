@@ -48,7 +48,7 @@
       "fluidInput": [],
       "itemInput": [
         ["item","hbm:tile.ore_oil_sand",16],
-        ["dict","unknownTar"]
+        ["dict","anyTar"]
       ],
       "fluidOutput": [
         ["BITUMEN",1000]
@@ -87,40 +87,6 @@
       ],
       "fluidOutput": [
         ["URANIUM_BROMIDE",4000]
-      ],
-      "itemOutput": []
-    },
-    {
-      "id": 1005,
-      "name": "PLUTONIUM_BROMIDE",
-      "duration": 50,
-      "fluidInput": [
-        ["HYDROGEN",4000]
-      ],
-      "itemInput": [
-        ["dict","billetPlutonium239"],
-        ["item","hbm:item.powder_bromine"],
-        ["dict","ingotAsbestos"]
-      ],
-      "fluidOutput": [
-        ["PLUTONIUM_BROMIDE",4000]
-      ],
-      "itemOutput": []
-    },
-    {
-      "id": 1006,
-      "name": "SCHRABIDIUM_BROMIDE",
-      "duration": 50,
-      "fluidInput": [
-        ["HYDROGEN",4000]
-      ],
-      "itemInput": [
-        ["dict","billetSchrabidium"],
-        ["item","hbm:item.powder_bromine"],
-        ["dict","ingotAsbestos"]
-      ],
-      "fluidOutput": [
-        ["SCHRABIDIUM_BROMIDE",4000]
       ],
       "itemOutput": []
     },
@@ -765,7 +731,7 @@
         ["STEAM",1000]
       ],
       "itemInput": [
-        ["dict","unknownTar"],
+        ["dict","anyTar"],
         ["dict","dustLead"]
       ],
       "fluidOutput": [],
@@ -1082,7 +1048,7 @@
       "name": "ANIMAN",
       "duration": 250,
       "fluidInput": [
-        ["OLIVEOIL",500]
+        ["NMASSTETRANOL",500]
       ],
       "itemInput": [
         ["item","hbm:item.canned_conserve",1,5]
@@ -1302,6 +1268,36 @@
         ["CHLOROMETHANE",1000]
       ],
       "itemOutput": []
+    },
+    {
+      "id": 1003,
+      "name": "HYDRAPISS",
+      "duration": 300,
+      "fluidInput": [
+        ["NITRIC_ACID",2000]
+      ],
+      "itemInput": [
+        ["item","hbm:item.rag_piss"]
+      ],
+      "fluidOutput": [
+        ["HYDRAZINE",800]
+      ],
+      "itemOutput": []
+    },
+    {
+      "id": 123,
+      "name": "RUSTY_DECO_STEEL",
+      "duration": 100,
+      "fluidInput": [
+        ["WATER",1000]
+      ],
+      "itemInput": [
+        ["item","hbm:tile.deco_steel",8]
+      ],
+      "fluidOutput": [],
+      "itemOutput": [
+        ["hbm:tile.deco_rusty_steel",8]
+      ]
     }
   ]
 }

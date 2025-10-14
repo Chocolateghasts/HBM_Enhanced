@@ -35,7 +35,7 @@
     },
     {
       "inputs": [
-        ["dict","ingotNickel"]
+        ["dict","ingotNickelPure"]
       ],
       "outputs": [
         ["hbm:item.plate_nickel",1.0]
@@ -712,32 +712,6 @@
     },
     {
       "inputs": [
-        ["dict","dustCoal",4],
-        ["item","minecraft:string",2],
-        ["item","minecraft:paper"]
-      ],
-      "outputs": [
-        ["hbm:item.filter_coal",1.0]
-      ],
-      "tierLower": 2,
-      "tierUpper": -1,
-      "overlay": "CONSTRUCTION"
-    },
-    {
-      "inputs": [
-        ["dict","plateSteel"],
-        ["dict","wireFineMingrade",2],
-        ["dict","dustNetherQuartz",2]
-      ],
-      "outputs": [
-        ["hbm:item.thermo_element",1.0]
-      ],
-      "tierLower": 2,
-      "tierUpper": -1,
-      "overlay": "CONSTRUCTION"
-    },
-    {
-      "inputs": [
         ["item","minecraft:stonebrick",4],
         ["item","hbm:item.ingot_firebrick",4],
         ["dict","plateCopper",4]
@@ -751,16 +725,30 @@
     },
     {
       "inputs": [
-        ["dict","blockGlassColorless",4],
         ["dict","ingotSteel",8],
-        ["dict","ingotCopper",8],
+        ["dict","plateCopper",4],
         ["item","hbm:item.motor",2],
         ["item","hbm:item.circuit",4]
       ],
       "outputs": [
-        ["hbm:tile.machine_assembler",1.0]
+        ["hbm:tile.machine_assembly_machine",1.0]
       ],
       "tierLower": 2,
+      "tierUpper": -1,
+      "overlay": "CONSTRUCTION"
+    },
+    {
+      "inputs": [
+        ["dict","plankWood",6],
+        ["dict","plateSteel",8],
+        ["item","hbm:item.circuit",1,8],
+        ["item","hbm:item.circuit",8],
+        ["item","hbm:tile.pole_satellite_receiver"]
+      ],
+      "outputs": [
+        ["hbm:tile.dish_control",1.0]
+      ],
+      "tierLower": 3,
       "tierUpper": -1,
       "overlay": "CONSTRUCTION"
     },
@@ -821,7 +809,7 @@
     },
     {
       "inputs": [
-        ["item","minecraft:stone",8],
+        ["dict","stone",8],
         ["dict","plateSteel",2],
         ["dict","ingotIron",4]
       ],
@@ -1062,20 +1050,6 @@
     },
     {
       "inputs": [
-        ["dict","shellSteel"],
-        ["item","hbm:item.piston_selenium"],
-        ["dict","plateTripleSteel"],
-        ["item","hbm:item.coil_copper",4]
-      ],
-      "outputs": [
-        ["hbm:tile.machine_diesel",1.0]
-      ],
-      "tierLower": 2,
-      "tierUpper": -1,
-      "overlay": "CONSTRUCTION"
-    },
-    {
-      "inputs": [
         ["item","hbm:tile.brick_concrete",64],
         ["item","minecraft:iron_bars",128],
         ["item","hbm:tile.machine_condenser",4]
@@ -1175,7 +1149,7 @@
     },
     {
       "inputs": [
-        ["dict","unknownConcrete",2],
+        ["dict","anyConcrete",2],
         ["item","hbm:tile.steel_scaffold",8],
         ["item","hbm:item.plate_polymer",8],
         ["item","hbm:item.coil_copper",4]
@@ -1189,7 +1163,7 @@
     },
     {
       "inputs": [
-        ["dict","unknownConcrete",8],
+        ["dict","anyConcrete",8],
         ["dict","ingotSteel",8],
         ["item","hbm:item.plate_polymer",12],
         ["item","hbm:item.coil_copper",8]
@@ -1217,7 +1191,7 @@
     {
       "inputs": [
         ["dict","plateSteel",16],
-        ["dict","unknownConcrete",64],
+        ["dict","anyConcrete",64],
         ["item","hbm:tile.steel_grate",4],
         ["item","hbm:item.filter_coal",4]
       ],
@@ -1396,19 +1370,6 @@
         ["hbm:item.plate_armor_dnt",1.0]
       ],
       "tierLower": 7,
-      "tierUpper": -1,
-      "overlay": "CONSTRUCTION"
-    },
-    {
-      "inputs": [
-        ["dict","plateAdvancedAlloy",2],
-        ["dict","plateTungCar"],
-        ["dict","plateSaturnite"]
-      ],
-      "outputs": [
-        ["hbm:item.plate_mixed",4,1.0]
-      ],
-      "tierLower": 3,
       "tierUpper": -1,
       "overlay": "CONSTRUCTION"
     },
@@ -2124,17 +2085,6 @@
     },
     {
       "inputs": [
-        ["dict","nuggetLead",6]
-      ],
-      "outputs": [
-        ["hbm:item.pellet_buckshot",1.0]
-      ],
-      "tierLower": 1,
-      "tierUpper": -1,
-      "overlay": "CONSTRUCTION"
-    },
-    {
-      "inputs": [
         ["item","hbm:item.chunk_ore"]
       ],
       "outputs": [
@@ -2198,6 +2148,17 @@
     {
       "inputs": [
         ["item","hbm:tile.deco_steel",4]
+      ],
+      "outputs": [
+        ["hbm:item.ingot_steel",1.0]
+      ],
+      "tierLower": 1,
+      "tierUpper": -1,
+      "overlay": "RECYCLING"
+    },
+    {
+      "inputs": [
+        ["item","hbm:tile.deco_rusty_steel",8]
       ],
       "outputs": [
         ["hbm:item.ingot_steel",1.0]

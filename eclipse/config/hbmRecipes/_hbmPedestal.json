@@ -13,7 +13,7 @@
         ["dict","plateLead"],
         null
       ],
-      "extra": "NONE"
+      "extra": "NEW_MOON"
     },
     {
       "output": ["hbm:item.gun_maresleg_broken"],
@@ -33,12 +33,12 @@
     {
       "output": ["hbm:item.gun_heavy_revolver_lilmac"],
       "input": [
-        ["dict","plateWeaponSteel"],
-        ["dict","gemDiamond"],
-        ["dict","plateWeaponSteel"],
+        null,
+        ["item","hbm:item.weapon_mod_special",1,1],
+        null,
         ["item","hbm:item.powder_magic"],
         ["item","hbm:item.gun_heavy_revolver"],
-        null,
+        ["dict","plateWeaponSteel"],
         null,
         ["dict","gripBone"],
         ["item","minecraft:apple",3]
@@ -79,13 +79,13 @@
       "output": ["hbm:item.gun_autoshotgun_sexy"],
       "input": [
         ["item","hbm:item.bolt_spike",16],
-        ["dict","ingotStarmetal",4],
+        ["item","hbm:item.wild_p"],
         ["item","hbm:item.bolt_spike",16],
         ["item","hbm:item.card_qos"],
         ["item","hbm:item.gun_autoshotgun"],
         ["item","hbm:item.card_aos"],
         ["item","hbm:item.bolt_spike",16],
-        ["dict","ingotStarmetal",4],
+        ["dict","ingotStarmetal",16],
         ["item","hbm:item.bolt_spike",16]
       ],
       "extra": "NONE"
@@ -106,19 +106,67 @@
       "extra": "FULL_MOON"
     },
     {
+      "output": ["hbm:item.gun_laser_pistol_morning_glory"],
+      "input": [
+        null,
+        ["item","hbm:item.morning_glory"],
+        null,
+        ["item","hbm:item.item_secret",2,2],
+        ["item","hbm:item.gun_laser_pistol"],
+        ["item","hbm:item.item_secret",2,2],
+        null,
+        ["dict","gemEmerald",16],
+        null
+      ],
+      "extra": "NONE"
+    },
+    {
       "output": ["hbm:item.gun_folly"],
       "input": [
-        ["item","hbm:item.item_secret",4,2],
+        ["item","hbm:item.item_secret",4,4],
         ["item","hbm:item.item_secret",2,1],
-        ["item","hbm:item.item_secret",4,2],
+        ["item","hbm:item.item_secret",4,4],
         ["dict","ingotBSCCO",16],
         ["dict","blockStarmetal",64],
         ["dict","ingotBSCCO",16],
-        ["item","hbm:item.item_secret",4,2],
+        ["item","hbm:item.item_secret",4,4],
         ["item","hbm:item.item_secret",2,1],
-        ["item","hbm:item.item_secret",4,2]
+        ["item","hbm:item.item_secret",4,4]
       ],
-      "extra": "FULL_MOON"
+      "extra": "FULL_MOON",
+      "set": 1
+    },
+    {
+      "output": ["hbm:item.gun_aberrator"],
+      "input": [
+        null,
+        ["item","hbm:item.item_secret",1,3],
+        null,
+        ["item","hbm:item.item_secret",1,3],
+        ["dict","gunMechanismSaturnite",4],
+        ["item","hbm:item.item_secret",1,3],
+        null,
+        ["item","hbm:item.item_secret",1,3],
+        null
+      ],
+      "extra": "NONE",
+      "set": 1
+    },
+    {
+      "output": ["hbm:item.gun_aberrator_eott"],
+      "input": [
+        ["item","hbm:item.item_secret",1,3],
+        ["item","hbm:item.item_secret",1,3],
+        ["item","hbm:item.item_secret",1,3],
+        ["item","hbm:item.item_secret",1,3],
+        ["dict","gunMechanismSaturnite",16],
+        ["item","hbm:item.item_secret",1,3],
+        ["item","hbm:item.item_secret",1,3],
+        ["item","hbm:item.item_secret",1,3],
+        ["item","hbm:item.item_secret",1,3]
+      ],
+      "extra": "GOOD_KARMA",
+      "set": 1
     },
     {
       "output": ["hbm:item.ammo_secret"],
@@ -127,13 +175,14 @@
         ["item","hbm:item.powder_magic"],
         ["dict","ingotStarmetal"],
         ["item","hbm:item.powder_magic"],
-        ["item","hbm:tile.moon_turf"],
+        ["item","hbm:item.chunk_ore",1,4],
         ["item","hbm:item.powder_magic"],
         ["dict","ingotStarmetal"],
         ["item","hbm:item.powder_magic"],
         ["dict","ingotStarmetal"]
       ],
-      "extra": "FULL_MOON"
+      "extra": "FULL_MOON",
+      "set": 1
     },
     {
       "output": ["hbm:item.ammo_secret",1,1],
@@ -148,7 +197,40 @@
         ["item","hbm:item.powder_magic"],
         ["dict","ingotStarmetal"]
       ],
-      "extra": "FULL_MOON"
+      "extra": "FULL_MOON",
+      "set": 1
+    },
+    {
+      "output": ["hbm:item.ammo_secret",5,5],
+      "input": [
+        null,
+        null,
+        null,
+        null,
+        ["item","hbm:item.item_secret",1,3],
+        null,
+        null,
+        null,
+        null
+      ],
+      "extra": "NONE",
+      "set": 1
+    },
+    {
+      "output": ["hbm:item.ammo_secret",10,7],
+      "input": [
+        null,
+        null,
+        null,
+        null,
+        ["item","hbm:item.item_secret",3,3],
+        null,
+        null,
+        null,
+        null
+      ],
+      "extra": "NONE",
+      "set": 1
     }
   ]
 }

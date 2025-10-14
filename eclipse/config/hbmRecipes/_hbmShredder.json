@@ -386,12 +386,20 @@
       "output": ["hbm:item.ore_enriched",1,1]
     },
     {
+      "input": ["hbm:item.crystal_zinc"],
+      "output": ["hbm:item.powder_zinc",3]
+    },
+    {
       "input": ["hbm:item.crystal_lead"],
       "output": ["hbm:item.powder_lead",3]
     },
     {
       "input": ["hbm:item.ore_centrifuged",1,15],
       "output": ["hbm:item.ore_enriched",1,15]
+    },
+    {
+      "input": ["hbm:tile.pvc_planks"],
+      "output": ["hbm:item.powder_pvc"]
     },
     {
       "input": ["hbm:item.ore_bedrock",1,17],
@@ -444,6 +452,10 @@
     {
       "input": ["hbm:tile.bobblehead",1,25],
       "output": ["hbm:item.scrap_plastic",1,9]
+    },
+    {
+      "input": ["hbm:tile.vinyl_planks"],
+      "output": ["hbm:item.powder_rubber"]
     },
     {
       "input": ["minecraft:glowstone"],
@@ -519,7 +531,7 @@
     },
     {
       "input": ["hbm:tile.steel_scaffold",1,32767],
-      "output": ["hbm:item.powder_steel_tiny",7]
+      "output": ["hbm:item.powder_steel_tiny",4]
     },
     {
       "input": ["hbm:item.ore_cleaned",1,6],
@@ -542,6 +554,10 @@
       "output": ["minecraft:gravel"]
     },
     {
+      "input": ["hbm:tile.basalt"],
+      "output": ["minecraft:gravel"]
+    },
+    {
       "input": ["hbm:item.coil_tungsten"],
       "output": ["hbm:item.powder_tungsten"]
     },
@@ -552,6 +568,14 @@
     {
       "input": ["hbm:item.ore_nitrated",1,9],
       "output": ["hbm:item.ore_enriched",1,9]
+    },
+    {
+      "input": ["minecraft:wheat"],
+      "output": ["hbm:item.flour"]
+    },
+    {
+      "input": ["hbm:tile.bobblehead",1,27],
+      "output": ["hbm:item.scrap_plastic"]
     },
     {
       "input": ["hbm:item.fragment_meteorite"],
@@ -604,6 +628,10 @@
     {
       "input": ["hbm:tile.duna_rock"],
       "output": ["minecraft:gravel"]
+    },
+    {
+      "input": ["hbm:tile.bobblehead",1,28],
+      "output": ["hbm:item.scrap_plastic",1,10]
     },
     {
       "input": ["hbm:item.ore_nitrocrystalline",1,7],
@@ -670,12 +698,20 @@
       "output": ["hbm:item.ore_enriched",1,8]
     },
     {
+      "input": ["hbm:tile.ore_nickel",1,32767],
+      "output": ["hbm:item.chunk_ore",2,3]
+    },
+    {
       "input": ["hbm:tile.sellafield",1,4],
       "output": ["hbm:item.scrap_nuclear",7]
     },
     {
       "input": ["hbm:item.ore_purified",1,16],
       "output": ["hbm:item.ore_enriched",1,16]
+    },
+    {
+      "input": ["hbm:tile.vinyl_log"],
+      "output": ["hbm:item.powder_rubber",4]
     },
     {
       "input": ["hbm:tile.brick_obsidian"],
@@ -695,7 +731,7 @@
     },
     {
       "input": ["hbm:tile.steel_poles"],
-      "output": ["hbm:item.powder_steel_tiny",3]
+      "output": ["hbm:item.powder_steel_tiny",2]
     },
     {
       "input": ["minecraft:stained_hardened_clay",1,8],
@@ -778,6 +814,10 @@
       "output": ["hbm:item.scrap_plastic"]
     },
     {
+      "input": ["hbm:tile.pvc_log"],
+      "output": ["hbm:item.powder_pvc",4]
+    },
+    {
       "input": ["hbm:tile.block_slag"],
       "output": ["hbm:item.powder_cement",4]
     },
@@ -816,6 +856,10 @@
     {
       "input": ["hbm:item.ore_purified",1,14],
       "output": ["hbm:item.ore_enriched",1,14]
+    },
+    {
+      "input": ["hbm:tile.vinyl_sand"],
+      "output": ["hbm:item.dust",2]
     },
     {
       "input": ["minecraft:sandstone_stairs"],
@@ -1047,7 +1091,7 @@
     },
     {
       "input": ["hbm:tile.steel_wall"],
-      "output": ["hbm:item.powder_steel_tiny",13]
+      "output": ["hbm:item.powder_steel_tiny",9]
     },
     {
       "input": ["hbm:item.ore_separated",1,18],
@@ -1242,6 +1286,10 @@
       "output": ["hbm:item.powder_steel"]
     },
     {
+      "input": ["hbm:tile.rubber_silt"],
+      "output": ["hbm:item.dust",2]
+    },
+    {
       "input": ["hbm:tile.deco_pipe_rusted"],
       "output": ["hbm:item.powder_steel"]
     },
@@ -1286,6 +1334,10 @@
       "output": ["minecraft:gravel"]
     },
     {
+      "input": ["hbm:tile.basalt_smooth"],
+      "output": ["minecraft:gravel"]
+    },
+    {
       "input": ["hbm:item.ore_seared",1,3],
       "output": ["hbm:item.ore_enriched",1,3]
     },
@@ -1296,10 +1348,6 @@
     {
       "input": ["hbm:tile.stone_resource",1,7],
       "output": ["hbm:item.powder_calcium",6]
-    },
-    {
-      "input": ["hbm:tile.machine_fluidtank"],
-      "output": ["hbm:item.powder_steel",16]
     },
     {
       "input": ["hbm:item.ore_bedrock",1,1],
@@ -1360,6 +1408,10 @@
     {
       "input": ["minecraft:wool"],
       "output": ["minecraft:string",4]
+    },
+    {
+      "input": ["hbm:tile.ore_aluminium",1,32767],
+      "output": ["hbm:item.chunk_ore",2,2]
     },
     {
       "input": ["hbm:tile.pink_planks"],
@@ -1451,7 +1503,7 @@
     },
     {
       "input": ["hbm:tile.steel_corner"],
-      "output": ["hbm:item.powder_steel_tiny",26]
+      "output": ["hbm:item.powder_steel_tiny",18]
     },
     {
       "input": ["hbm:tile.crate_steel"],
@@ -1496,10 +1548,6 @@
     {
       "input": ["minecraft:gravel"],
       "output": ["minecraft:sand"]
-    },
-    {
-      "input": ["hbm:tile.ore_aluminium"],
-      "output": ["hbm:item.chunk_ore",2,2]
     },
     {
       "input": ["hbm:tile.bobblehead",1,12],
@@ -1595,7 +1643,7 @@
     },
     {
       "input": ["hbm:tile.steel_roof"],
-      "output": ["hbm:item.powder_steel_tiny",13]
+      "output": ["hbm:item.powder_steel_tiny",9]
     },
     {
       "input": ["hbm:item.ore_purified"],
@@ -1608,6 +1656,10 @@
     {
       "input": ["hbm:tile.deco_pipe_green"],
       "output": ["hbm:item.powder_steel"]
+    },
+    {
+      "input": ["hbm:tile.duna_cobble"],
+      "output": ["minecraft:gravel"]
     },
     {
       "input": ["hbm:tile.meteor_brick_mossy"],
@@ -1636,10 +1688,6 @@
     {
       "input": ["hbm:item.ore_seared",1,9],
       "output": ["hbm:item.ore_enriched",1,9]
-    },
-    {
-      "input": ["hbm:tile.machine_well"],
-      "output": ["hbm:item.powder_steel",32]
     },
     {
       "input": ["hbm:tile.deco_pipe_framed_green"],

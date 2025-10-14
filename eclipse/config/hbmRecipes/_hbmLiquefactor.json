@@ -42,6 +42,10 @@
       "output": ["LAVA",250]
     },
     {
+      "input": ["dict","cobblestone"],
+      "output": ["LAVA",250]
+    },
+    {
       "input": ["dict","dustSodium"],
       "output": ["SODIUM",100]
     },
@@ -98,7 +102,7 @@
       "output": ["ENDERJUICE",100]
     },
     {
-      "input": ["item","minecraft:stone"],
+      "input": ["dict","stone"],
       "output": ["LAVA",250]
     },
     {
@@ -140,10 +144,6 @@
     {
       "input": ["item","minecraft:snow"],
       "output": ["WATER",500]
-    },
-    {
-      "input": ["item","minecraft:cobblestone"],
-      "output": ["LAVA",250]
     }
   ]
 }

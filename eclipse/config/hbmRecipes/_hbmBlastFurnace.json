@@ -28,7 +28,7 @@
     },
     {
       "output": ["hbm:item.ingot_stainless",2],
-      "input1": ["dictframe","Nickel"],
+      "input1": ["dictframe","NickelPure"],
       "input2": ["dictframe","Steel"]
     },
     {
@@ -74,23 +74,18 @@
     {
       "output": ["hbm:item.ingot_starmetal",2],
       "input1": ["dictframe","Saturnite"],
-      "input2": ["item","hbm:item.powder_meteorite"]
+      "input2": ["item","hbm:item.ingot_meteorite"]
     },
     {
       "output": ["hbm:item.ingot_meteorite"],
       "input1": ["dictframe","Cobalt"],
-      "input2": ["item","hbm:tile.block_meteor"]
+      "input2": ["item","hbm:item.powder_meteorite"]
     },
     {
       "output": ["hbm:item.meteorite_sword_alloyed"],
       "input1": ["item","hbm:item.meteorite_sword_hardened"],
       "input2": ["dictframe","Cobalt"],
       "hidden": true
-    },
-    {
-      "output": ["hbm:item.ingot_meteorite"],
-      "input1": ["item","hbm:tile.block_meteor"],
-      "input2": ["dictframe","Cobalt"]
     }
   ]
 }

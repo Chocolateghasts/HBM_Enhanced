@@ -9,7 +9,7 @@ particles:0
 bobView:true
 anaglyph3d:false
 advancedOpengl:false
-maxFps:120
+maxFps:260
 fboEnable:true
 difficulty:2
 fancyGraphics:true
@@ -25,7 +25,7 @@ chatLinksPrompt:true
 chatOpacity:1.0
 snooperEnabled:true
 fullscreen:false
-enableVsync:true
+enableVsync:false
 hideServerAddress:false
 advancedItemTooltips:false
 pauseOnLostFocus:true
@@ -92,10 +92,12 @@ key_schematica.key.layerInc:0
 key_schematica.key.layerDec:0
 key_hbm.key.calculator:49
 key_hbm.key.toggleBack:46
+key_hbm.key.toggleMagnet:44
 key_hbm.key.toggleHUD:47
 key_hbm.key.dash:42
 key_hbm.key.trainInv:19
 key_hbm.key.slamkey:29
+key_hbm.key.qmaw:59
 key_hbm.key.reload:19
 key_hbm.key.gunPrimary:-100
 key_hbm.key.gunSecondary:-99
@@ -105,13 +107,15 @@ key_hbm.key.craneMoveDown:208
 key_hbm.key.craneMoveLeft:203
 key_hbm.key.craneMoveRight:205
 key_hbm.key.craneLoad:28
+key_hbm.key.ability:-99
+key_hbm.key.abilityAlt:56
 key_hbm.key.copyToolAlt:56
 key_hbm.key.copyToolCtrl:29
 key_WorldEdit Reference:38
 key_key.materialCosts:56
 key_key.clipboardPaste:210
 soundCategory_master:0.0
-soundCategory_music:1.0
+soundCategory_music:0.45774648
 soundCategory_record:1.0
 soundCategory_weather:1.0
 soundCategory_block:1.0

@@ -18,6 +18,20 @@ import com.mewo.hbmenhanced.ResearchBlocks.Tier3.T3Block;
 import com.mewo.hbmenhanced.ResearchBlocks.Tier3.TileEntityT3;
 import com.mewo.hbmenhanced.ResearchManager.PointManager;
 import com.mewo.hbmenhanced.Util.ResearchUtil.ResearchItemUtil;
+import com.mewo.hbmenhanced.blocks.BlockTemuSign1;
+import com.mewo.hbmenhanced.blocks.BlockTemuSign2;
+import com.mewo.hbmenhanced.blocks.BlockTemuSign3;
+import com.mewo.hbmenhanced.blocks.BlockTemuSign4;
+import com.mewo.hbmenhanced.blocks.BlockTemuSign5;
+import com.mewo.hbmenhanced.blocks.BlockTemuSign6;
+import com.mewo.hbmenhanced.blocks.tileentity.*;
+import com.mewo.hbmenhanced.blocks.render.RenderTemuSign1;
+import com.mewo.hbmenhanced.blocks.render.RenderTemuSign2;
+import com.mewo.hbmenhanced.blocks.render.RenderTemuSign3;
+import com.mewo.hbmenhanced.blocks.render.RenderTemuSign4;
+import com.mewo.hbmenhanced.blocks.render.RenderTemuSign5;
+import com.mewo.hbmenhanced.blocks.render.RenderTemuSign6;
+import cpw.mods.fml.client.registry.ClientRegistry;
 import com.mewo.hbmenhanced.Util.ResearchUtil.ResearchRegistry;
 import com.mewo.hbmenhanced.Util.Result;
 import com.mewo.hbmenhanced.Util.getItemValues;
@@ -75,6 +89,7 @@ public class hbmenhanced
     public static Item researchPoint;
     public static Item researchItem;
     public static Item linker;
+    public static Item temuFactory;
 
     public static Block labBlock;
     public static Block researchBlock;
@@ -82,6 +97,12 @@ public class hbmenhanced
     public static Block researchBlockT2;
     public static Block researchBlockT3;
     public static Block researchController;
+    public static Block temuSign1;
+    public static Block temuSign2;
+    public static Block temuSign3;
+    public static Block temuSign4;
+    public static Block temuSign5;
+    public static Block temuSign6;
 
     @SidedProxy(
             clientSide = "com.mewo.hbmenhanced.proxy.ClientProxy",
@@ -129,6 +150,24 @@ public class hbmenhanced
         int packetId = 0;
         network.registerMessage(EnergyPacket.Handler.class, EnergyPacket.class, packetId++, Side.CLIENT);
         network.registerMessage(ConnectionsPacket.Handler.class, ConnectionsPacket.class, packetId++, Side.CLIENT);
+        if (FMLCommonHandler.instance().getEffectiveSide().isClient()) {
+            ClientRegistry.bindTileEntitySpecialRenderer(TileEntityTemuSign1.class, new RenderTemuSign1());
+        }
+        if (FMLCommonHandler.instance().getEffectiveSide().isClient()) {
+            ClientRegistry.bindTileEntitySpecialRenderer(TileEntityTemuSign2.class, new RenderTemuSign2());
+        }
+        if (FMLCommonHandler.instance().getEffectiveSide().isClient()) {
+            ClientRegistry.bindTileEntitySpecialRenderer(TileEntityTemuSign3.class, new RenderTemuSign3());
+        }
+        if (FMLCommonHandler.instance().getEffectiveSide().isClient()) {
+            ClientRegistry.bindTileEntitySpecialRenderer(TileEntityTemuSign4.class, new RenderTemuSign4());
+        }
+        if (FMLCommonHandler.instance().getEffectiveSide().isClient()) {
+            ClientRegistry.bindTileEntitySpecialRenderer(TileEntityTemuSign5.class, new RenderTemuSign5());
+        }
+        if (FMLCommonHandler.instance().getEffectiveSide().isClient()) {
+            ClientRegistry.bindTileEntitySpecialRenderer(TileEntityTemuSign6.class, new RenderTemuSign6());
+        }
 
         // PacketResearchTree is bidirectional, so register for both server and client
         network.registerMessage(PacketResearchTree.Handler.class, PacketResearchTree.class, packetId++, Side.SERVER);
@@ -168,6 +207,26 @@ public class hbmenhanced
         researchController = new BlockResearchController().setBlockName("blockResearchController");
         GameRegistry.registerBlock(researchController, "blockResearchController");
         GameRegistry.registerTileEntity(TileEntityResearchController.class, "tileEntityResearchController");
+        temuFactory = new ItemTemuFactory();
+        GameRegistry.registerItem(temuFactory, "temuFactory");
+        temuSign1 = new BlockTemuSign1();
+        GameRegistry.registerBlock(temuSign1, "temuSign1");
+        GameRegistry.registerTileEntity(TileEntityTemuSign1.class, "temuSign1");
+        temuSign2 = new BlockTemuSign2();
+        GameRegistry.registerBlock(temuSign2, "temuSign2");
+        GameRegistry.registerTileEntity(TileEntityTemuSign2.class, "temuSign2");
+        temuSign3 = new BlockTemuSign3();
+        GameRegistry.registerBlock(temuSign3, "temuSign3");
+        GameRegistry.registerTileEntity(TileEntityTemuSign3.class, "temuSign3");
+        temuSign4 = new BlockTemuSign4();
+        GameRegistry.registerBlock(temuSign4, "temuSign4");
+        GameRegistry.registerTileEntity(TileEntityTemuSign4.class, "temuSign4");
+        temuSign5 = new BlockTemuSign5();
+        GameRegistry.registerBlock(temuSign5, "temuSign5");
+        GameRegistry.registerTileEntity(TileEntityTemuSign5.class, "temuSign5");
+        temuSign6 = new BlockTemuSign6();
+        GameRegistry.registerBlock(temuSign6, "temuSign6");
+        GameRegistry.registerTileEntity(TileEntityTemuSign6.class, "temuSign6");
     }
 
 

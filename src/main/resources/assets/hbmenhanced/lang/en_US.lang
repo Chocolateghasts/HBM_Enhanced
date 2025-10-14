@@ -2,34 +2,7 @@ tile.labBlock.name=Lab Block
 
 ^ for blocks ^
 
-# Prop Airframes
-item.smallPropAirframe.name=Small Prop Airframe
-item.mediumPropAirframe.name=Medium Prop Airframe
-item.largePropAirframe.name=Large Prop Airframe
-
-# Modern Prop Airframes
-item.smallModernPropAirframe.name=Small Modern Prop Airframe
-item.mediumModernPropAirframe.name=Medium Modern Prop Airframe
-item.largeModernPropAirframe.name=Large Modern Prop Airframe
-
-# Early Jet Airframes
-item.smallEarlyJetAirframe.name=Small Early Jet Airframe
-item.mediumEarlyJetAirframe.name=Medium Early Jet Airframe
-item.largeEarlyJetAirframe.name=Large Early Jet Airframe
-
-# Late Jet Airframes
-item.smallLateJetAirframe.name=Small Late Jet Airframe
-item.mediumLateJetAirframe.name=Medium Late Jet Airframe
-item.largeLateJetAirframe.name=Large Late Jet Airframe
-
-# Stealth Airframes
-item.smallStealthAirframe.name=Small Stealth Airframe
-item.mediumStealthAirframe.name=Medium Stealth Airframe
-item.largeStealthAirframe.name=Large Stealth Airframe
-
-# Drone Airframes
-item.smallDroneAirframe.name=Small Drone Airframe
-item.mediumDroneAirframe.name=Medium Drone Airframe
+item.temuFactory.name=Temu Factory
 
 ^ for items ^
 
