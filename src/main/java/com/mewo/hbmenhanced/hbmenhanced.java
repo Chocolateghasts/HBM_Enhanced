@@ -17,6 +17,7 @@ import com.mewo.hbmenhanced.ResearchBlocks.Tier2.TileEntityT2;
 import com.mewo.hbmenhanced.ResearchBlocks.Tier3.T3Block;
 import com.mewo.hbmenhanced.ResearchBlocks.Tier3.TileEntityT3;
 import com.mewo.hbmenhanced.ResearchManager.PointManager;
+import cpw.mods.fml.common.registry.EntityRegistry;
 import com.mewo.hbmenhanced.Util.ResearchUtil.ResearchItemUtil;
 import com.mewo.hbmenhanced.blocks.BlockTemuSign1;
 import com.mewo.hbmenhanced.blocks.BlockTemuSign2;
@@ -31,6 +32,11 @@ import com.mewo.hbmenhanced.blocks.render.RenderTemuSign3;
 import com.mewo.hbmenhanced.blocks.render.RenderTemuSign4;
 import com.mewo.hbmenhanced.blocks.render.RenderTemuSign5;
 import com.mewo.hbmenhanced.blocks.render.RenderTemuSign6;
+import com.mewo.hbmenhanced.blocks.render.RenderStalin;
+import cpw.mods.fml.common.registry.EntityRegistry;
+import com.mewo.hbmenhanced.entity.EntityStalin;
+//import com.mewo.hbmenhanced.entity.TickHandler;
+import com.mewo.hbmenhanced.entity.EntityStalin;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import com.mewo.hbmenhanced.Util.ResearchUtil.ResearchRegistry;
 import com.mewo.hbmenhanced.Util.Result;
@@ -43,6 +49,7 @@ import com.mewo.hbmenhanced.containers.labBlockTileEntity;
 import com.mewo.hbmenhanced.items.*;
 import com.mewo.hbmenhanced.proxy.CommonProxy;
 import com.mewo.hbmenhanced.recipes.ServerTemplates;
+import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
@@ -50,6 +57,7 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
+import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import li.cil.oc.api.Driver;
@@ -136,6 +144,9 @@ public class hbmenhanced
     @EventHandler
     public void init(FMLInitializationEvent event)
     {
+        int stalinEntityID = EntityRegistry.findGlobalUniqueEntityId();
+        EntityRegistry.registerGlobalEntityID(EntityStalin.class, "Stalin", stalinEntityID, 0x555555, 0xAA0000); // Egg colors: gray & red
+        EntityRegistry.registerModEntity(EntityStalin.class, "Stalin", stalinEntityID, this, 80, 3, true);
         ResearchItemUtil.initMaterials();
         ResearchItemUtil.init();
         ResearchRegistry.init();
@@ -143,6 +154,7 @@ public class hbmenhanced
         proxy.registerRenderers();
         FMLCommonHandler.instance().bus().register(new TickHandler());
         FMLCommonHandler.instance().bus().register(new ServerEventHandler());
+        EntityRegistry.registerModEntity(EntityStalin.class, "Stalin", 3, this, 64, 1, true);
         Test testInstance = new Test();
         FMLCommonHandler.instance().bus().register(testInstance);
         MinecraftForge.EVENT_BUS.register(testInstance);
@@ -168,6 +180,10 @@ public class hbmenhanced
         if (FMLCommonHandler.instance().getEffectiveSide().isClient()) {
             ClientRegistry.bindTileEntitySpecialRenderer(TileEntityTemuSign6.class, new RenderTemuSign6());
         }
+        if (FMLCommonHandler.instance().getEffectiveSide().isClient()) {
+            RenderingRegistry.registerEntityRenderingHandler(EntityStalin.class, new RenderStalin());
+        }
+
 
         // PacketResearchTree is bidirectional, so register for both server and client
         network.registerMessage(PacketResearchTree.Handler.class, PacketResearchTree.class, packetId++, Side.SERVER);

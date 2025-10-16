@@ -7,33 +7,8 @@
       "output2": ["PETROLEUM",20]
     },
     {
-      "input": "BITUMEN",
-      "output1": ["OIL",80],
-      "output2": ["AROMATICS",20]
-    },
-    {
       "input": "DIESEL",
       "output1": ["KEROSENE",40],
-      "output2": ["PETROLEUM",30]
-    },
-    {
-      "input": "KEROSENE",
-      "output1": ["PETROLEUM",60],
-      "output2": ["NONE",0]
-    },
-    {
-      "input": "ELBOWGREASE",
-      "output1": ["MERCURY",70],
-      "output2": ["SOURGAS",50]
-    },
-    {
-      "input": "CBENZ",
-      "output1": ["AROMATICS",50],
-      "output2": ["CHLORINE",30]
-    },
-    {
-      "input": "DIESEL_REFORM",
-      "output1": ["KEROSENE_REFORM",40],
       "output2": ["PETROLEUM",30]
     },
     {
@@ -42,9 +17,14 @@
       "output2": ["PETROLEUM",30]
     },
     {
-      "input": "SMEAR",
-      "output1": ["NAPHTHA",60],
-      "output2": ["PETROLEUM",40]
+      "input": "DIESEL_REFORM",
+      "output1": ["KEROSENE_REFORM",40],
+      "output2": ["PETROLEUM",30]
+    },
+    {
+      "input": "CHLOROETHANE",
+      "output1": ["POLYTHYLENE",50],
+      "output2": ["CHLORINE",30]
     },
     {
       "input": "REFORMATE",
@@ -52,14 +32,29 @@
       "output2": ["REFORMGAS",60]
     },
     {
-      "input": "HEATINGOIL_VACUUM",
-      "output1": ["HEATINGOIL",80],
-      "output2": ["REFORMGAS",20]
+      "input": "BITUMEN",
+      "output1": ["OIL",80],
+      "output2": ["AROMATICS",20]
     },
     {
-      "input": "CHLOROETHANE",
-      "output1": ["POLYTHYLENE",50],
-      "output2": ["CHLORINE",30]
+      "input": "XYLENE",
+      "output1": ["AROMATICS",80],
+      "output2": ["PETROLEUM",20]
+    },
+    {
+      "input": "BIOGAS",
+      "output1": ["PETROLEUM",20],
+      "output2": ["AROMATICS",20]
+    },
+    {
+      "input": "DIESEL_CRACK",
+      "output1": ["KEROSENE",40],
+      "output2": ["PETROLEUM",30]
+    },
+    {
+      "input": "KEROSENE",
+      "output1": ["PETROLEUM",60],
+      "output2": ["NONE",0]
     },
     {
       "input": "WOODOIL",
@@ -72,19 +67,24 @@
       "output2": ["PETROLEUM",20]
     },
     {
-      "input": "DIESEL_CRACK",
-      "output1": ["KEROSENE",40],
-      "output2": ["PETROLEUM",30]
+      "input": "SMEAR",
+      "output1": ["NAPHTHA",60],
+      "output2": ["PETROLEUM",40]
     },
     {
-      "input": "BIOGAS",
-      "output1": ["PETROLEUM",20],
-      "output2": ["AROMATICS",20]
+      "input": "ELBOWGREASE",
+      "output1": ["MERCURY",70],
+      "output2": ["SOURGAS",50]
     },
     {
-      "input": "XYLENE",
-      "output1": ["AROMATICS",80],
-      "output2": ["PETROLEUM",20]
+      "input": "CBENZ",
+      "output1": ["AROMATICS",50],
+      "output2": ["CHLORINE",30]
+    },
+    {
+      "input": "HEATINGOIL_VACUUM",
+      "output1": ["HEATINGOIL",80],
+      "output2": ["REFORMGAS",20]
     }
   ]
 }
