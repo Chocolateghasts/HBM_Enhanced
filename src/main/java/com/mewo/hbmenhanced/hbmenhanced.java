@@ -277,7 +277,7 @@ public class hbmenhanced
 
         PointManager manager = new PointManager();
         manager.createFile(event.getServer().getEntityWorld());
-
+        getItemValues.loadDiminish();
         Timer timer = new Timer(true);
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override

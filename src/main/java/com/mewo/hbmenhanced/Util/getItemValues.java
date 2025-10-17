@@ -1,5 +1,6 @@
 package com.mewo.hbmenhanced.Util;
 
+import com.google.gson.reflect.TypeToken;
 import com.hbm.items.ModItems;
 import com.mewo.hbmenhanced.ResearchBlocks.ResearchController.TileEntityResearchController;
 import com.mewo.hbmenhanced.ResearchBlocks.Tier1.TileEntityT1;
@@ -12,12 +13,32 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 
+import java.io.File;
+import java.lang.reflect.Type;
 import java.util.*;
 
 public class getItemValues {
 
     public static Map<String, Map<String, Integer>> researchCounts = new HashMap<>();
     public static Map<String, ResearchValue> Values = new HashMap<>();
+
+    public static void loadDiminish() {
+        File file = new File("config/hbmenhanced/research_diminish.json");
+        Type type = new TypeToken<Map<String, Map<String, Integer>>>() {}.getType();
+        Map<String, Map<String, Integer>> loaded = JsonUtil.read(file, type);
+        if (loaded != null) {
+            researchCounts = loaded;
+            System.out.println("[getItemValues] Loaded diminishing values for all teams.");
+        } else {
+            System.out.println("[getItemValues] No existing diminishing data found, starting fresh.");
+        }
+    }
+
+    public static void saveDiminish() {
+        File file = new File("config/hbmenhanced/research_diminish.json");
+        JsonUtil.write(file, researchCounts);
+        System.out.println("[getItemValues] Saved diminishing values for all teams.");
+    }
 
     // Creates a truly unique identifier for an item including metadata
     private static String getUniqueItemKey(Item item, int meta) {
@@ -165,6 +186,11 @@ public class getItemValues {
 
         Map<PointManager.ResearchType, Integer> map = value.getAllPoints();
         System.out.println("Map size: " + map.size());
+        System.out.println(team);
+        if (team == null) {
+            System.err.println("[getItemValues] Cannot apply diminishing: team is null. Stack=" + sourceStack);
+            return;
+        }
         researchCounts.computeIfAbsent(team, t -> new HashMap<>());
 
         for (Map.Entry<PointManager.ResearchType, Integer> entry : map.entrySet()) {
@@ -174,6 +200,7 @@ public class getItemValues {
 
         int current = researchCounts.get(team).getOrDefault(sourceKey, 0);
         researchCounts.get(team).put(sourceKey, current + 1);
+        getItemValues.saveDiminish();
         System.out.println("Applied diminishing for source item: " + sourceKey + " for team: " + team);
     }
 }

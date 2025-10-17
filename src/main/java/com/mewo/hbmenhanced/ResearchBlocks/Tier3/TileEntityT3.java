@@ -203,6 +203,7 @@ public class TileEntityT3 extends TileEntity implements IInventory, IEnergyRecei
         researchData.setInteger("researchProgress", researchProgress);
         researchData.setInteger("maxResearchProgress", maxResearchProgress);
         compound.setTag("researchData", researchData);
+        compound.setString("Team", team);
     }
 
     @Override
@@ -225,6 +226,7 @@ public class TileEntityT3 extends TileEntity implements IInventory, IEnergyRecei
         isResearching =  researchData.getBoolean("isResearching");
         researchProgress = researchData.getInteger("researchProgress");
         maxResearchProgress = researchData.getInteger("maxResearchProgress");
+        team = compound.getString("Team");
     }
 
     @Override

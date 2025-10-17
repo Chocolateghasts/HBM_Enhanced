@@ -198,6 +198,7 @@ public class TileEntityT1 extends TileEntity implements IInventory, IResearchPro
         }
         compound.setTag("Items", items);
         compound.setTag("researchData", researchData);
+        compound.setString("Team", team);
     }
 
     @Override
@@ -211,7 +212,7 @@ public class TileEntityT1 extends TileEntity implements IInventory, IResearchPro
         currentBurnTime = researchData.getInteger("currentBurnTime");
         maxResearchProgress = researchData.getInteger("maxResearchProgress");
         isBurning = researchData.getBoolean("isBurning");
-
+        team = compound.getString("Team");
         NBTTagCompound items = compound.hasKey("Items") ? compound.getCompoundTag("Items") : new NBTTagCompound();
         for (int i = 0; i < inventory.length; i++) {
             if (items.hasKey("Slot" + i)) {
