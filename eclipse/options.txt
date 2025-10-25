@@ -100,8 +100,8 @@ key_hbm.key.slamkey:29
 key_hbm.key.qmaw:59
 key_hbm.key.reload:19
 key_hbm.key.gunPrimary:-100
-key_hbm.key.gunSecondary:-99
-key_hbm.key.gunTertitary:-98
+key_hbm.key.gunSecondary:-98
+key_hbm.key.gunTertitary:-99
 key_hbm.key.craneMoveUp:200
 key_hbm.key.craneMoveDown:208
 key_hbm.key.craneMoveLeft:203
@@ -114,8 +114,8 @@ key_hbm.key.copyToolCtrl:29
 key_WorldEdit Reference:38
 key_key.materialCosts:56
 key_key.clipboardPaste:210
-soundCategory_master:0.0
-soundCategory_music:0.45774648
+soundCategory_master:0.205298
+soundCategory_music:0.0
 soundCategory_record:1.0
 soundCategory_weather:1.0
 soundCategory_block:1.0

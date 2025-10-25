@@ -1,10 +1,10 @@
 {
   "recipes": [
     {
-      "input": "UNSATURATEDS",
+      "input": "CHLOROMETHANE",
       "acid": ["NONE",0],
-      "output1": ["AROMATICS",70],
-      "output2": ["PETROLEUM",30]
+      "output1": ["UNSATURATEDS",75],
+      "output2": ["CHLORINE",25]
     },
     {
       "input": "AROMATICS",
@@ -13,10 +13,16 @@
       "output2": ["CHLORINE",10]
     },
     {
-      "input": "CHLOROMETHANE",
+      "input": "XYLENE",
+      "acid": ["CCL",60],
+      "output1": ["REFORMGAS",100],
+      "output2": ["CHLOROMETHANE",50]
+    },
+    {
+      "input": "UNSATURATEDS",
       "acid": ["NONE",0],
-      "output1": ["UNSATURATEDS",75],
-      "output2": ["CHLORINE",25]
+      "output1": ["AROMATICS",70],
+      "output2": ["PETROLEUM",30]
     },
     {
       "input": "CHLOROETHANE",
@@ -29,12 +35,6 @@
       "acid": ["SULFURIC_ACID",50],
       "output1": ["LIGHTOIL",50],
       "output2": ["PEROXIDE",20]
-    },
-    {
-      "input": "XYLENE",
-      "acid": ["CCL",60],
-      "output1": ["REFORMGAS",100],
-      "output2": ["CHLOROMETHANE",50]
     }
   ]
 }

@@ -1,59 +1,73 @@
-[21:09:55] [main/INFO]: Setting user: Player297
-[21:09:56] [Client thread/INFO]: LWJGL Version: 2.9.1
-[21:10:02] [Client thread/INFO]: Reloading ResourceManager: Default, FMLFileResourcePack:Forge Mod Loader, FMLFileResourcePack:Minecraft Forge, FMLFileResourcePack:Not Enough Items, FMLFileResourcePack:WorldEdit, FMLFileResourcePack:LunatriusCore, FMLFileResourcePack:Schematica, FMLFileResourcePack:NTM: Space, FMLFileResourcePack:OpenComputers, FMLFileResourcePack:HBM Enhanced
-[21:10:16] [Client thread/WARN]: File hbm:sounds/clap.ogg does not exist, cannot add it to event hbm:fm.clap
-[21:10:16] [Client thread/WARN]: File hbm:sounds/mug.ogg does not exist, cannot add it to event hbm:fm.mug
-[21:10:16] [Client thread/WARN]: File hbm:sounds/sample.ogg does not exist, cannot add it to event hbm:fm.sample
-[21:10:16] [Sound Library Loader/INFO]: Sound engine started
-[21:10:16] [Client thread/INFO]: Created: 16x16 textures/blocks-atlas
-[21:10:16] [Client thread/INFO]: Created: 16x16 textures/items-atlas
-[21:10:18] [Client thread/INFO]: Reloading ResourceManager: Default, FMLFileResourcePack:Forge Mod Loader, FMLFileResourcePack:Minecraft Forge, FMLFileResourcePack:Not Enough Items, FMLFileResourcePack:WorldEdit, FMLFileResourcePack:LunatriusCore, FMLFileResourcePack:Schematica, FMLFileResourcePack:NTM: Space, FMLFileResourcePack:OpenComputers, FMLFileResourcePack:HBM Enhanced
-[21:10:20] [Client thread/INFO]: Created: 2048x2048 textures/blocks-atlas
-[21:10:21] [Client thread/INFO]: Created: 4096x2048 textures/items-atlas
-[21:10:22] [Client thread/WARN]: File hbm:sounds/clap.ogg does not exist, cannot add it to event hbm:fm.clap
-[21:10:22] [Client thread/WARN]: File hbm:sounds/mug.ogg does not exist, cannot add it to event hbm:fm.mug
-[21:10:22] [Client thread/WARN]: File hbm:sounds/sample.ogg does not exist, cannot add it to event hbm:fm.sample
-[21:10:22] [Sound Library Loader/INFO]: Sound engine started
-[21:10:26] [Server thread/INFO]: Starting integrated minecraft server version 1.7.10
-[21:10:26] [Server thread/INFO]: Generating keypair
-[21:10:26] [Server thread/INFO]: Preparing start region for level 0
-[21:10:27] [Server thread/INFO]: Changing view distance to 12, from 10
-[21:10:27] [Server thread/INFO]: Player297[local:E:daacde13] logged in with entity id 293 at (765.5680377594219, 4.0, -819.4496140486136)
-[21:10:27] [Server thread/INFO]: Player297 joined the game
-[21:10:28] [Client thread/INFO]: [CHAT] Loaded world with JameH2's NTM: Space 1.0.27 BETA (5467) for Minecraft 1.7.10!
-[21:10:31] [Client thread/INFO]: [CHAT] §aOpenComputers§f: A new version is available: 1.12.2-forge/1.8.9a
-[21:10:33] [Server thread/WARN]: Skipping Entity with id 3
-[21:10:34] [Server thread/WARN]: Skipping Entity with id 3
-[21:10:35] [Server thread/INFO]: Saving and pausing game...
-[21:10:35] [Server thread/INFO]: Saving chunks for level 'Temu Factory'/Overworld
-[21:10:35] [Server thread/INFO]: Saving chunks for level 'Temu Factory'/Nether
-[21:10:35] [Server thread/INFO]: Saving chunks for level 'Temu Factory'/The End
-[21:10:35] [Server thread/INFO]: Saving chunks for level 'Temu Factory'/Laythe
-[21:10:35] [Server thread/INFO]: Saving chunks for level 'Temu Factory'/Minmus
-[21:10:35] [Server thread/INFO]: Saving chunks for level 'Temu Factory'/Moho
-[21:10:35] [Server thread/INFO]: Saving chunks for level 'Temu Factory'/Dres
-[21:10:35] [Server thread/INFO]: Saving chunks for level 'Temu Factory'/Eve
-[21:10:35] [Server thread/INFO]: Saving chunks for level 'Temu Factory'/Ike
-[21:10:35] [Server thread/INFO]: Saving chunks for level 'Temu Factory'/Duna
-[21:10:35] [Server thread/INFO]: Saving chunks for level 'Temu Factory'/Mun
-[21:10:35] [Server thread/INFO]: Saving chunks for level 'Temu Factory'/Thatmo
-[21:10:35] [Server thread/INFO]: Saving chunks for level 'Temu Factory'/Tekto
-[21:10:35] [Server thread/INFO]: Saving chunks for level 'Temu Factory'/Orbit
-[21:10:45] [Client thread/INFO]: Stopping!
-[21:10:45] [Server thread/INFO]: Stopping server
-[21:10:45] [Server thread/INFO]: Saving players
-[21:10:45] [Server thread/INFO]: Saving worlds
-[21:10:45] [Server thread/INFO]: Saving chunks for level 'Temu Factory'/Overworld
-[21:10:45] [Server thread/INFO]: Saving chunks for level 'Temu Factory'/Nether
-[21:10:45] [Server thread/INFO]: Saving chunks for level 'Temu Factory'/The End
-[21:10:45] [Server thread/INFO]: Saving chunks for level 'Temu Factory'/Laythe
-[21:10:45] [Server thread/INFO]: Saving chunks for level 'Temu Factory'/Minmus
-[21:10:45] [Server thread/INFO]: Saving chunks for level 'Temu Factory'/Moho
-[21:10:45] [Server thread/INFO]: Saving chunks for level 'Temu Factory'/Dres
-[21:10:45] [Server thread/INFO]: Saving chunks for level 'Temu Factory'/Eve
-[21:10:45] [Server thread/INFO]: Saving chunks for level 'Temu Factory'/Ike
-[21:10:45] [Server thread/INFO]: Saving chunks for level 'Temu Factory'/Duna
-[21:10:45] [Server thread/INFO]: Saving chunks for level 'Temu Factory'/Mun
-[21:10:45] [Server thread/INFO]: Saving chunks for level 'Temu Factory'/Thatmo
-[21:10:45] [Server thread/INFO]: Saving chunks for level 'Temu Factory'/Tekto
-[21:10:45] [Server thread/INFO]: Saving chunks for level 'Temu Factory'/Orbit
+[21:42:31] [main/INFO]: Setting user: Player859
+[21:42:32] [Client thread/INFO]: LWJGL Version: 2.9.1
+[21:42:41] [Client thread/INFO]: Reloading ResourceManager: Default, FMLFileResourcePack:Forge Mod Loader, FMLFileResourcePack:Minecraft Forge, FMLFileResourcePack:Not Enough Items, FMLFileResourcePack:WorldEdit, FMLFileResourcePack:LunatriusCore, FMLFileResourcePack:Schematica, FMLFileResourcePack:NTM: Space, FMLFileResourcePack:OpenComputers, FMLFileResourcePack:HBM Enhanced
+[21:43:00] [Sound Library Loader/INFO]: Sound engine started
+[21:43:00] [Client thread/WARN]: File hbm:sounds/clap.ogg does not exist, cannot add it to event hbm:fm.clap
+[21:43:00] [Client thread/WARN]: File hbm:sounds/mug.ogg does not exist, cannot add it to event hbm:fm.mug
+[21:43:00] [Client thread/WARN]: File hbm:sounds/sample.ogg does not exist, cannot add it to event hbm:fm.sample
+[21:43:00] [Client thread/INFO]: Created: 16x16 textures/blocks-atlas
+[21:43:00] [Client thread/INFO]: Created: 16x16 textures/items-atlas
+[21:43:02] [Client thread/INFO]: Reloading ResourceManager: Default, FMLFileResourcePack:Forge Mod Loader, FMLFileResourcePack:Minecraft Forge, FMLFileResourcePack:Not Enough Items, FMLFileResourcePack:WorldEdit, FMLFileResourcePack:LunatriusCore, FMLFileResourcePack:Schematica, FMLFileResourcePack:NTM: Space, FMLFileResourcePack:OpenComputers, FMLFileResourcePack:HBM Enhanced
+[21:43:05] [Client thread/INFO]: Created: 2048x2048 textures/blocks-atlas
+[21:43:06] [Client thread/INFO]: Created: 4096x2048 textures/items-atlas
+[21:43:07] [Client thread/WARN]: File hbm:sounds/clap.ogg does not exist, cannot add it to event hbm:fm.clap
+[21:43:07] [Client thread/WARN]: File hbm:sounds/mug.ogg does not exist, cannot add it to event hbm:fm.mug
+[21:43:07] [Client thread/WARN]: File hbm:sounds/sample.ogg does not exist, cannot add it to event hbm:fm.sample
+[21:43:07] [Sound Library Loader/INFO]: Sound engine started
+[21:43:12] [Server thread/INFO]: Starting integrated minecraft server version 1.7.10
+[21:43:12] [Server thread/INFO]: Generating keypair
+[21:43:13] [Server thread/INFO]: Preparing start region for level 0
+[21:43:13] [Server thread/INFO]: Changing view distance to 12, from 10
+[21:43:14] [Server thread/INFO]: Player859[local:E:892f0696] logged in with entity id 211 at (750.6688049877803, 65.20000004768372, 1223.0327791411776)
+[21:43:14] [Server thread/INFO]: Player859 joined the game
+[21:43:15] [Client thread/INFO]: [CHAT] Loaded world with JameH2's NTM: Space 1.0.27 BETA (5467) for Minecraft 1.7.10!
+[21:43:15] [Client thread/INFO]: [CHAT] New version 1.0.27 BETA (5491) is available! Click [here] to download!
+[21:43:17] [Client thread/INFO]: [CHAT] §aOpenComputers§f: A new version is available: 1.12.2-forge/1.8.9a
+[21:43:19] [Server thread/INFO]: Saving and pausing game...
+[21:43:19] [Server thread/INFO]: Saving chunks for level 'New World'/Overworld
+[21:43:19] [Server thread/INFO]: Saving chunks for level 'New World'/Nether
+[21:43:19] [Server thread/INFO]: Saving chunks for level 'New World'/The End
+[21:43:19] [Server thread/INFO]: Saving chunks for level 'New World'/Laythe
+[21:43:19] [Server thread/INFO]: Saving chunks for level 'New World'/Minmus
+[21:43:19] [Server thread/INFO]: Saving chunks for level 'New World'/Moho
+[21:43:19] [Server thread/INFO]: Saving chunks for level 'New World'/Dres
+[21:43:19] [Server thread/INFO]: Saving chunks for level 'New World'/Eve
+[21:43:19] [Server thread/INFO]: Saving chunks for level 'New World'/Ike
+[21:43:19] [Server thread/INFO]: Saving chunks for level 'New World'/Duna
+[21:43:19] [Server thread/INFO]: Saving chunks for level 'New World'/Mun
+[21:43:19] [Server thread/INFO]: Saving chunks for level 'New World'/Thatmo
+[21:43:19] [Server thread/INFO]: Saving chunks for level 'New World'/Tekto
+[21:43:19] [Server thread/INFO]: Saving chunks for level 'New World'/Orbit
+[21:43:52] [Server thread/INFO]: Saving and pausing game...
+[21:43:52] [Server thread/INFO]: Saving chunks for level 'New World'/Overworld
+[21:43:52] [Server thread/INFO]: Saving chunks for level 'New World'/Nether
+[21:43:52] [Server thread/INFO]: Saving chunks for level 'New World'/The End
+[21:43:52] [Server thread/INFO]: Saving chunks for level 'New World'/Laythe
+[21:43:52] [Server thread/INFO]: Saving chunks for level 'New World'/Minmus
+[21:43:52] [Server thread/INFO]: Saving chunks for level 'New World'/Moho
+[21:43:52] [Server thread/INFO]: Saving chunks for level 'New World'/Dres
+[21:43:52] [Server thread/INFO]: Saving chunks for level 'New World'/Eve
+[21:43:52] [Server thread/INFO]: Saving chunks for level 'New World'/Ike
+[21:43:52] [Server thread/INFO]: Saving chunks for level 'New World'/Duna
+[21:43:52] [Server thread/INFO]: Saving chunks for level 'New World'/Mun
+[21:43:52] [Server thread/INFO]: Saving chunks for level 'New World'/Thatmo
+[21:43:52] [Server thread/INFO]: Saving chunks for level 'New World'/Tekto
+[21:43:52] [Server thread/INFO]: Saving chunks for level 'New World'/Orbit
+[21:44:32] [Client thread/INFO]: Stopping!
+[21:44:32] [Server thread/INFO]: Stopping server
+[21:44:32] [Server thread/INFO]: Saving players
+[21:44:32] [Server thread/INFO]: Saving worlds
+[21:44:32] [Server thread/INFO]: Saving chunks for level 'New World'/Overworld
+[21:44:32] [Server thread/INFO]: Saving chunks for level 'New World'/Nether
+[21:44:32] [Server thread/INFO]: Saving chunks for level 'New World'/The End
+[21:44:32] [Server thread/INFO]: Saving chunks for level 'New World'/Laythe
+[21:44:32] [Server thread/INFO]: Saving chunks for level 'New World'/Minmus
+[21:44:32] [Server thread/INFO]: Saving chunks for level 'New World'/Moho
+[21:44:32] [Server thread/INFO]: Saving chunks for level 'New World'/Dres
+[21:44:32] [Server thread/INFO]: Saving chunks for level 'New World'/Eve
+[21:44:32] [Server thread/INFO]: Saving chunks for level 'New World'/Ike
+[21:44:32] [Server thread/INFO]: Saving chunks for level 'New World'/Duna
+[21:44:32] [Server thread/INFO]: Saving chunks for level 'New World'/Mun
+[21:44:32] [Server thread/INFO]: Saving chunks for level 'New World'/Thatmo
+[21:44:32] [Server thread/INFO]: Saving chunks for level 'New World'/Tekto
+[21:44:32] [Server thread/INFO]: Saving chunks for level 'New World'/Orbit

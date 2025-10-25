@@ -2,39 +2,24 @@
   "comment": "Inputs are always 100mB, set output quantities accordingly. The steam in/outputs are fixed, using 200mB of steam per 100mB of input.",
   "recipes": [
     {
-      "input": "OIL",
-      "output1": ["CRACKOIL",80],
-      "output2": ["PETROLEUM",20]
-    },
-    {
-      "input": "DIESEL",
-      "output1": ["KEROSENE",40],
-      "output2": ["PETROLEUM",30]
-    },
-    {
-      "input": "DIESEL_CRACK_REFORM",
-      "output1": ["KEROSENE_REFORM",40],
-      "output2": ["PETROLEUM",30]
-    },
-    {
       "input": "DIESEL_REFORM",
       "output1": ["KEROSENE_REFORM",40],
       "output2": ["PETROLEUM",30]
     },
     {
-      "input": "CHLOROETHANE",
-      "output1": ["POLYTHYLENE",50],
-      "output2": ["CHLORINE",30]
+      "input": "DIESEL_CRACK",
+      "output1": ["KEROSENE",40],
+      "output2": ["PETROLEUM",30]
     },
     {
-      "input": "REFORMATE",
-      "output1": ["UNSATURATEDS",40],
-      "output2": ["REFORMGAS",60]
+      "input": "SMEAR",
+      "output1": ["NAPHTHA",60],
+      "output2": ["PETROLEUM",40]
     },
     {
-      "input": "BITUMEN",
-      "output1": ["OIL",80],
-      "output2": ["AROMATICS",20]
+      "input": "DIESEL",
+      "output1": ["KEROSENE",40],
+      "output2": ["PETROLEUM",30]
     },
     {
       "input": "XYLENE",
@@ -47,19 +32,9 @@
       "output2": ["AROMATICS",20]
     },
     {
-      "input": "DIESEL_CRACK",
-      "output1": ["KEROSENE",40],
-      "output2": ["PETROLEUM",30]
-    },
-    {
       "input": "KEROSENE",
       "output1": ["PETROLEUM",60],
       "output2": ["NONE",0]
-    },
-    {
-      "input": "WOODOIL",
-      "output1": ["HEATINGOIL",40],
-      "output2": ["AROMATICS",10]
     },
     {
       "input": "OIL_DS",
@@ -67,9 +42,9 @@
       "output2": ["PETROLEUM",20]
     },
     {
-      "input": "SMEAR",
-      "output1": ["NAPHTHA",60],
-      "output2": ["PETROLEUM",40]
+      "input": "DIESEL_CRACK_REFORM",
+      "output1": ["KEROSENE_REFORM",40],
+      "output2": ["PETROLEUM",30]
     },
     {
       "input": "ELBOWGREASE",
@@ -77,14 +52,39 @@
       "output2": ["SOURGAS",50]
     },
     {
-      "input": "CBENZ",
-      "output1": ["AROMATICS",50],
-      "output2": ["CHLORINE",30]
+      "input": "REFORMATE",
+      "output1": ["UNSATURATEDS",40],
+      "output2": ["REFORMGAS",60]
     },
     {
       "input": "HEATINGOIL_VACUUM",
       "output1": ["HEATINGOIL",80],
       "output2": ["REFORMGAS",20]
+    },
+    {
+      "input": "WOODOIL",
+      "output1": ["HEATINGOIL",40],
+      "output2": ["AROMATICS",10]
+    },
+    {
+      "input": "BITUMEN",
+      "output1": ["OIL",80],
+      "output2": ["AROMATICS",20]
+    },
+    {
+      "input": "CHLOROETHANE",
+      "output1": ["POLYTHYLENE",50],
+      "output2": ["CHLORINE",30]
+    },
+    {
+      "input": "OIL",
+      "output1": ["CRACKOIL",80],
+      "output2": ["PETROLEUM",20]
+    },
+    {
+      "input": "CBENZ",
+      "output1": ["AROMATICS",50],
+      "output2": ["CHLORINE",30]
     }
   ]
 }

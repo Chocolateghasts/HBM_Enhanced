@@ -17,8 +17,16 @@ import com.mewo.hbmenhanced.ResearchBlocks.Tier2.TileEntityT2;
 import com.mewo.hbmenhanced.ResearchBlocks.Tier3.T3Block;
 import com.mewo.hbmenhanced.ResearchBlocks.Tier3.TileEntityT3;
 import com.mewo.hbmenhanced.ResearchManager.PointManager;
+import com.mewo.hbmenhanced.blocks.render.RenderSovietSoldier;
+import com.mewo.hbmenhanced.blocks.render.RenderSovietSoldier1;
+import com.mewo.hbmenhanced.blocks.render.RenderSovietSoldier2;
 import cpw.mods.fml.common.registry.EntityRegistry;
 import com.mewo.hbmenhanced.Util.ResearchUtil.ResearchItemUtil;
+import com.mewo.hbmenhanced.entity.EntitySovietSoldier;
+import com.mewo.hbmenhanced.entity.EntitySovietSoldier1;
+import com.mewo.hbmenhanced.entity.EntitySovietSoldier2;
+import com.mewo.hbmenhanced.blocks.render.RenderSovietOfficer;
+import com.mewo.hbmenhanced.entity.EntitySovietOfficer;
 import com.mewo.hbmenhanced.blocks.BlockTemuSign1;
 import com.mewo.hbmenhanced.blocks.BlockTemuSign2;
 import com.mewo.hbmenhanced.blocks.BlockTemuSign3;
@@ -37,6 +45,7 @@ import cpw.mods.fml.common.registry.EntityRegistry;
 import com.mewo.hbmenhanced.entity.EntityStalin;
 //import com.mewo.hbmenhanced.entity.TickHandler;
 import com.mewo.hbmenhanced.entity.EntityStalin;
+import com.mewo.hbmenhanced.entity.projectile.EntityStalinBeam;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import com.mewo.hbmenhanced.Util.ResearchUtil.ResearchRegistry;
 import com.mewo.hbmenhanced.Util.Result;
@@ -147,6 +156,19 @@ public class hbmenhanced
         int stalinEntityID = EntityRegistry.findGlobalUniqueEntityId();
         EntityRegistry.registerGlobalEntityID(EntityStalin.class, "Stalin", stalinEntityID, 0x555555, 0xAA0000); // Egg colors: gray & red
         EntityRegistry.registerModEntity(EntityStalin.class, "Stalin", stalinEntityID, this, 80, 3, true);
+        EntityRegistry.registerModEntity(EntityStalinBeam.class, "StalinBeam", 1, "hbmenhanced", 64, 10, true);
+        int soldierEntityID = EntityRegistry.findGlobalUniqueEntityId();
+        EntityRegistry.registerGlobalEntityID(EntitySovietSoldier.class, "SovietSoldier", soldierEntityID, 0x008000, 0x808080);
+        EntityRegistry.registerModEntity(EntitySovietSoldier.class, "SovietSoldier", soldierEntityID, this, 80, 3, true);
+        int officerEntityID = EntityRegistry.findGlobalUniqueEntityId();
+        EntityRegistry.registerGlobalEntityID(EntitySovietOfficer.class, "SovietOfficer", officerEntityID, 0x008000, 0x808080);
+        EntityRegistry.registerModEntity(EntitySovietOfficer.class, "SovietOfficer", officerEntityID, this, 80, 3, true);
+        int soldier1EntityID = EntityRegistry.findGlobalUniqueEntityId();
+        EntityRegistry.registerGlobalEntityID(EntitySovietSoldier.class, "SovietSoldier1", soldier1EntityID, 0x008000, 0x808080);
+        EntityRegistry.registerModEntity(EntitySovietSoldier.class, "SovietSoldier1", soldier1EntityID, this, 80, 3, true);
+        int soldier2EntityID = EntityRegistry.findGlobalUniqueEntityId();
+        EntityRegistry.registerGlobalEntityID(EntitySovietSoldier.class, "SovietSoldier2", soldier2EntityID, 0x008000, 0x808080);
+        EntityRegistry.registerModEntity(EntitySovietSoldier.class, "SovietSoldier2", soldier2EntityID, this, 80, 3, true);
         ResearchItemUtil.initMaterials();
         ResearchItemUtil.init();
         ResearchRegistry.init();
@@ -182,6 +204,22 @@ public class hbmenhanced
         }
         if (FMLCommonHandler.instance().getEffectiveSide().isClient()) {
             RenderingRegistry.registerEntityRenderingHandler(EntityStalin.class, new RenderStalin());
+        }
+        if (FMLCommonHandler.instance().getEffectiveSide().isClient()) {
+            RenderingRegistry.registerEntityRenderingHandler(EntitySovietSoldier.class, new RenderSovietSoldier());
+            //system.out.println("Registered SovietSoldier");
+        }
+        if (FMLCommonHandler.instance().getEffectiveSide().isClient()) {
+            RenderingRegistry.registerEntityRenderingHandler(EntitySovietOfficer.class, new RenderSovietOfficer());
+            //system.out.println("Registered SovietOfficer");
+        }
+        if (FMLCommonHandler.instance().getEffectiveSide().isClient()) {
+            RenderingRegistry.registerEntityRenderingHandler(EntitySovietSoldier1.class, new RenderSovietSoldier1());
+            //system.out.println("Registered SovietSoldier1");
+        }
+        if (FMLCommonHandler.instance().getEffectiveSide().isClient()) {
+            RenderingRegistry.registerEntityRenderingHandler(EntitySovietSoldier2.class, new RenderSovietSoldier2());
+            //system.out.println("Registered SovietSoldier2");
         }
 
 
