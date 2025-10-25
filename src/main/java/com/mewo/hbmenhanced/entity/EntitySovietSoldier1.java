@@ -80,7 +80,7 @@ public class EntitySovietSoldier1 extends EntityMob implements IRangedAttackMob,
 
     public boolean attackEntityFrom(DamageSource source, float amount) {
 
-        if(source instanceof EntityDamageSourceIndirect && ((EntityDamageSourceIndirect)source).getEntity() instanceof EntitySovietSoldier) {
+        if(source instanceof EntityDamageSourceIndirect && ((EntityDamageSourceIndirect)source).getEntity() instanceof EntitySovietSoldier1) {
             return false;
         }
 

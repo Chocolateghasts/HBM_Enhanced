@@ -164,11 +164,17 @@ public class hbmenhanced
         EntityRegistry.registerGlobalEntityID(EntitySovietOfficer.class, "SovietOfficer", officerEntityID, 0x008000, 0x808080);
         EntityRegistry.registerModEntity(EntitySovietOfficer.class, "SovietOfficer", officerEntityID, this, 80, 3, true);
         int soldier1EntityID = EntityRegistry.findGlobalUniqueEntityId();
-        EntityRegistry.registerGlobalEntityID(EntitySovietSoldier.class, "SovietSoldier1", soldier1EntityID, 0x008000, 0x808080);
-        EntityRegistry.registerModEntity(EntitySovietSoldier.class, "SovietSoldier1", soldier1EntityID, this, 80, 3, true);
-        int soldier2EntityID = EntityRegistry.findGlobalUniqueEntityId();
-        EntityRegistry.registerGlobalEntityID(EntitySovietSoldier.class, "SovietSoldier2", soldier2EntityID, 0x008000, 0x808080);
-        EntityRegistry.registerModEntity(EntitySovietSoldier.class, "SovietSoldier2", soldier2EntityID, this, 80, 3, true);
+        EntityRegistry.registerGlobalEntityID(EntitySovietSoldier1.class, "SovietSoldier1", soldier1EntityID, 0x008000, 0x808080);
+        EntityRegistry.registerModEntity(EntitySovietSoldier1.class, "SovietSoldier1", soldier1EntityID, this, 80, 3, true);
+        int soldier2EntityID = 67;
+        EntityRegistry.registerGlobalEntityID(EntitySovietSoldier2.class, "SovietSoldier2", soldier2EntityID, 0x008000, 0x808080);
+        EntityRegistry.registerModEntity(EntitySovietSoldier2.class, "SovietSoldier2", soldier2EntityID, this, 80, 3, true);
+        System.out.println("entityids");
+        System.out.println(soldierEntityID);
+        System.out.println(soldier1EntityID);
+        System.out.println(soldier2EntityID);
+        System.out.println(officerEntityID);
+        System.out.println(stalinEntityID);
         ResearchItemUtil.initMaterials();
         ResearchItemUtil.init();
         ResearchRegistry.init();
@@ -186,42 +192,18 @@ public class hbmenhanced
         network.registerMessage(ConnectionsPacket.Handler.class, ConnectionsPacket.class, packetId++, Side.CLIENT);
         if (FMLCommonHandler.instance().getEffectiveSide().isClient()) {
             ClientRegistry.bindTileEntitySpecialRenderer(TileEntityTemuSign1.class, new RenderTemuSign1());
-        }
-        if (FMLCommonHandler.instance().getEffectiveSide().isClient()) {
             ClientRegistry.bindTileEntitySpecialRenderer(TileEntityTemuSign2.class, new RenderTemuSign2());
-        }
-        if (FMLCommonHandler.instance().getEffectiveSide().isClient()) {
             ClientRegistry.bindTileEntitySpecialRenderer(TileEntityTemuSign3.class, new RenderTemuSign3());
-        }
-        if (FMLCommonHandler.instance().getEffectiveSide().isClient()) {
             ClientRegistry.bindTileEntitySpecialRenderer(TileEntityTemuSign4.class, new RenderTemuSign4());
-        }
-        if (FMLCommonHandler.instance().getEffectiveSide().isClient()) {
             ClientRegistry.bindTileEntitySpecialRenderer(TileEntityTemuSign5.class, new RenderTemuSign5());
-        }
-        if (FMLCommonHandler.instance().getEffectiveSide().isClient()) {
             ClientRegistry.bindTileEntitySpecialRenderer(TileEntityTemuSign6.class, new RenderTemuSign6());
-        }
-        if (FMLCommonHandler.instance().getEffectiveSide().isClient()) {
-            RenderingRegistry.registerEntityRenderingHandler(EntityStalin.class, new RenderStalin());
-        }
-        if (FMLCommonHandler.instance().getEffectiveSide().isClient()) {
-            RenderingRegistry.registerEntityRenderingHandler(EntitySovietSoldier.class, new RenderSovietSoldier());
-            //system.out.println("Registered SovietSoldier");
-        }
-        if (FMLCommonHandler.instance().getEffectiveSide().isClient()) {
-            RenderingRegistry.registerEntityRenderingHandler(EntitySovietOfficer.class, new RenderSovietOfficer());
-            //system.out.println("Registered SovietOfficer");
-        }
-        if (FMLCommonHandler.instance().getEffectiveSide().isClient()) {
-            RenderingRegistry.registerEntityRenderingHandler(EntitySovietSoldier1.class, new RenderSovietSoldier1());
-            //system.out.println("Registered SovietSoldier1");
-        }
-        if (FMLCommonHandler.instance().getEffectiveSide().isClient()) {
-            RenderingRegistry.registerEntityRenderingHandler(EntitySovietSoldier2.class, new RenderSovietSoldier2());
-            //system.out.println("Registered SovietSoldier2");
-        }
 
+            RenderingRegistry.registerEntityRenderingHandler(EntityStalin.class, new RenderStalin());
+            RenderingRegistry.registerEntityRenderingHandler(EntitySovietSoldier.class, new RenderSovietOfficer());
+            RenderingRegistry.registerEntityRenderingHandler(EntitySovietSoldier.class, new RenderSovietSoldier());
+            RenderingRegistry.registerEntityRenderingHandler(EntitySovietSoldier1.class, new RenderSovietSoldier1());
+            RenderingRegistry.registerEntityRenderingHandler(EntitySovietSoldier2.class, new RenderSovietSoldier2());
+        }
 
         // PacketResearchTree is bidirectional, so register for both server and client
         network.registerMessage(PacketResearchTree.Handler.class, PacketResearchTree.class, packetId++, Side.SERVER);

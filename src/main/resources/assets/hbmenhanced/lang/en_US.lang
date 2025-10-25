@@ -9,3 +9,11 @@ item.temuFactory.name=Temu Factory
 itemGroup.tabhbmenhanced=HBM enhanced
 
 ^ for tabs ^
+
+entity.Stalin=Stalin
+entity.SovietSoldier=Soviet Soldier
+entity.SovietSoldier1=Soviet Shotgunner
+entity.SovietSoldier2=Soviet Grenadier
+entity.SovietOfficer=Soviet Officer
+
+^ for entities ^
