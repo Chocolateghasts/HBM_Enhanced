@@ -8,6 +8,7 @@ import com.mewo.hbmenhanced.ResearchBlocks.ResearchController.ContainerResearchC
 import com.mewo.hbmenhanced.ResearchBlocks.ResearchController.GuiResearchController;
 import com.mewo.hbmenhanced.ResearchBlocks.ResearchController.TileEntityResearchController;
 import com.mewo.hbmenhanced.ResearchBlocks.ResearchTerminal.GuiResearchTerminal;
+import com.mewo.hbmenhanced.ResearchBlocks.ResearchTerminal.GuiResearchTerminal1;
 import com.mewo.hbmenhanced.ResearchBlocks.ResearchTerminal.TileEntityResearchTerminal;
 import com.mewo.hbmenhanced.ResearchBlocks.Tier1.ContainerT1;
 import com.mewo.hbmenhanced.ResearchBlocks.Tier1.GuiT1;
@@ -116,7 +117,7 @@ public class GuiHandler implements IGuiHandler {
                     System.out.println("TEAM ON GUI OPEN: " + team);
                     PacketResearchTreeRequest request = PacketResearchTreeRequest.versionCheck(team, ClientResearchSync.getVersion());
                     hbmenhanced.network.sendToServer(request);
-                    return new GuiResearchTerminal(team);
+                    return new GuiResearchTerminal1(team);
                 }
                 break;
 
