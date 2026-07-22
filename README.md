@@ -61,55 +61,51 @@ GSON (Google)
   - Used for JSON parsing and serialization
 
 WorldEdit
-  - License: GPL v3
+  - License: LGPL v3
   - CurseForge: https://www.curseforge.com/minecraft/mods/worldedit
+  - Github: https://github.com/EngineHub/WorldEdit/tree/forge-archive/1.7.10
   - Used for world editing utilities
 
 Lunatrius Core
   - License: MIT
   - CurseForge: https://www.curseforge.com/minecraft/mods/lunatriuscore
+  - Github: https://github.com/Lunatrius/LunatriusCore/tree/1.7.10
   - Dependency for Schematica
 
 Schematica
   - License: MIT
   - CurseForge: https://www.curseforge.com/minecraft/mods/schematica
+  - Github: https://github.com/Lunatrius/Schematica/tree/1.7.10
   - Used for schematic building features
 
 OpenComputers (Li Cil)
   - License: MIT
-  - Version: MC1.7.10-1.7.5.1356
-  - URL: https://github.com/MightyPirates/OpenComputers
+  - URL: https://github.com/MightyPirates/OpenComputers/tree/OC1.7-MC1.7.10
   - Used for computer integration
 
 CodeChickenLib (CodeChicken)
   - License: LGPL v2.1
-  - Version: 1.7.10-1.1.3.141
   - URL: https://github.com/Chicken-Bones/CodeChickenLib
   - Utility library for CodeChicken mods
 
 CodeChickenCore (CodeChicken)
-  - License: LGPL v2.1
-  - Version: 1.7.10-1.0.7.48
+  - License: MIT
   - URL: https://github.com/Chicken-Bones/CodeChickenCore
   - Core utilities and ASM transformations
 
 NotEnoughItems (CodeChicken)
   - License: MIT
-  - Version: 1.7.10-1.0.5.120
   - URL: https://github.com/Chicken-Bones/NotEnoughItems
   - Used for crafting recipe integration
 
 HBM's Nuclear Tech GIT (JameH2)
-  - License: Check source repository
+  - License: LGPL v3
   - URL: https://github.com/JameH2/Hbm-s-Nuclear-Tech-GIT
   - The base mod being enhanced by this project
 
+If I made any mistake with licensing, please create an issue with the github repository, or message me on discord (name is mewo_cat on discord)
 -------------------------------------------
-Building
+LICENSE
 -------------------------------------------
 
-Ensure Java 8+ is installed. Run:
-  ./gradlew setupDevWorkspace
-  ./gradlew eclipse  (or './gradlew idea' for IntelliJ)
-
-For build troubleshooting, refer to the ForgeGradle documentation.
+This repository is licensed under LGPL-3
