@@ -66,7 +66,7 @@ WorldEdit
   - Used for world editing utilities
 
 Lunatrius Core
-  - License: Various (check source)
+  - License: MIT
   - CurseForge: https://www.curseforge.com/minecraft/mods/lunatriuscore
   - Dependency for Schematica
 
